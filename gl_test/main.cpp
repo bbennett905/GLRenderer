@@ -7,14 +7,19 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "Camera.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
+
+Camera camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f));
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		printf("angle %f\n", camera.GetAngles().y);
 }
 
 int main()
@@ -173,7 +178,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Time varying color
-		GLfloat time = glfwGetTime();
+		GLfloat time = GLfloat(glfwGetTime());
 		GLfloat greenValue = (sin(time * 1.3f) / 2) + 0.5f;
 		GLfloat redValue = (sin(time * 1.5f) / 5) + 0.5f;
 		GLfloat blueValue = (sin(time) * 1.0f) + 0.5f;
@@ -196,15 +201,12 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
 		//view matrix moves the world relative to the camera - rotation + translation
-		glm::mat4 view;
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
 
 		//projection matrix is the projection of the camera, perspective or orthogonal
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(45.0f), float(SCREEN_WIDTH / SCREEN_HEIGHT), 0.1f, 1000.0f);
-		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
+		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));		
 
 		//Bind our VAO so we have the correct vertex attribute configuration
 		glBindVertexArray(VAO);
