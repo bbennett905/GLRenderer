@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include <SOIL\SOIL.h>
+#include <SOIL.h>
 
 Texture::Texture(const char * path)
 {

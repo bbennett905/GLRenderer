@@ -1,13 +1,15 @@
 #include <iostream>
-#include <gl/glew.h>
-#include <GLFW/glfw3.h>
-#include <SOIL\SOIL.h>
+#include <glew.h>
+#include <glfw3.h>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
 
-#define SCREEN_WIDTH 1366
-#define SCREEN_HEIGHT 768
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 800
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode)
 {
