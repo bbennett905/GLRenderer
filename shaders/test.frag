@@ -11,8 +11,9 @@ out vec4 color;
 
 void main(void) 
 {
-	color = mix(texture(ourTexture1, TexCoord), texture(ourTexture2, TexCoord), 0.2);
+//	color = mix(texture(ourTexture1, TexCoord), texture(ourTexture2, TexCoord), 0.2);
 //	color = texture(ourTexture1, TexCoord);
-//	color = vec4(vertexColor, 1.0f);
+	color = vec4(vertexColor * 2.0f
+	, 1.0f);
 //	color = ourColor;
 }

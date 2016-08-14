@@ -54,12 +54,56 @@ int main()
 
 	//the vertices that we will render, in normalized device coordinates:
 	//coordinates between -1.0f and 1.0f are visible on screen, anything outside of this is not visible
-	GLfloat vertices[] = {
+	/*GLfloat vertices[] = {
 		// Positions			// Colors           // Texture Coords
 		0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f,   // Top Right
 		0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f,   // Bottom Right
 		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,   // Bottom Left
 		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f,	0.0f, 1.0f    // Top Left 
+	}; */
+
+	GLfloat vertices[] = {
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
 	//indices used for the EBO, so we require fewer vertices
@@ -72,6 +116,8 @@ int main()
 	Texture texture2("../images/awesomeface.png");
 
 	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
+
+	glEnable(GL_DEPTH_TEST);
 
 	//VBO - vertex buffer object: can store large # of verices in the gpu memory
 	//allows for sending large amounts of data at the same time, rather than individually
@@ -104,11 +150,11 @@ int main()
 	//should look up more about this
 	//these are called after we bind the VAO - if we bind a different VAO and rebind this one, these calls are stored
 	//the 0 here corresponds to the 0 for the vec3 position in vertex shader code
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	//unbind VBO, we've given it the data it needs
@@ -123,7 +169,8 @@ int main()
 		glfwPollEvents();
 
 		glClearColor(0.7f, 1.0f, 0.7f, 1.0f);	//sets state
-		glClear(GL_COLOR_BUFFER_BIT);			//uses set state
+		//glClear(GL_COLOR_BUFFER_BIT);			//uses set state
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Time varying color
 		GLfloat time = glfwGetTime();
@@ -142,11 +189,28 @@ int main()
 		texture2.Bind();
 		glUniform1i(glGetUniformLocation(newShader.Program, "ourTexture2"), 1);
 
+		//model matrix is the matrix that transforms model space to world space - rotation and translation
+		glm::mat4 model;
+		model = glm::rotate(model, glm::radians(GLfloat(glfwGetTime() * 25.0f)), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(GLfloat(glfwGetTime() * -40.0f)), glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+		//view matrix moves the world relative to the camera - rotation + translation
+		glm::mat4 view;
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+		//projection matrix is the projection of the camera, perspective or orthogonal
+		glm::mat4 projection;
+		projection = glm::perspective(glm::radians(45.0f), float(SCREEN_WIDTH / SCREEN_HEIGHT), 0.1f, 1000.0f);
+		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+
 		//Bind our VAO so we have the correct vertex attribute configuration
 		glBindVertexArray(VAO);
 		//Draw! - type of primitive, starting index of vertex array, number of vertices
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//Unbind VAO at end of call
 		glBindVertexArray(0);
 
