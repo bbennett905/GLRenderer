@@ -177,16 +177,9 @@ int main()
 		//glClear(GL_COLOR_BUFFER_BIT);			//uses set state
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Time varying color
-		GLfloat time = GLfloat(glfwGetTime());
-		GLfloat greenValue = (sin(time * 1.3f) / 2) + 0.5f;
-		GLfloat redValue = (sin(time * 1.5f) / 5) + 0.5f;
-		GLfloat blueValue = (sin(time) * 1.0f) + 0.5f;
-		
 		//Sets which shaderprogram we should use for rendering this
 		newShader.Use();
-		//glUniform4f(glGetUniformLocation(newShader.Program, "ourColor"), redValue, greenValue, blueValue, 1.0f);
-		
+				
 		glActiveTexture(GL_TEXTURE0);
 		texture1.Bind();
 		glUniform1i(glGetUniformLocation(newShader.Program, "ourTexture1"), 0);
