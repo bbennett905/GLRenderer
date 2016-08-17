@@ -182,10 +182,10 @@ int main()
 				
 		glActiveTexture(GL_TEXTURE0);
 		texture1.Bind();
-		glUniform1i(glGetUniformLocation(newShader.Program, "ourTexture1"), 0);
+		glUniform1i(glGetUniformLocation(newShader.Program, "Texture1"), 0);
 		glActiveTexture(GL_TEXTURE1);
 		texture2.Bind();
-		glUniform1i(glGetUniformLocation(newShader.Program, "ourTexture2"), 1);
+		glUniform1i(glGetUniformLocation(newShader.Program, "Texture2"), 1);
 
 		//model matrix is the matrix that transforms model space to world space - rotation and translation
 		glm::mat4 model;
