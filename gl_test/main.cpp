@@ -18,8 +18,6 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		printf("angle %f\n", camera.GetAngles().y);
 }
 
 int main()
@@ -59,13 +57,7 @@ int main()
 
 	//the vertices that we will render, in normalized device coordinates:
 	//coordinates between -1.0f and 1.0f are visible on screen, anything outside of this is not visible
-	/*GLfloat vertices[] = {
-		// Positions			// Colors           // Texture Coords
-		0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f,   // Top Right
-		0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f,   // Bottom Right
-		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,   // Bottom Left
-		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f,	0.0f, 1.0f    // Top Left 
-	}; */
+	//	note: the above is no longer true due to model transformations
 
 	GLfloat vertices[] = {
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -131,13 +123,13 @@ int main()
 	//EBO - element buffer object: stores indices of vertices - not currently used in this sample
 	//used so that instead of having multiple overlapping vertices, each vertex is assigned an index
 	//	which is used to specify which vertex is part of which triangle
-	GLuint VBO, VAO, EBO;
+	GLuint VBO, VAO;// , EBO;
 	glGenVertexArrays(1, &VAO);
 
 	//generate the vertex buffer object's ID
 	glGenBuffers(1, &VBO);
 	//same
-	glGenBuffers(1, &EBO);
+	//glGenBuffers(1, &EBO);
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 	glBindVertexArray(VAO);
 
@@ -147,8 +139,8 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	//bind the EBO to the element array buffer, and give it the index data
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	//tell GL how to interpret vertex data - pass data to this vertex attribute (see vertex shader), size of (3 values, vec), type is float,
 	//	normalize it to 0-1, space between consecutive vertex sets, offset of where the data begins in the buffer
@@ -157,16 +149,15 @@ int main()
 	//the 0 here corresponds to the 0 for the vec3 position in vertex shader code
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	//glEnableVertexAttribArray(1);
+	//TODO this must be 2 for textures to work, find out why
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	//unbind VBO, we've given it the data it needs
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, NULL);
 
 	//Unbind VAO, so we don't mistakenly call it - not necessary for this simple code, but good practice
-	glBindVertexArray(0);
+	glBindVertexArray(NULL);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -195,7 +186,6 @@ int main()
 
 		//view matrix moves the world relative to the camera - rotation + translation
 		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
-
 		//projection matrix is the projection of the camera, perspective or orthogonal
 		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(camera.GetProjMatrix()));		
 
@@ -215,7 +205,7 @@ int main()
 	//Cleanup our things
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	//glDeleteBuffers(1, &EBO);
 
 	glfwTerminate();
 	return 0;
