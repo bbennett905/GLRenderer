@@ -12,11 +12,13 @@ public:
 	bool ShouldClose();
 	void PollEvents();
 	void SwapBuffers();
-
-	void GetFramebufferSize(int * width, int * height);
 	
 	//TODO replace with own callback
 	void SetKeyCallback(void (* keyCallback));
+
+	int GetWidth();
+	int GetHeight();
+	
 private:
 	GLFWwindow * _window;
 	int _width;

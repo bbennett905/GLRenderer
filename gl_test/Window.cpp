@@ -16,6 +16,8 @@ Window::Window(int width, int height, const char * title)
 		std::cout << "Window creation failed!" << std::endl;
 	}
 	glfwMakeContextCurrent(_window);
+
+	glfwGetFramebufferSize(_window, &_width, &_height);
 }
 
 Window::~Window()
@@ -44,12 +46,17 @@ void Window::SwapBuffers()
 	glfwSwapBuffers(_window);
 }
 
-void Window::GetFramebufferSize(int * width, int * height)
-{
-	glfwGetFramebufferSize(_window, width, height);//width, height);
-}
-
 void Window::SetKeyCallback(void (* keyCallback))
 {
 	glfwSetKeyCallback(_window, GLFWkeyfun(keyCallback));
+}
+
+int Window::GetWidth()
+{
+	return _width;
+}
+
+int Window::GetHeight()
+{
+	return _height;
 }

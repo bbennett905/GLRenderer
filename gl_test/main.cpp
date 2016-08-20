@@ -36,9 +36,7 @@ int main()
 		return -1;
 	}
 
-	int width, height;
-	window.GetFramebufferSize(&width, &height);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, window.GetWidth(), window.GetHeight());
 	
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
