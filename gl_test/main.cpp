@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "LightSimple.h"
 #include "Material.h"
+#include "Window.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -24,22 +25,7 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
 int main()
 {
-	//most glfw functions are self-explanatory
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);	//this sets the opengl version to use
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	GLFWwindow * window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing", nullptr, nullptr);
-
-	if (window == nullptr)
-	{
-		std::cout << "Window creation failed!" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
+	Window * window = new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 	glewExperimental = GL_TRUE;
 	GLenum f = glewInit();
@@ -51,11 +37,11 @@ int main()
 	}
 
 	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
+	window->GetFramebufferSize(&width, &height);
 	glViewport(0, 0, width, height);
 	
 	//Set where we handle input
-	glfwSetKeyCallback(window, KeyCallback);
+	window->SetKeyCallback(KeyCallback);
 
 	//the vertices that we will render, in normalized device coordinates:
 	//coordinates between -1.0f and 1.0f are visible on screen, anything outside of this is not visible
@@ -170,7 +156,7 @@ int main()
 	//Unbind VAO, so we don't mistakenly call it - not necessary for this simple code, but good practice
 	glBindVertexArray(0);
 
-	while (!glfwWindowShouldClose(window))
+	while (!window->ShouldClose())
 	{
 		//Go to the event callbacks specified before
 		glfwPollEvents();
@@ -223,7 +209,7 @@ int main()
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glfwSwapBuffers(window);
+		window->SwapBuffers();
 	}
 
 	//Cleanup our things
@@ -231,6 +217,6 @@ int main()
 	glDeleteBuffers(1, &VBO);
 	//glDeleteBuffers(1, &EBO);
 
-	glfwTerminate();
+	delete window;
 	return 0;
 }
