@@ -8,6 +8,8 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "LightSimple.h"
+#include "Material.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -60,47 +62,48 @@ int main()
 	//	note: the above is no longer true due to model transformations
 
 	GLfloat vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		// Positions           // Normals           // Texture Coords
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 
 	//indices used for the EBO, so we require fewer vertices
@@ -113,6 +116,13 @@ int main()
 	Texture texture2("../images/awesomeface.png");
 
 	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
+
+	Material mat1( &newShader, &texture1, &texture2, 0.4f,
+		0.5f, 1.0f, 1.0f, 32.0f );
+
+	LightSimple light(glm::vec3(2.0f, 1.0f, -3.0f), 
+		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f, 
+		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -147,17 +157,18 @@ int main()
 	//should look up more about this
 	//these are called after we bind the VAO - if we bind a different VAO and rebind this one, these calls are stored
 	//the 0 here corresponds to the 0 for the vec3 position in vertex shader code
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
-	//TODO this must be 2 for textures to work, find out why
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	//unbind VBO, we've given it the data it needs
-	glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Unbind VAO, so we don't mistakenly call it - not necessary for this simple code, but good practice
-	glBindVertexArray(NULL);
+	glBindVertexArray(0);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -171,12 +182,18 @@ int main()
 		//Sets which shaderprogram we should use for rendering this
 		newShader.Use();
 				
+		//Set all the material uniforms in the shader
 		glActiveTexture(GL_TEXTURE0);
 		texture1.Bind();
-		glUniform1i(glGetUniformLocation(newShader.Program, "Texture1"), 0);
+		glUniform1i(glGetUniformLocation(newShader.Program, "material.Texture1"), 0);
 		glActiveTexture(GL_TEXTURE1);
 		texture2.Bind();
-		glUniform1i(glGetUniformLocation(newShader.Program, "Texture2"), 1);
+		glUniform1i(glGetUniformLocation(newShader.Program, "material.Texture2"), 1);
+		glUniform1f(glGetUniformLocation(newShader.Program, "material.MixRatio"), mat1.MixRatio);
+		glUniform1f(glGetUniformLocation(newShader.Program, "material.AmbientStrength"), mat1.AmbientStrength);
+		glUniform1f(glGetUniformLocation(newShader.Program, "material.DiffuseStrength"), mat1.DiffuseStrength);
+		glUniform1f(glGetUniformLocation(newShader.Program, "material.SpecularStrength"), mat1.SpecularStrength);
+		glUniform1f(glGetUniformLocation(newShader.Program, "material.Shininess"), mat1.Shininess);
 
 		//model matrix is the matrix that transforms model space to world space - rotation and translation
 		glm::mat4 model;
@@ -189,6 +206,13 @@ int main()
 		//projection matrix is the projection of the camera, perspective or orthogonal
 		glUniformMatrix4fv(glGetUniformLocation(newShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(camera.GetProjMatrix()));		
 
+		glUniform3f(glGetUniformLocation(newShader.Program, "viewPos"), camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
+
+		glUniform3f(glGetUniformLocation(newShader.Program, "lightPos"), light.Position.x, light.Position.y, light.Position.z);
+		glUniform3f(glGetUniformLocation(newShader.Program, "lightColor"), light.LightColor.x, light.LightColor.y, light.LightColor.z);
+		glUniform1f(glGetUniformLocation(newShader.Program, "lightIntensity"), light.LightIntensity);
+		glUniform3f(glGetUniformLocation(newShader.Program, "ambientColor"), light.AmbientColor.x, light.AmbientColor.y, light.AmbientColor.z);
+		glUniform1f(glGetUniformLocation(newShader.Program, "ambientIntensity"), light.AmbientIntensity);
 		//Bind our VAO so we have the correct vertex attribute configuration
 		glBindVertexArray(VAO);
 		//Draw! - type of primitive, starting index of vertex array, number of vertices
