@@ -25,7 +25,7 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
 int main()
 {
-	Window * window = new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
+	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 	glewExperimental = GL_TRUE;
 	GLenum f = glewInit();
@@ -37,11 +37,11 @@ int main()
 	}
 
 	int width, height;
-	window->GetFramebufferSize(&width, &height);
+	window.GetFramebufferSize(&width, &height);
 	glViewport(0, 0, width, height);
 	
 	//Set where we handle input
-	window->SetKeyCallback(KeyCallback);
+	window.SetKeyCallback(KeyCallback);
 
 	//the vertices that we will render, in normalized device coordinates:
 	//coordinates between -1.0f and 1.0f are visible on screen, anything outside of this is not visible
@@ -156,7 +156,7 @@ int main()
 	//Unbind VAO, so we don't mistakenly call it - not necessary for this simple code, but good practice
 	glBindVertexArray(0);
 
-	while (!window->ShouldClose())
+	while (!window.ShouldClose())
 	{
 		//Go to the event callbacks specified before
 		glfwPollEvents();
@@ -209,7 +209,7 @@ int main()
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		window->SwapBuffers();
+		window.SwapBuffers();
 	}
 
 	//Cleanup our things
@@ -217,6 +217,5 @@ int main()
 	glDeleteBuffers(1, &VBO);
 	//glDeleteBuffers(1, &EBO);
 
-	delete window;
 	return 0;
 }
