@@ -11,6 +11,8 @@
 #include "LightSimple.h"
 #include "Material.h"
 #include "Window.h"
+#include "Cube.h"
+#include "Renderer.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -25,8 +27,29 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
 int main()
 {
+	LightSimple light(glm::vec3(2.0f, 1.0f, -3.0f),
+		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f,
+		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);
+
+
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
+	Renderer render(window, camera, light);
+	render.ClearColor = glm::vec4(0.0f, 1.0f, 0.8f, 1.0f);
+
+	Texture texture1("../images/container.jpg");
+	Texture texture2("../images/awesomeface.png");
+
+	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
+
+	Material mat1(&newShader, &texture1, &texture2, 0.4f,
+		0.5f, 1.0f, 1.0f, 32.0f);
+
+	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+
+	render.AddToDrawList(cube);
+
+	/*
 	glewExperimental = GL_TRUE;
 	GLenum f = glewInit();
 	if (f != GLEW_OK)
@@ -36,7 +59,7 @@ int main()
 		return -1;
 	}
 
-	glViewport(0, 0, window.GetWidth(), window.GetHeight());
+	glViewport(0, 0, window.GetWidth(), window.GetHeight());*/
 	
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
@@ -45,7 +68,7 @@ int main()
 	//coordinates between -1.0f and 1.0f are visible on screen, anything outside of this is not visible
 	//	note: the above is no longer true due to model transformations
 
-	GLfloat vertices[] = {
+	/*GLfloat vertices[] = {
 		// Positions           // Normals           // Texture Coords
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
@@ -96,18 +119,6 @@ int main()
 		1, 2, 3   // Second Triangle
 	};
 
-	Texture texture1("../images/container.jpg");
-	Texture texture2("../images/awesomeface.png");
-
-	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
-
-	Material mat1( &newShader, &texture1, &texture2, 0.4f,
-		0.5f, 1.0f, 1.0f, 32.0f );
-
-	LightSimple light(glm::vec3(2.0f, 1.0f, -3.0f), 
-		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f, 
-		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);
-
 	glEnable(GL_DEPTH_TEST);
 
 	//VBO - vertex buffer object: can store large # of verices in the gpu memory
@@ -152,14 +163,19 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Unbind VAO, so we don't mistakenly call it - not necessary for this simple code, but good practice
-	glBindVertexArray(0);
+	glBindVertexArray(0);*/
 
 	while (!window.ShouldClose())
 	{
-		//Go to the event callbacks specified before
-		glfwPollEvents();
+		glm::vec3 rotate(GLfloat(glfwGetTime() * -40.0f), GLfloat(glfwGetTime() * 25.0f), 0.0f);
+		cube->SetAngles(rotate);
 
-		glClearColor(0.7f, 1.0f, 0.7f, 1.0f);	//sets state
+		//Go to the event callbacks specified before
+		window.PollEvents();
+
+		render.Draw();
+
+		/*glClearColor(0.7f, 1.0f, 0.7f, 1.0f);	//sets state
 		//glClear(GL_COLOR_BUFFER_BIT);			//uses set state
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -205,14 +221,14 @@ int main()
 		//Unbind VAO at end of call
 		glBindVertexArray(0);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);*/
 
 		window.SwapBuffers();
 	}
 
 	//Cleanup our things
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &VBO);
 	//glDeleteBuffers(1, &EBO);
 
 	return 0;

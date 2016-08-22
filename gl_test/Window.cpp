@@ -9,6 +9,7 @@ Window::Window(int width, int height, const char * title)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+
 	_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
 	if (_window == nullptr)
