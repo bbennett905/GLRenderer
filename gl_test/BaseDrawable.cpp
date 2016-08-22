@@ -25,10 +25,10 @@ BaseDrawable::BaseDrawable(glm::vec3 pos, glm::vec3 ang,
 
 glm::mat4 BaseDrawable::GetModelMatrix()
 {
+	//TODO cache this, add bIsStatic to determine if this is always updated or cached?
 	glm::mat4 model;
 	model = glm::translate(model, Position);
 
-	//TODO this is *probably* wrong
 	glm::vec3 ang = GetAngles();
 	model = glm::rotate(model, glm::radians(ang.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(ang.y), glm::vec3(0.0f, 1.0f, 0.0f));

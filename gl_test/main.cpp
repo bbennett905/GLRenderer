@@ -51,8 +51,20 @@ int main()
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
 
+	double lastTime = glfwGetTime();
+	int numFrames = 0;
 	while (!window.ShouldClose())
 	{
+		double currentTime = glfwGetTime();
+		numFrames++;
+		if (currentTime - lastTime >= 0.2) 
+		{
+			double timePerFrame = 200.0 / double(numFrames);
+			printf("FPS: %f (%f ms)\n", numFrames / timePerFrame, timePerFrame);
+			numFrames = 0;
+			lastTime = glfwGetTime();
+		}
+
 		glm::vec3 rotate(GLfloat(glfwGetTime() * -40.0f), GLfloat(glfwGetTime() * 25.0f), 0.0f);
 		cube->SetAngles(rotate);
 
