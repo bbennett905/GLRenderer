@@ -17,12 +17,38 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 
+#define MOVE_SPEED 0.1f
+
 Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
 
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (action == GLFW_PRESS)
+	{
+		glm::vec3 vec;
+		switch (key)
+		{
+		case GLFW_KEY_ESCAPE:
+			glfwSetWindowShouldClose(window, GL_TRUE);
+			break;
+		case GLFW_KEY_W:
+			vec = camera.GetForward() * MOVE_SPEED;
+			camera.SetPos(camera.GetPos() + vec);
+			break;
+		case GLFW_KEY_A:
+			vec = camera.GetRight() * MOVE_SPEED;
+			camera.SetPos(camera.GetPos() - vec);
+			break;
+		case GLFW_KEY_S:
+			vec = camera.GetForward() * MOVE_SPEED;
+			camera.SetPos(camera.GetPos() - vec);
+			break;
+		case GLFW_KEY_D:
+			vec = camera.GetRight() * MOVE_SPEED;
+			camera.SetPos(camera.GetPos() + vec);
+			break;
+		}
+	}
 }
 
 int main()
