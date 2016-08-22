@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(Window & window, Camera & cam, LightSimple & light) :
+Renderer::Renderer(Window & window, Camera * cam, LightSimple & light) :
 	_window(window), _camera(cam), _light(light)
 {
 	glewExperimental = GL_TRUE;
@@ -50,11 +50,11 @@ void Renderer::Draw()
 		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "model"), 1, GL_FALSE, glm::value_ptr(obj->GetModelMatrix()));
 
 		//view matrix moves the world relative to the camera - rotation + translation
-		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "view"), 1, GL_FALSE, glm::value_ptr(_camera.GetViewMatrix()));
+		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "view"), 1, GL_FALSE, glm::value_ptr(_camera->GetViewMatrix()));
 		//projection matrix is the projection of the camera, perspective or orthogonal
-		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "projection"), 1, GL_FALSE, glm::value_ptr(_camera.GetProjMatrix()));
+		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "projection"), 1, GL_FALSE, glm::value_ptr(_camera->GetProjMatrix()));
 
-		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "viewPos"), _camera.GetPos().x, _camera.GetPos().y, _camera.GetPos().z);
+		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "viewPos"), _camera->GetPos().x, _camera->GetPos().y, _camera->GetPos().z);
 
 		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightPos"), _light.Position.x, _light.Position.y, _light.Position.z);
 		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightColor"), _light.LightColor.x, _light.LightColor.y, _light.LightColor.z);

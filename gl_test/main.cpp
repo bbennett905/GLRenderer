@@ -34,7 +34,7 @@ int main()
 
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-	Renderer render(window, camera, light);
+	Renderer render(window, &camera, light);
 	render.ClearColor = glm::vec4(0.0f, 1.0f, 0.8f, 1.0f);
 
 	Texture texture1("../images/container.jpg");

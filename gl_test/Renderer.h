@@ -23,7 +23,7 @@
 class Renderer
 {
 public:
-	Renderer(Window & window, Camera & cam, LightSimple & light);
+	Renderer(Window & window, Camera * cam, LightSimple & light);
 	~Renderer();
 
 	void Draw();
@@ -34,7 +34,7 @@ private:
 	std::vector<BaseDrawable *> _drawList;
 	
 	Window _window;
-	Camera _camera;
+	Camera * _camera;
 	LightSimple _light; //TEMP
 };
 
