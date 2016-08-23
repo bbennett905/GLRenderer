@@ -45,5 +45,5 @@ void main(void)
 	vec3 ambient = material.AmbientStrength * ambientIntensity * ambientColor;
 
 	color = vec4((ambient + diffuse + specular) * 
-			mix(texture(material.Texture1, TexCoord), texture(material.Texture2, TexCoord), material.MixRatio), 1.0);
+		mix(texture(material.Texture1, TexCoord), texture(material.Texture2, TexCoord), material.MixRatio).xyz, 1.0);
 }

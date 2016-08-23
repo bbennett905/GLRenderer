@@ -59,7 +59,7 @@ int main()
 		numFrames++;
 		if (currentTime - lastTime >= 0.2) 
 		{
-			double timePerFrame = 200.0 / double(numFrames);
+			double timePerFrame = double(200.0) / double(numFrames);
 			printf("FPS: %f (%f ms)\n", numFrames / timePerFrame, timePerFrame);
 			numFrames = 0;
 			lastTime = glfwGetTime();
