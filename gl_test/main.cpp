@@ -66,7 +66,7 @@ int main()
 	//Texture texture2("../images/awesomeface.png");
 	Texture specMap("../images/container2_specular.png");
 
-	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
+	Shader newShader("../shaders/default.vert", "../shaders/default.frag");
 
 	Material mat1(&newShader, &texture1, nullptr, 0.4f, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
