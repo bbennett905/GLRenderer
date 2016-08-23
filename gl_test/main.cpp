@@ -53,22 +53,22 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
 int main()
 {
-	LightSimple light(glm::vec3(2.0f, 1.0f, -3.0f),
+	LightSimple light(glm::vec3(-2.0f, 1.0f, -3.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f,
 		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);
 
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 	Renderer render(window, &camera, light);
-	render.ClearColor = glm::vec4(0.0f, 1.0f, 0.8f, 1.0f);
+	render.ClearColor = glm::vec4(0.0f, 0.05f, 0.1f, 1.0f);
 
 	Texture texture1("../images/container2.png");
-	Texture texture2("../images/awesomeface.png");
+	//Texture texture2("../images/awesomeface.png");
 	Texture specMap("../images/container2_specular.png");
 
 	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
 
-	Material mat1(&newShader, &texture1, &texture2, 0.4f, &specMap,
+	Material mat1(&newShader, &texture1, nullptr, 0.4f, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
@@ -77,7 +77,7 @@ int main()
 	render.AddToDrawList(cube2);
 	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	render.AddToDrawList(cube3);
-	Cube * cube4 = new Cube(glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	render.AddToDrawList(cube4);
 
 	//Set where we handle input
