@@ -1,5 +1,4 @@
 #version 330 core
-in vec3 vertexColor;
 in vec3 position;
 in vec2 TexCoord;
 in vec3 normal;
