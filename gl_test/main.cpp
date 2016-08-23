@@ -57,7 +57,6 @@ int main()
 		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f,
 		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);
 
-
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 	Renderer render(window, &camera, light);
@@ -73,6 +72,12 @@ int main()
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	render.AddToDrawList(cube);
+	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	render.AddToDrawList(cube2);
+	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	render.AddToDrawList(cube3);
+	Cube * cube4 = new Cube(glm::vec3(-1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	render.AddToDrawList(cube4);
 
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
@@ -93,6 +98,9 @@ int main()
 
 		glm::vec3 rotate(GLfloat(glfwGetTime() * -40.0f), GLfloat(glfwGetTime() * 25.0f), 0.0f);
 		cube->SetAngles(rotate);
+		cube2->SetAngles(rotate);
+		cube3->SetAngles(rotate);
+		cube4->SetAngles(rotate);
 
 		//Go to the event callbacks specified before
 		window.PollEvents();
