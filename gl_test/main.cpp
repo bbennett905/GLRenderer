@@ -62,12 +62,13 @@ int main()
 	Renderer render(window, &camera, light);
 	render.ClearColor = glm::vec4(0.0f, 1.0f, 0.8f, 1.0f);
 
-	Texture texture1("../images/container.jpg");
+	Texture texture1("../images/container2.png");
 	Texture texture2("../images/awesomeface.png");
+	Texture specMap("../images/container2_specular.png");
 
 	Shader newShader("../shaders/test.vert", "../shaders/test.frag");
 
-	Material mat1(&newShader, &texture1, &texture2, 0.4f,
+	Material mat1(&newShader, &texture1, &texture2, 0.4f, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);

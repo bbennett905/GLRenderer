@@ -34,13 +34,25 @@ void Renderer::Draw()
 		//Sets which shaderprogram we should use for rendering this
 		obj->MatObj.ShaderObj->Use();
 		//Set all the material uniforms in the shader
-		glActiveTexture(GL_TEXTURE0);
-		obj->MatObj.TextureObj1->Bind();
-		glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture1"), 0);
-		glActiveTexture(GL_TEXTURE1);
-		obj->MatObj.TextureObj2->Bind();
-		glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture2"), 1);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.MixRatio"), obj->MatObj.MixRatio);
+		if (obj->MatObj.TextureObj1 != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			obj->MatObj.TextureObj1->Bind();
+			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture1"), 0);
+		}
+		if (obj->MatObj.TextureObj2 != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			obj->MatObj.TextureObj2->Bind();
+			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture2"), 1);
+			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.MixRatio"), obj->MatObj.MixRatio);
+		}
+		if (obj->MatObj.SpecularMap != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE2);
+			obj->MatObj.SpecularMap->Bind();
+			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.SpecMap"), 2);
+		}
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.AmbientStrength"), obj->MatObj.AmbientStrength);
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.DiffuseStrength"), obj->MatObj.DiffuseStrength);
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.SpecularStrength"), obj->MatObj.SpecularStrength);
