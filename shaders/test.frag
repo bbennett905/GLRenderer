@@ -10,6 +10,7 @@ struct Material {
 	sampler2D Texture1;
 	sampler2D Texture2;
 	float MixRatio;
+	sampler2D SpecMap;
     float AmbientStrength;
     float DiffuseStrength;
     float SpecularStrength;

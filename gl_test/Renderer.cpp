@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(Window & window, Camera & cam, LightSimple & light) :
+Renderer::Renderer(Window & window, Camera * cam, LightSimple & light) :
 	_window(window), _camera(cam), _light(light)
 {
 	glewExperimental = GL_TRUE;
@@ -34,13 +34,25 @@ void Renderer::Draw()
 		//Sets which shaderprogram we should use for rendering this
 		obj->MatObj.ShaderObj->Use();
 		//Set all the material uniforms in the shader
-		glActiveTexture(GL_TEXTURE0);
-		obj->MatObj.TextureObj1->Bind();
-		glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture1"), 0);
-		glActiveTexture(GL_TEXTURE1);
-		obj->MatObj.TextureObj2->Bind();
-		glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture2"), 1);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.MixRatio"), obj->MatObj.MixRatio);
+		if (obj->MatObj.TextureObj1 != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			obj->MatObj.TextureObj1->Bind();
+			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture1"), 0);
+		}
+		if (obj->MatObj.TextureObj2 != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			obj->MatObj.TextureObj2->Bind();
+			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture2"), 1);
+			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.MixRatio"), obj->MatObj.MixRatio);
+		}
+		if (obj->MatObj.SpecularMap != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE2);
+			obj->MatObj.SpecularMap->Bind();
+			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.SpecMap"), 2);
+		}
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.AmbientStrength"), obj->MatObj.AmbientStrength);
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.DiffuseStrength"), obj->MatObj.DiffuseStrength);
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.SpecularStrength"), obj->MatObj.SpecularStrength);
@@ -50,11 +62,11 @@ void Renderer::Draw()
 		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "model"), 1, GL_FALSE, glm::value_ptr(obj->GetModelMatrix()));
 
 		//view matrix moves the world relative to the camera - rotation + translation
-		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "view"), 1, GL_FALSE, glm::value_ptr(_camera.GetViewMatrix()));
+		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "view"), 1, GL_FALSE, glm::value_ptr(_camera->GetViewMatrix()));
 		//projection matrix is the projection of the camera, perspective or orthogonal
-		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "projection"), 1, GL_FALSE, glm::value_ptr(_camera.GetProjMatrix()));
+		glUniformMatrix4fv(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "projection"), 1, GL_FALSE, glm::value_ptr(_camera->GetProjMatrix()));
 
-		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "viewPos"), _camera.GetPos().x, _camera.GetPos().y, _camera.GetPos().z);
+		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "viewPos"), _camera->GetPos().x, _camera->GetPos().y, _camera->GetPos().z);
 
 		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightPos"), _light.Position.x, _light.Position.y, _light.Position.z);
 		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightColor"), _light.LightColor.x, _light.LightColor.y, _light.LightColor.z);

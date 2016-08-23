@@ -21,6 +21,8 @@ struct Material
 	Texture * TextureObj2;
 	//Mix Ratio between the textures
 	float MixRatio;
+	//Texture for specular highlights
+	Texture * SpecularMap;
 
 	//Reflection properties
 	float AmbientStrength;
@@ -29,8 +31,10 @@ struct Material
 	float Shininess;
 
 	Material(Shader * shad, Texture * tex1 = nullptr, Texture * tex2 = nullptr, float mix = 0.5f, 
+		Texture * specMap = nullptr,
 		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) : 
 		ShaderObj(shad), TextureObj1(tex1), TextureObj2(tex2), MixRatio(mix),
+		SpecularMap(specMap),
 		AmbientStrength(ambStr), DiffuseStrength(difStr), SpecularStrength(specStr),
 		Shininess(shiny) { }
 	Material(Shader * shad, Texture * tex1 = nullptr,
