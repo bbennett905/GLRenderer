@@ -88,11 +88,12 @@ int main()
 	while (!window.ShouldClose())
 	{
 		double currentTime = glfwGetTime();
+		double deltaTime = currentTime - lastTime;
 		numFrames++;
-		if (currentTime - lastTime >= 0.2) 
+		if (deltaTime >= 0.2) 
 		{
-			double timePerFrame = double(200.0) / double(numFrames);
-			printf("FPS: %f (%f ms)\n", numFrames / timePerFrame, timePerFrame);
+			double timePerFrame = deltaTime / double(numFrames);
+			printf("FPS: %f (%f ms)\n", 1.0 / timePerFrame, timePerFrame * 1000.0);
 			numFrames = 0;
 			lastTime = glfwGetTime();
 		}
