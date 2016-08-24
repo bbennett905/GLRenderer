@@ -53,10 +53,12 @@ struct LightSpot {
 };
 
 uniform LightDirectional directionalLight;
-#define NR_POINT_LIGHTS 1 
-uniform LightPoint pointLights[NR_POINT_LIGHTS];
-#define NR_SPOT_LIGHTS 1  
-uniform LightSpot spotLights[NR_POINT_LIGHTS];
+#define MAX_POINT_LIGHTS 128
+uniform int numPointLights;
+uniform LightPoint pointLights[MAX_POINT_LIGHTS];
+#define MAX_SPOT_LIGHTS 128
+uniform int numSpotLights;
+uniform LightSpot spotLights[MAX_POINT_LIGHTS];
 
 uniform vec3 viewPos;
 
@@ -80,12 +82,10 @@ void main(void)
 	vec3 viewDir = normalize(viewPos - fragPos);
 
 	vec3 result = CalcDirLight(directionalLight, norm, viewDir);
-	//TODO these only work if they EXACTLY match the number of lights!
-	for (int i = 0; i < NR_POINT_LIGHTS; i++)
+	for (int i = 0; i < numPointLights; i++)
 		result += CalcPointLight(pointLights[i], norm, fragPos, viewDir);
-	//TODO spot light calc is broken
-	for (int i = 0; i < NR_SPOT_LIGHTS; i++)
-		result += CalcSpotLight(spotLights[0], norm, fragPos, viewDir);
+	for (int i = 0; i < numSpotLights; i++)
+		result += CalcSpotLight(spotLights[i], norm, fragPos, viewDir);
 
 	color = vec4(result, 1.0f);
 }
