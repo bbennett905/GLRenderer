@@ -14,7 +14,6 @@
 #include "Window.h"
 
 #include "Lights.h"
-#include "LightSimple.h"
 
 #define MAX_DRAWABLES 256
 
