@@ -78,6 +78,7 @@ int main()
 		0.5f, 1.0f, 1.0f, 32.0f);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
 	render.AddToDrawList(cube);
 	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	render.AddToDrawList(cube2);
