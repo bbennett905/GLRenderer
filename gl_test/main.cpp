@@ -8,7 +8,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
-#include "LightSimple.h"
+#include "Lights.h"
 #include "Material.h"
 #include "Window.h"
 #include "Cube.h"
@@ -53,18 +53,20 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
 int main()
 {
-	LightDirectional dirLight(glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(1.0f, 0.9f, 0.1f), 10.0f,
+	LightDirectional dirLight(glm::vec3(-45.0f, 45.0f, 0.0f),
+		glm::vec3(1.0f, 0.9f, 0.1f), 2.0f,
 		glm::vec3(0.1f, 0.1f, 0.5f), 0.5f);
-	/*LightSimple light(glm::vec3(-2.0f, 1.0f, -3.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f,
-		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);*/
+	LightPoint pointLight(glm::vec3(-2.0f, 1.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
+	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f), 10.0f, 0.005f, 0.01f);
 
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 	Renderer render(window, &camera);
 	render.ClearColor = glm::vec4(0.0f, 0.05f, 0.1f, 1.0f);
 	render.SetDirLight(&dirLight);
+	render.AddPointLight(&pointLight);
+	render.AddSpotLight(&spotLight);
 
 	Texture texture1("../images/container2.png");
 	//Texture texture2("../images/awesomeface.png");
@@ -107,6 +109,7 @@ int main()
 		cube2->SetAngles(rotate);
 		cube3->SetAngles(rotate);
 		cube4->SetAngles(rotate);
+		//dirLight.SetAngles(rotate);
 
 		//Go to the event callbacks specified before
 		window.PollEvents();

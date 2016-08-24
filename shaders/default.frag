@@ -53,9 +53,9 @@ struct LightSpot {
 };
 
 uniform LightDirectional directionalLight;
-#define NR_POINT_LIGHTS 4  
+#define NR_POINT_LIGHTS 1 
 uniform LightPoint pointLights[NR_POINT_LIGHTS];
-#define NR_SPOT_LIGHTS 4  
+#define NR_SPOT_LIGHTS 1  
 uniform LightSpot spotLights[NR_POINT_LIGHTS];
 
 uniform vec3 viewPos;
@@ -77,40 +77,29 @@ vec3 CalcSpotLight(LightSpot light, vec3 normal, vec3 fragPos, vec3 viewDir);
 void main(void) 
 {
 	vec3 norm = normalize(normal);
-	vec3 lightDir = normalize(lightPos - fragPos);
-
-	//float diffFactor = max(dot(norm, lightDir), 0.0);
-	//vec3 diffuse = material.DiffuseStrength * lightIntensity * diffFactor * lightColor;
-
 	vec3 viewDir = normalize(viewPos - fragPos);
-	//vec3 reflectDir = reflect(-lightDir, norm);
-	//float specFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
-	//vec3 specular = material.SpecularStrength * specFactor * lightColor;  
-
-	//vec3 ambient = material.AmbientStrength * ambientIntensity * ambientColor;
-
-	//color = vec4((ambient + diffuse) * mix(texture(material.Texture1, TexCoord), texture(material.Texture2, TexCoord), material.MixRatio).xyz, 1.0) +
-	//		vec4(specular * texture(material.SpecMap, TexCoord).xyz, 1.0);
-
 
 	vec3 result = CalcDirLight(directionalLight, norm, viewDir);
+	//TODO these only work if they EXACTLY match the number of lights!
 	for (int i = 0; i < NR_POINT_LIGHTS; i++)
 		result += CalcPointLight(pointLights[i], norm, fragPos, viewDir);
-	for (int i = 0; i < NR_SPOT_LIGHTS; i++)
-		result += CalcSpotLight(spotLights[i], norm, fragPos, viewDir);
+	//TODO spot light calc is broken
+	//for (int i = 0; i < NR_SPOT_LIGHTS; i++)
+	//	result += CalcSpotLight(spotLights[i], norm, fragPos, viewDir);
+
 	color = vec4(result, 1.0f);
 }
 
-vec3 CalcDirLight(LightDirectional light, vec3 normal, vec3 viewDir)
+vec3 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir)
 {
 	vec3 lightDir = normalize(-light.Direction);
 
 	vec3 ambient  = light.AmbientColor * light.AmbientIntensity * material.AmbientStrength;
 
-	float diff = max(dot(normal, lightDir), 0.0);
+	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse  = light.Color * light.Intensity * material.DiffuseStrength * diff;
 	
-	vec3 reflectDir = reflect(-lightDir, normal);
+	vec3 reflectDir = reflect(-lightDir, norm);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 	vec3 specular = light.Color * light.Intensity * material.SpecularStrength * spec;
 	
@@ -118,14 +107,14 @@ vec3 CalcDirLight(LightDirectional light, vec3 normal, vec3 viewDir)
 		(specular * vec3(texture(material.SpecMap, TexCoord)));
 }  
 
-vec3 CalcPointLight(LightPoint light, vec3 normal, vec3 fragPos, vec3 viewDir)
+vec3 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.Position - fragPos);
 
-    float diff = max(dot(normal, lightDir), 0.0);
+    float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = light.Color * light.Intensity * material.DiffuseStrength * diff;
 
-    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 	vec3 specular = light.Color * light.Intensity * material.SpecularStrength * spec;
 
@@ -137,14 +126,14 @@ vec3 CalcPointLight(LightPoint light, vec3 normal, vec3 fragPos, vec3 viewDir)
 		(specular * vec3(texture(material.SpecMap, TexCoord))) ) * attenuation;
 } 
 
-vec3 CalcSpotLight(LightSpot light, vec3 normal, vec3 fragPos, vec3 viewDir)
+vec3 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir)
 {
 	vec3 lightDir = normalize(light.Position - fragPos);
 
-	float diff = max(dot(normal, lightDir), 0.0);
+	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = light.Color * light.Intensity * material.DiffuseStrength * diff;
 
-	vec3 reflectDir = reflect(-lightDir, normal);
+	vec3 reflectDir = reflect(-lightDir, norm);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 	vec3 specular = light.Color * light.Intensity * material.SpecularStrength * spec;
 
@@ -155,8 +144,8 @@ vec3 CalcSpotLight(LightSpot light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float epsilon = light.InnerCutOff - light.OuterCutOff;
     float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
 
-    return attenuation * (	(diffuse * mix(texture(material.Texture1, TexCoord), 
-								texture(material.Texture2, TexCoord), 
-								material.MixRatio).xyz) + 
+    return intensity * attenuation * ((diffuse * mix(texture(material.Texture1, TexCoord), 
+									texture(material.Texture2, TexCoord), 
+									material.MixRatio).xyz) + 
 							(specular * vec3(texture(material.SpecMap, TexCoord))) );
 }
