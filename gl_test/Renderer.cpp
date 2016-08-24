@@ -2,8 +2,8 @@
 
 #include <string>
 
-Renderer::Renderer(Window & window, Camera * cam, LightSimple & light) :
-	_window(window), _camera(cam), _light(light)
+Renderer::Renderer(Window & window, Camera * cam) :
+	_window(window), _camera(cam)
 {
 	glewExperimental = GL_TRUE;
 	GLenum f = glewInit();

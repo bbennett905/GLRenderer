@@ -24,7 +24,7 @@
 class Renderer
 {
 public:
-	Renderer(Window & window, Camera * cam, LightSimple & light);
+	Renderer(Window & window, Camera * cam);
 	~Renderer();
 
 	void Draw();
@@ -45,6 +45,6 @@ private:
 	
 	Window _window;
 	Camera * _camera;
-	LightSimple _light; //TEMP
+	//LightSimple _light; //TEMP
 };
 

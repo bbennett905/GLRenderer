@@ -79,18 +79,26 @@ void main(void)
 	vec3 norm = normalize(normal);
 	vec3 lightDir = normalize(lightPos - fragPos);
 
-	float diffFactor = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = material.DiffuseStrength * lightIntensity * diffFactor * lightColor;
+	//float diffFactor = max(dot(norm, lightDir), 0.0);
+	//vec3 diffuse = material.DiffuseStrength * lightIntensity * diffFactor * lightColor;
 
 	vec3 viewDir = normalize(viewPos - fragPos);
-	vec3 reflectDir = reflect(-lightDir, norm);
-	float specFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
-	vec3 specular = material.SpecularStrength * specFactor * lightColor;  
+	//vec3 reflectDir = reflect(-lightDir, norm);
+	//float specFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
+	//vec3 specular = material.SpecularStrength * specFactor * lightColor;  
 
-	vec3 ambient = material.AmbientStrength * ambientIntensity * ambientColor;
+	//vec3 ambient = material.AmbientStrength * ambientIntensity * ambientColor;
 
-	color = vec4((ambient + diffuse) * mix(texture(material.Texture1, TexCoord), texture(material.Texture2, TexCoord), material.MixRatio).xyz, 1.0) +
-			vec4(specular * texture(material.SpecMap, TexCoord).xyz, 1.0);
+	//color = vec4((ambient + diffuse) * mix(texture(material.Texture1, TexCoord), texture(material.Texture2, TexCoord), material.MixRatio).xyz, 1.0) +
+	//		vec4(specular * texture(material.SpecMap, TexCoord).xyz, 1.0);
+
+
+	vec3 result = CalcDirLight(directionalLight, norm, viewDir);
+	for (int i = 0; i < NR_POINT_LIGHTS; i++)
+		result += CalcPointLight(pointLights[i], norm, fragPos, viewDir);
+	for (int i = 0; i < NR_SPOT_LIGHTS; i++)
+		result += CalcSpotLight(spotLights[i], norm, fragPos, viewDir);
+	color = vec4(result, 1.0f);
 }
 
 vec3 CalcDirLight(LightDirectional light, vec3 normal, vec3 viewDir)

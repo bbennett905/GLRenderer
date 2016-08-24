@@ -53,14 +53,18 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 
 int main()
 {
-	LightSimple light(glm::vec3(-2.0f, 1.0f, -3.0f),
+	LightDirectional dirLight(glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 0.9f, 0.1f), 10.0f,
+		glm::vec3(0.1f, 0.1f, 0.5f), 0.5f);
+	/*LightSimple light(glm::vec3(-2.0f, 1.0f, -3.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f,
-		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);
+		glm::vec3(0.3f, 0.6f, 0.7f), 0.5f);*/
 
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-	Renderer render(window, &camera, light);
+	Renderer render(window, &camera);
 	render.ClearColor = glm::vec4(0.0f, 0.05f, 0.1f, 1.0f);
+	render.SetDirLight(&dirLight);
 
 	Texture texture1("../images/container2.png");
 	//Texture texture2("../images/awesomeface.png");

@@ -20,9 +20,11 @@ public:
 	glm::vec3 AmbientColor;
 	float AmbientIntensity;
 
-	LightDirectional(glm::vec3 col, float intens, glm::vec3 ambCol, float ambIntens) :
+	LightDirectional(glm::vec3 ang, glm::vec3 col, float intens, glm::vec3 ambCol, float ambIntens) :
 		BaseLight(col, intens), AmbientColor(ambCol), AmbientIntensity(ambIntens)
-	{ }
+	{ 
+		SetAngles(ang);
+	}
 };
 
 class LightPoint :
@@ -34,10 +36,12 @@ public:
 	float Linear;
 	float Quadratic;
 
-	LightPoint(glm::vec3 col, float intens, 
+	LightPoint(glm::vec3 pos, glm::vec3 col, float intens, 
 		float constant = 1.0f, float linear = 0.14f, float quad = 0.07f) :
 		BaseLight(col, intens), Constant(constant), Linear(linear), Quadratic(quad)
-	{ }
+	{ 
+		Position = pos;
+	}
 };
 
 class LightSpot :
@@ -53,9 +57,12 @@ public:
 	float InnerCutOff;
 	float OuterCutOff;
 
-	LightSpot(glm::vec3 col, float intens, float cutoffIn, float cutoffOut,
+	LightSpot(glm::vec3 pos, glm::vec3 ang, glm::vec3 col, float intens, float cutoffIn, float cutoffOut,
 		float constant = 1.0f, float linear = 0.14f, float quad = 0.07f) :
 		BaseLight(col, intens), InnerCutOff(cutoffIn), OuterCutOff(cutoffOut),
 		Constant(constant), Linear(linear), Quadratic(quad)
-	{ }
+	{ 
+		Position = pos;
+		SetAngles(ang);
+	}
 };
