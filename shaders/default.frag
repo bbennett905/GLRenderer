@@ -53,10 +53,10 @@ struct LightSpot {
 };
 
 uniform LightDirectional directionalLight;
-#define MAX_POINT_LIGHTS 128
+#define MAX_POINT_LIGHTS 64
 uniform int numPointLights;
 uniform LightPoint pointLights[MAX_POINT_LIGHTS];
-#define MAX_SPOT_LIGHTS 128
+#define MAX_SPOT_LIGHTS 64
 uniform int numSpotLights;
 uniform LightSpot spotLights[MAX_POINT_LIGHTS];
 
