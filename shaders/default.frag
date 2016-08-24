@@ -85,7 +85,7 @@ void main(void)
 		result += CalcPointLight(pointLights[i], norm, fragPos, viewDir);
 	//TODO spot light calc is broken
 	//for (int i = 0; i < NR_SPOT_LIGHTS; i++)
-	//	result += CalcSpotLight(spotLights[i], norm, fragPos, viewDir);
+		result = CalcSpotLight(spotLights[0], norm, fragPos, viewDir);
 
 	color = vec4(result, 1.0f);
 }

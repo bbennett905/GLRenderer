@@ -95,9 +95,9 @@ void Renderer::Draw()
 			glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Color").c_str()),
 				_lightSpotList[i]->Color.x, _lightPointList[i]->Color.y, _lightPointList[i]->Color.z);
 			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].InnerCutOff").c_str()),
-				_lightSpotList[i]->InnerCutOff);
+				glm::cos(glm::radians(_lightSpotList[i]->InnerCutOff)));
 			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].OuterCutOff").c_str()),
-				_lightSpotList[i]->OuterCutOff);
+				glm::cos(glm::radians(_lightSpotList[i]->OuterCutOff)));
 			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Intensity").c_str()),
 				_lightSpotList[i]->Intensity);
 			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Constant").c_str()),
