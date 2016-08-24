@@ -57,8 +57,8 @@ int main()
 		glm::vec3(1.0f, 0.9f, 0.1f), 2.0f,
 		glm::vec3(0.1f, 0.1f, 0.5f), 0.5f);
 	LightPoint pointLight(glm::vec3(-2.0f, 1.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
-	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f),
-		glm::vec3(0.0f, 0.0f, 1.0f), 10.0f, 12.5f, 20.0f);
+	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 90.0f, 0.0f),
+		glm::vec3(0.0f, 0.2f, 1.0f), 2.0f, 12.5f, 20.0f);
 
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
@@ -104,14 +104,13 @@ int main()
 			lastTime = glfwGetTime();
 		}
 
-		spotLight.SetAngles(glm::vec3(glfwGetTime() * 25.0f, 0.0f, 0.0f));
-
 		glm::vec3 rotate(GLfloat(glfwGetTime() * -40.0f), GLfloat(glfwGetTime() * 25.0f), 0.0f);
 		cube->SetAngles(rotate);
 		cube2->SetAngles(rotate);
 		cube3->SetAngles(rotate);
 		cube4->SetAngles(rotate);
-		//dirLight.SetAngles(rotate);
+
+		spotLight.Position = camera.GetPos();
 
 		//Go to the event callbacks specified before
 		window.PollEvents();

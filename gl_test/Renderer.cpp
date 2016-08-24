@@ -89,11 +89,11 @@ void Renderer::Draw()
 		for (int i = 0; i < _lightSpotList.size(); i++)
 		{
 			glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Position").c_str()),
-				_lightSpotList[i]->Position.x, _lightPointList[i]->Position.y, _lightPointList[i]->Position.z);
+				_lightSpotList[i]->Position.x, _lightSpotList[i]->Position.y, _lightSpotList[i]->Position.z);
 			glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Direction").c_str()),
-				_lightSpotList[i]->GetForward().x, _lightPointList[i]->GetForward().y, _lightPointList[i]->GetForward().z);
+				_lightSpotList[i]->GetForward().x, _lightSpotList[i]->GetForward().y, _lightSpotList[i]->GetForward().z);
 			glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Color").c_str()),
-				_lightSpotList[i]->Color.x, _lightPointList[i]->Color.y, _lightPointList[i]->Color.z);
+				_lightSpotList[i]->Color.x, _lightSpotList[i]->Color.y, _lightSpotList[i]->Color.z);
 			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].InnerCutOff").c_str()),
 				glm::cos(glm::radians(_lightSpotList[i]->InnerCutOff)));
 			glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].OuterCutOff").c_str()),
