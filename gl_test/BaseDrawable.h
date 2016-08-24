@@ -20,7 +20,7 @@ public:
 		const GLfloat vertices[], const GLuint indices[],
 		Material & mat);
 
-	glm::mat4 GetModelMatrix();
+	virtual glm::mat4 GetModelMatrix();
 
 	std::vector<GLfloat> Vertices;
 	std::vector<GLuint> Indices;

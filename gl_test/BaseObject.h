@@ -13,9 +13,9 @@ public:
 	BaseObject(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 ang = glm::vec3(0.0f, 0.0f, 0.0f));
 
 	//Returns the Euler angles of the object - pitch, yaw, roll
-	glm::vec3 GetAngles();
+	virtual glm::vec3 GetAngles();
 	//Set the object's Euler angles - pitch, yaw, roll
-	void SetAngles(glm::vec3 newAngles);
+	virtual void SetAngles(glm::vec3 newAngles);
 
 	//Position of this object in 3D space
 	glm::vec3 Position;
