@@ -21,34 +21,64 @@
 
 Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
 
+bool keys[1024];
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode)
 {
 	if (action == GLFW_PRESS)
 	{
-		glm::vec3 vec;
-		switch (key)
-		{
-		case GLFW_KEY_ESCAPE:
-			glfwSetWindowShouldClose(window, GL_TRUE);
-			break;
-		case GLFW_KEY_W:
-			vec = camera.GetForward() * MOVE_SPEED;
-			camera.SetPos(camera.GetPos() + vec);
-			break;
-		case GLFW_KEY_A:
-			vec = camera.GetRight() * MOVE_SPEED;
-			camera.SetPos(camera.GetPos() - vec);
-			break;
-		case GLFW_KEY_S:
-			vec = camera.GetForward() * MOVE_SPEED;
-			camera.SetPos(camera.GetPos() - vec);
-			break;
-		case GLFW_KEY_D:
-			vec = camera.GetRight() * MOVE_SPEED;
-			camera.SetPos(camera.GetPos() + vec);
-			break;
-		}
+		keys[key] = true;
 	}
+	else if (action == GLFW_RELEASE)
+	{
+		keys[key] = false;
+	}
+}
+
+double lastX, lastY;
+bool firstMouse = true;
+void MouseCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	GLfloat xoffset = xpos - lastX;
+	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
+	lastX = xpos;
+	lastY = ypos;
+
+	GLfloat sensitivity = 0.05;	// Change this value to your liking
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	glm::vec3 ang = camera.GetAngles();
+
+	ang.y += xoffset;
+	ang.x += yoffset;
+
+	// Make sure that when pitch is out of bounds, screen doesn't get flipped
+	if (ang.x > 89.0f)
+		ang.x = 89.0f;
+	if (ang.x < -89.0f)
+		ang.x = -89.0f;
+	
+	camera.SetAngles(ang);
+}
+
+void HandleMovement(float deltaTime)
+{
+	GLfloat cameraSpeed = 0.5f * deltaTime;
+	if (keys[GLFW_KEY_W])
+		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
+	if (keys[GLFW_KEY_S])
+		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetForward()));
+	if (keys[GLFW_KEY_A])
+		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetRight()));
+	if (keys[GLFW_KEY_D])
+		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
 }
 
 int main()
@@ -89,6 +119,7 @@ int main()
 
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
+	window.SetCursorCallback(MouseCallback);
 
 	double lastTime = glfwGetTime();
 	int numFrames = 0;
@@ -115,6 +146,7 @@ int main()
 
 		//Go to the event callbacks specified before
 		window.PollEvents();
+		HandleMovement(deltaTime);
 
 		render.Draw();
 

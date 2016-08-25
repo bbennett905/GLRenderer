@@ -15,6 +15,7 @@ public:
 	
 	//TODO replace with own callback
 	void SetKeyCallback(void (* keyCallback));
+	void SetCursorCallback(void(*cursorCallback));
 
 	int GetWidth();
 	int GetHeight();
