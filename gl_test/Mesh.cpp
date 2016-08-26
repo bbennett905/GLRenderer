@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<TextureData> texts)
+Mesh::Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<TextureData> texts) :
+	BaseDrawable(vert, ind), TextData(texts)
 {
 
 }

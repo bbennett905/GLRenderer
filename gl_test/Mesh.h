@@ -2,19 +2,15 @@
 #include "BaseDrawable.h"
 
 #include <string>
-
-//TODO move this to basedrawable, and update renderer to use it
-struct VertexData
-{
-	glm::vec3 Position;
-	glm::vec3 Normal;
-	glm::vec2 TexCoords;
-};
+#include <Importer.hpp>
+#include <scene.h>
+#include <postprocess.h>
 
 struct TextureData
 {
 	GLuint id;
 	std::string type;
+	aiString path;
 };
 
 class Mesh :
@@ -23,13 +19,11 @@ class Mesh :
 public:
 	Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<TextureData> texts);
 	std::vector<TextureData> TextData;
-	std::vector<VertexData> VertData;
 };
 
 class Model :
 	public BaseObject
 {
 public:
-	//TODO needs pos, ang, etc.
 	std::vector<Mesh> Meshes;
 };

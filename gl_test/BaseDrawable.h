@@ -6,6 +6,13 @@
 
 #include "Material.h"
 
+struct VertexData
+{
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 TexCoords;
+};
+
 class BaseDrawable
 {
 public:
@@ -13,12 +20,13 @@ public:
 	//TODO more constructors
 	BaseDrawable(const GLfloat vertices[], int verticesSize,
 		Material & mat);
-	BaseDrawable(const GLfloat vertices[], const GLuint indices[],
-		Material & mat);
+	BaseDrawable(std::vector<VertexData> vert);
+	BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind);
 
 	virtual glm::mat4 GetModelMatrix()=0;
 
-	std::vector<GLfloat> Vertices;
+	std::vector<VertexData> Vertices;
+	//std::vector<GLfloat> Vertices;
 	std::vector<GLuint> Indices;
 
 	Material MatObj;
