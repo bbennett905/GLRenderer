@@ -20,6 +20,7 @@
 #define MOVE_SPEED 0.1f
 
 Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
+Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 bool keys[1024];
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode)
@@ -79,6 +80,8 @@ void HandleMovement(float deltaTime)
 		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetRight()));
 	if (keys[GLFW_KEY_D])
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
+	if (keys[GLFW_KEY_ESCAPE])
+		window.SetShouldClose(true);
 }
 
 int main()
@@ -89,8 +92,6 @@ int main()
 	LightPoint pointLight(glm::vec3(-2.0f, 1.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
 	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 90.0f, 0.0f),
 		glm::vec3(0.0f, 0.2f, 1.0f), 2.0f, 12.5f, 20.0f);
-
-	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 	Renderer render(window, &camera);
 	render.ClearColor = glm::vec4(0.0f, 0.05f, 0.1f, 1.0f);
