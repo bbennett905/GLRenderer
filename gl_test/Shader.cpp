@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-Shader::Shader(const GLchar * vertexPath, const GLchar * fragPath)
+Shader::Shader(const char * vertexPath, const char * fragPath)
 {
 	std::string vertexSource;
 	std::string fragSource;
