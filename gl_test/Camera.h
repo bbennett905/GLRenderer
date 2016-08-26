@@ -22,6 +22,7 @@ public:
 
 	glm::vec3 GetPos();
 	void SetPos(glm::vec3 pos);
+	void SetAngles(glm::vec3 newAngles);
 
 private:
 	void updateMatrices();

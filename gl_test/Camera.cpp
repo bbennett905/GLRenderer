@@ -33,6 +33,12 @@ void Camera::SetPos(glm::vec3 pos)
 	updateMatrices();
 }
 
+void Camera::SetAngles(glm::vec3 newAngles)
+{
+	BaseObject::SetAngles(newAngles);
+	updateMatrices();
+}
+
 void Camera::updateMatrices()
 {
 	viewMatrix = glm::lookAt(Position, Position + GetForward(), GetUp());
