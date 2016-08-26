@@ -142,6 +142,7 @@ int main()
 		cube4->SetAngles(rotate);
 
 		spotLight.Position = camera.GetPos();
+		spotLight.SetAngles(camera.GetAngles());
 
 		//Go to the event callbacks specified before
 		window.PollEvents();
