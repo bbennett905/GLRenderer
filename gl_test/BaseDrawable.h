@@ -6,21 +6,17 @@
 
 #include "Material.h"
 
-//Eventually, these should be passed to the renderer in an array or vector,
-//but not yet
-class BaseDrawable :
-	public BaseObject
+class BaseDrawable
 {
 public:
 	BaseDrawable();
-	BaseDrawable(glm::vec3 pos, glm::vec3 ang,
-		const GLfloat vertices[], int verticesSize,
+	//TODO more constructors
+	BaseDrawable(const GLfloat vertices[], int verticesSize,
 		Material & mat);
-	BaseDrawable(glm::vec3 pos, glm::vec3 ang, 
-		const GLfloat vertices[], const GLuint indices[],
+	BaseDrawable(const GLfloat vertices[], const GLuint indices[],
 		Material & mat);
 
-	virtual glm::mat4 GetModelMatrix();
+	virtual glm::mat4 GetModelMatrix()=0;
 
 	std::vector<GLfloat> Vertices;
 	std::vector<GLuint> Indices;

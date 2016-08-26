@@ -18,7 +18,7 @@ struct TextureData
 };
 
 class Mesh :
-	public BaseDrawable	//TODO should baseDraw not inherit from baseobj? instead, multiple inheritance?
+	public BaseDrawable
 {
 public:
 	Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<TextureData> texts);
@@ -26,7 +26,8 @@ public:
 	std::vector<VertexData> VertData;
 };
 
-class Model
+class Model :
+	public BaseObject
 {
 public:
 	//TODO needs pos, ang, etc.
