@@ -71,7 +71,7 @@ void Renderer::Draw()
 		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "viewPos"), _camera->GetPos().x, _camera->GetPos().y, _camera->GetPos().z);
 
 		glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "numPointLights"), _lightPointList.size());
-		for (int i = 0; i < _lightPointList.size(); i++)
+		for (uint32_t i = 0; i < _lightPointList.size(); i++)
 		{
 			glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Position").c_str()), 
 				_lightPointList[i]->Position.x, _lightPointList[i]->Position.y, _lightPointList[i]->Position.z);
@@ -88,7 +88,7 @@ void Renderer::Draw()
 		}
 
 		glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "numSpotLights"), _lightSpotList.size());
-		for (int i = 0; i < _lightSpotList.size(); i++)
+		for (uint32_t i = 0; i < _lightSpotList.size(); i++)
 		{
 			glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Position").c_str()),
 				_lightSpotList[i]->Position.x, _lightSpotList[i]->Position.y, _lightSpotList[i]->Position.z);

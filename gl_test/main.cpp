@@ -46,21 +46,19 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 		firstMouse = false;
 	}
 
-	GLfloat xoffset = xpos - lastX;
-	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
+	double xoffset = xpos - lastX;
+	double yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
 	lastX = xpos;
 	lastY = ypos;
 
-	GLfloat sensitivity = 0.05;	// Change this value to your liking
+	double sensitivity = 0.05;
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
 	glm::vec3 ang = camera.GetAngles();
+	ang.y += float(xoffset); //Yaw
+	ang.x += float(yoffset); //Pitch
 
-	ang.y += xoffset;
-	ang.x += yoffset;
-
-	// Make sure that when pitch is out of bounds, screen doesn't get flipped
 	if (ang.x > 89.0f)
 		ang.x = 89.0f;
 	if (ang.x < -89.0f)
@@ -69,9 +67,9 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 	camera.SetAngles(ang);
 }
 
-void HandleMovement(float deltaTime)
+void HandleMovement(double deltaTime)
 {
-	GLfloat cameraSpeed = 0.5f * deltaTime;
+	float cameraSpeed = 0.5f * float(deltaTime);
 	if (keys[GLFW_KEY_W])
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
 	if (keys[GLFW_KEY_S])
