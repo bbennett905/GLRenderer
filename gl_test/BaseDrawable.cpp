@@ -13,6 +13,7 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 		VertexData data = { glm::vec3(vertices[i++], vertices[i++], vertices[i++]),	//Pos
 							glm::vec3(vertices[i++], vertices[i++], vertices[i++]),	//Norm
 							glm::vec2(vertices[i++], vertices[i++]) };				//TexCoord
+		Vertices.push_back(data);
 	}
 	//Vertices = std::vector<GLfloat>(vertices, vertices + verticesSize);
 	bUsesIndices = false; //TODO this is probably irrelevant
