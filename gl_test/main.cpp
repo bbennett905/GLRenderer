@@ -69,7 +69,7 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 void HandleMovement(double deltaTime)
 {
-	float cameraSpeed = 0.5f * float(deltaTime);
+	float cameraSpeed = 0.1f * float(deltaTime);
 	if (keys[GLFW_KEY_W])
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
 	if (keys[GLFW_KEY_S])
@@ -85,11 +85,11 @@ void HandleMovement(double deltaTime)
 int main()
 {
 	LightDirectional dirLight(glm::vec3(-45.0f, 45.0f, 0.0f),
-		glm::vec3(1.0f, 0.9f, 0.1f), 2.0f,
+		glm::vec3(1.0f, 1.0f, 1.0f), 3.0f,
 		glm::vec3(0.1f, 0.1f, 0.5f), 0.5f);
 	LightPoint pointLight(glm::vec3(-2.0f, 1.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
 	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 90.0f, 0.0f),
-		glm::vec3(0.0f, 0.2f, 1.0f), 2.0f, 12.5f, 20.0f);
+		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
 
 	Renderer render(window, &camera);
 	render.ClearColor = glm::vec4(0.0f, 0.05f, 0.1f, 1.0f);
