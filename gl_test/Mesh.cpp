@@ -137,7 +137,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType
 		bool skip = false;
 		for (uint32_t j = 0; j < _textures_loaded.size(); j++)
 		{
-			if (_textures_loaded[j].Path == str)
+			if (aiString(_textures_loaded[j].Path) == str)
 			{
 				textures.push_back(_textures_loaded[j]);
 				skip = true;

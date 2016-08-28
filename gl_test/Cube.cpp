@@ -66,4 +66,3 @@ glm::mat4 Cube::GetModelMatrix()
 	model = glm::scale(model, Scale);
 	return model;
 }
-
