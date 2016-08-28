@@ -146,13 +146,13 @@ void Renderer::AddToDrawList(BaseDrawable * obj)
 	//bind the VBO to array_buffer - it is now actually what we want it to be
 	glBindBuffer(GL_ARRAY_BUFFER, obj->VertexBufferObj);
 	//copies vertex data into buffer's memory - last arg means data is not likely to change, or only rarely
-	glBufferData(GL_ARRAY_BUFFER, obj->Vertices.size() * sizeof(GLfloat), &(obj->Vertices)[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, obj->Vertices.size() * sizeof(VertexData), &(obj->Vertices)[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid *)(offsetof(VertexData, Normal)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(offsetof(VertexData, TexCoords)));
 	glEnableVertexAttribArray(2);
 
 	//unbind
