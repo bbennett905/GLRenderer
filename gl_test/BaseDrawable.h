@@ -23,10 +23,10 @@ public:
 	BaseDrawable(std::vector<VertexData> vert);
 	BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind);
 
-	virtual glm::mat4 GetModelMatrix()=0;
+	//TODO this may need to be in a different place or done differently somehow
+	virtual glm::mat4 GetModelMatrix();
 
 	std::vector<VertexData> Vertices;
-	//std::vector<GLfloat> Vertices;
 	std::vector<GLuint> Indices;
 
 	Material MatObj;
@@ -37,4 +37,3 @@ public:
 
 	bool bUsesIndices;
 };
-

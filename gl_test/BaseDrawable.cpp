@@ -25,3 +25,8 @@ BaseDrawable::BaseDrawable(std::vector<VertexData> vert) :
 BaseDrawable::BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind) :
 	Vertices(vert), Indices(ind)
 { }
+
+glm::mat4 BaseDrawable::GetModelMatrix()
+{
+	return glm::mat4(); //Return an identity matrix, no transform
+}
