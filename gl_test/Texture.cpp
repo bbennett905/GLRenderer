@@ -20,6 +20,8 @@ Texture::Texture(const char * path)
 
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	Path = path;
 }
 
 void Texture::Bind() { glBindTexture(GL_TEXTURE_2D, ID); }

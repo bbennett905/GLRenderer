@@ -2,6 +2,8 @@
 
 #include <glew.h>
 
+#include <string>
+
 class Texture
 {
 public:
@@ -9,5 +11,7 @@ public:
 	void Bind();
 
 	GLuint ID;
+	std::string Type;
+	std::string Path;
 };
 
