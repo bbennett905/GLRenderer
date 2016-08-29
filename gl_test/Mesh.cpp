@@ -127,7 +127,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typename)
+std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
 {
 	std::vector<Texture> textures;
 	for (uint32_t i = 0; i < mat->GetTextureCount(type); i++)
@@ -147,6 +147,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType
 		if (!skip)
 		{
 			Texture texture(str.C_Str());
+			texture.Type = typeName;
 			textures.push_back(texture);
 			_textures_loaded.push_back(texture);
 		}
