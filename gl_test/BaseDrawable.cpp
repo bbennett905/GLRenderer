@@ -8,14 +8,13 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 	Material & mat) :
 	MatObj(mat)
 {
-	for (int i = 0; i < verticesSize;)// ? ok
+	for (int i = 0; i < verticesSize; i+=8)// ? ok
 	{
-		VertexData data = { glm::vec3(vertices[i++], vertices[i++], vertices[i++]),	//Pos
-							glm::vec3(vertices[i++], vertices[i++], vertices[i++]),	//Norm
-							glm::vec2(vertices[i++], vertices[i++]) };				//TexCoord
+		VertexData data = { glm::vec3(vertices[i], vertices[i+1], vertices[i+2]),	//Pos
+							glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]),	//Norm
+							glm::vec2(vertices[i+6], vertices[i+7]) };				//TexCoord
 		Vertices.push_back(data);
 	}
-	//Vertices = std::vector<GLfloat>(vertices, vertices + verticesSize);
 	bUsesIndices = false; //TODO this is probably irrelevant
 }
 
