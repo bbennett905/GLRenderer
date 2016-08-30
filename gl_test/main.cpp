@@ -13,6 +13,7 @@
 #include "Window.h"
 #include "Cube.h"
 #include "Renderer.h"
+#include "Mesh.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -115,6 +116,9 @@ int main()
 	render.AddToDrawList(cube3);
 	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	render.AddToDrawList(cube4);
+
+	Model * suit = new Model("../nanosuit/nanosuit.obj");
+	render.AddToDrawList(suit);
 
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
