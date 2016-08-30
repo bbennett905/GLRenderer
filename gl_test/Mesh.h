@@ -21,7 +21,7 @@ class Model :
 {
 public:
 	Model(const char * path);
-	std::vector<Mesh> * GetMeshes();
+	std::vector<Mesh *> GetMeshes();
 
 	void SetPosition(glm::vec3 pos);
 	glm::vec3 GetPosition();
@@ -32,7 +32,7 @@ private:
 	Mesh processMesh(aiMesh * mesh, const aiScene * scene);
 	std::vector<Texture> loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName);
 	
-	std::vector<Mesh> _meshes;
+	std::vector<Mesh *> _meshes;
 	std::string _directory;
 	std::vector<Texture> _textures_loaded;
 

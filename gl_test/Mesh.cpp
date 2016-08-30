@@ -27,16 +27,16 @@ Model::Model(const char * path)
 	loadModel(path);
 }
 
-std::vector<Mesh> * Model::GetMeshes()
+std::vector<Mesh *> Model::GetMeshes()
 {
-	return &_meshes;
+	return _meshes;
 }
 
 void Model::SetPosition(glm::vec3 pos)
 {
 	Position = pos;
 	for (uint32_t i = 0; i < _meshes.size(); i++)
-		_meshes[i].Position = pos; //i THINK this should work
+		_meshes[i]->Position = pos; //i THINK this should work
 }
 
 glm::vec3 Model::GetPosition()
@@ -48,7 +48,7 @@ void Model::SetAngles(glm::vec3 ang)
 {
 	BaseObject::SetAngles(ang);
 	for (uint32_t i = 0; i < _meshes.size(); i++)
-		_meshes[i].SetAngles(ang); //i THINK this should work
+		_meshes[i]->SetAngles(ang); //i THINK this should work
 }
 
 void Model::loadModel(std::string path)
@@ -69,7 +69,7 @@ void Model::processNode(aiNode * node, const aiScene * scene)
 	for (uint32_t i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh * mesh = scene->mMeshes[node->mMeshes[i]];
-		_meshes.push_back(processMesh(mesh, scene));
+		_meshes.push_back(&processMesh(mesh, scene));
 	}
 	for (uint32_t i = 0; i < node->mNumChildren; i++)
 		processNode(node->mChildren[i], scene);
