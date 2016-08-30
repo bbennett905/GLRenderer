@@ -12,7 +12,7 @@
 #include "BaseDrawable.h"
 #include "Camera.h"
 #include "Window.h"
-
+#include "Mesh.h"
 #include "Lights.h"
 
 class Renderer
@@ -23,6 +23,7 @@ public:
 
 	void Draw();
 	void AddToDrawList(BaseDrawable * obj);
+	void AddToDrawList(Model * model);
 
 	void AddPointLight(LightPoint * light);
 	void AddSpotLight(LightSpot * light);

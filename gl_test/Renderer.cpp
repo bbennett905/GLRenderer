@@ -160,6 +160,14 @@ void Renderer::AddToDrawList(BaseDrawable * obj)
 	glBindVertexArray(0);
 }
 
+void Renderer::AddToDrawList(Model * model)
+{
+	for (uint32_t i = 0; i < model->GetMeshes().size(); i++)
+	{
+		_drawList.push_back(model->GetMeshes()[i]);
+	}
+}
+
 void Renderer::AddPointLight(LightPoint * light)
 {
 	_lightPointList.push_back(light);
