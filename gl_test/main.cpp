@@ -117,6 +117,7 @@ int main()
 	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	render.AddToDrawList(cube4);
 
+	//TODO .obj is in gitignore, oops
 	Model * suit = new Model("../nanosuit/nanosuit.obj");
 	render.AddToDrawList(suit);
 

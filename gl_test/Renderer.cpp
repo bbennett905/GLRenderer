@@ -34,6 +34,7 @@ void Renderer::Draw()
 	for (auto obj : _drawList)
 	{
 		//Sets which shaderprogram we should use for rendering this
+		//TODO what if its a mesh and doesnt use MatObj? separate list for models/meshes?
 		obj->MatObj.ShaderObj->Use();
 		//Set all the material uniforms in the shader
 		if (obj->MatObj.TextureObj1 != nullptr)
@@ -115,13 +116,6 @@ void Renderer::Draw()
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "directionalLight.Intensity"), _lightDir->Intensity);
 		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "directionalLight.AmbientColor"), _lightDir->AmbientColor.x, _lightDir->AmbientColor.y, _lightDir->AmbientColor.z);
 		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "directionalLight.AmbientIntensity"), _lightDir->AmbientIntensity);
-
-		//OLD
-		/*glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightPos"), _light.Position.x, _light.Position.y, _light.Position.z);
-		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightColor"), _light.LightColor.x, _light.LightColor.y, _light.LightColor.z);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "lightIntensity"), _light.LightIntensity);
-		glUniform3f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "ambientColor"), _light.AmbientColor.x, _light.AmbientColor.y, _light.AmbientColor.z);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "ambientIntensity"), _light.AmbientIntensity);*/
 
 		//Bind our VAO so we have the correct vertex attribute configuration
 		glBindVertexArray(obj->VertexArrayObj);

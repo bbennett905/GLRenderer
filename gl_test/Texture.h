@@ -11,6 +11,7 @@ public:
 	void Bind();
 
 	GLuint ID;
+	//"texture_diffuse" or "texture_specular"
 	std::string Type;
 	std::string Path;
 };

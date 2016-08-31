@@ -117,6 +117,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	{
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
 		//TODO here we want to load materials instead, or all texts into 1 mat
+		//TODO how many materials / mesh? probably can be more than 1
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	
