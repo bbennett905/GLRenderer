@@ -30,14 +30,16 @@ struct Material
 	float SpecularStrength;
 	float Shininess;
 
-	Material(Shader * shad, Texture * tex1 = nullptr, Texture * tex2 = nullptr, float mix = 0.5f, 
+	Material(Shader * shad) :
+		ShaderObj(shad) { }
+	Material(Shader * shad, Texture * tex1, Texture * tex2, float mix = 0.5f, 
 		Texture * specMap = nullptr,
 		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) : 
 		ShaderObj(shad), TextureObj1(tex1), TextureObj2(tex2), MixRatio(mix),
 		SpecularMap(specMap),
 		AmbientStrength(ambStr), DiffuseStrength(difStr), SpecularStrength(specStr),
 		Shininess(shiny) { }
-	Material(Shader * shad, Texture * tex1 = nullptr,
+	Material(Shader * shad, Texture * tex1,
 		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) :
 		ShaderObj(shad), TextureObj1(tex1),
 		AmbientStrength(ambStr), DiffuseStrength(difStr), SpecularStrength(specStr),

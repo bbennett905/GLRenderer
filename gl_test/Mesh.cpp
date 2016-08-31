@@ -5,7 +5,7 @@
 Mesh::Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<Texture> texts) :
 	BaseDrawable(vert, ind), Textures(texts)
 {
-
+	MatObj = Material(new Shader("../shaders/default.vert", "../shaders/default.frag"));
 }
 
 glm::mat4 Mesh::GetModelMatrix()
@@ -116,7 +116,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
-
+		//TODO here we want to load materials instead, or all texts into 1 mat
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	
