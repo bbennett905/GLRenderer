@@ -2,13 +2,9 @@
 
 #include <gtc\matrix_transform.hpp>
 
-Mesh::Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<Texture> texts, Shader * shad) :
-	BaseDrawable(vert, ind, shad), Textures(texts)
-{
-	//TODO accept shader as param!
-	//MatObj = Material(nullptr);
-	//TODO push mats to Materials!
-}
+Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> & texts, Shader * shad) :
+	BaseDrawable(vert, ind, shad,  texts)
+{ }
 
 glm::mat4 Mesh::GetModelMatrix()
 {
@@ -72,7 +68,8 @@ void Model::processNode(aiNode * node, const aiScene * scene)
 	for (uint32_t i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh * mesh = scene->mMeshes[node->mMeshes[i]];
-		_meshes.push_back(processMesh(mesh, scene));
+		Mesh m = processMesh(mesh, scene);
+		_meshes.push_back(m);
 	}
 	for (uint32_t i = 0; i < node->mNumChildren; i++)
 		processNode(node->mChildren[i], scene);
@@ -82,8 +79,9 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<VertexData> vertices;
 	std::vector<GLuint> indices;
-	std::vector<Texture> textures;
-	
+	//std::vector<Texture> textures;
+	std::vector<Material> materials;
+
 	for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 	{
 		VertexData vertex;
@@ -119,16 +117,25 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
-		//TODO here we want to load materials instead, or all texts into 1 mat
-		//TODO how many materials / mesh? probably can be more than 1
+		//TODO here we want to load materials instead
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		//textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	
 		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		//textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+		for (uint32_t i = 0; i < diffuseMaps.size(); i++)
+		{
+			//Use default for other params when we create the Material
+			if (int(specularMaps.size()) <= int(i) - 1) 
+				materials.push_back(Material(&diffuseMaps[i], &specularMaps[i]));
+			else materials.push_back(Material(&diffuseMaps[i]));
+		}
 	}
 
-	return Mesh(vertices, indices, textures, _shader);
+	
+	Mesh m(vertices, indices, materials, _shader);
+	return m;
 }
 
 //each mesh has 1 aiMaterial
