@@ -37,8 +37,9 @@ BaseDrawable::BaseDrawable(std::vector<VertexData> vert, Shader * shad) :
 	Vertices(vert), ShaderObj(shad)
 { }
 
-BaseDrawable::BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind, Shader * shad) :
-	Vertices(vert), Indices(ind), ShaderObj(shad)
+BaseDrawable::BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, Shader * shad,
+	std::vector<Material> & mat) :
+	Vertices(vert), Indices(ind), ShaderObj(shad), Materials(mat)
 { }
 
 glm::mat4 BaseDrawable::GetModelMatrix()

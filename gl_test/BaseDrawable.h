@@ -23,15 +23,13 @@ public:
 	BaseDrawable(const GLfloat vertices[], int verticesSize, Shader * shad,
 		std::vector<Material> & mat);
 	BaseDrawable(std::vector<VertexData> vert, Shader * shad);
-	BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind, Shader * shad);
+	BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, Shader * shad, std::vector<Material> & mat);
 
-	//TODO this may need to be in a different place or done differently somehow
 	virtual glm::mat4 GetModelMatrix();
 
 	std::vector<VertexData> Vertices;
 	std::vector<GLuint> Indices;
 
-	//Material MatObj;
 	Shader * ShaderObj;
 	std::vector<Material> Materials;
 
