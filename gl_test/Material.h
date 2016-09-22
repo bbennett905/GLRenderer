@@ -1,28 +1,32 @@
 #pragma once
 
 #include <glm.hpp>
+#include <vector>
 
 #include "Shader.h"
 #include "Texture.h"
 
 //TODO we could load these from a file (like vmt)
 //and this could also bind textures + other uniforms for the shader,
-//making this more suited to a class?	probably not 
-//or we could pass a Material to a renderer method, setting as the one to use <---
-//also, more textures for normal maps, reflection maps, etc would eventually be necessary
+
 struct Material
 {
+	//shader needs to be for each MESH not material
 	//Shader used for this material
-	Shader * ShaderObj;
+	//Shader * ShaderObj;
 
+	//TODO what if THESE were vectors of each map?
 	//Primary texture
-	Texture * TextureObj1;
-	//Secondary (blended) texture, optional
-	Texture * TextureObj2;
-	//Mix Ratio between the textures
-	float MixRatio;
+	Texture * DiffuseMap;
 	//Texture for specular highlights
 	Texture * SpecularMap;
+
+	//doing this means we need to change the shader - 
+	//can do like tutorial - diffusemap1, 2, 3, etc, specmap1, 2 .... 
+	//or arrays maybe
+	//1 MaterialProperties struct, with strength, shininess values, with array of Sampler2D outsisde struct
+	std::vector<Texture *> DiffuseMaps;
+	std::vector<Texture *> SpecularMaps;
 
 	//Reflection properties
 	float AmbientStrength;
@@ -30,18 +34,13 @@ struct Material
 	float SpecularStrength;
 	float Shininess;
 
-	Material(Shader * shad) :
-		ShaderObj(shad) { }
-	Material(Shader * shad, Texture * tex1, Texture * tex2, float mix = 0.5f, 
+	//Material(Shader * shad) :
+	//	ShaderObj(shad) { }
+	Material(Texture * tex1,
 		Texture * specMap = nullptr,
 		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) : 
-		ShaderObj(shad), TextureObj1(tex1), TextureObj2(tex2), MixRatio(mix),
+		DiffuseMap(tex1),
 		SpecularMap(specMap),
-		AmbientStrength(ambStr), DiffuseStrength(difStr), SpecularStrength(specStr),
-		Shininess(shiny) { }
-	Material(Shader * shad, Texture * tex1,
-		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) :
-		ShaderObj(shad), TextureObj1(tex1),
 		AmbientStrength(ambStr), DiffuseStrength(difStr), SpecularStrength(specStr),
 		Shininess(shiny) { }
 	Material() { }
