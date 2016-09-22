@@ -11,7 +11,7 @@ class Mesh :
 	public BaseDrawable, public BaseObject
 {
 public:
-	Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<Texture> texts);
+	Mesh(std::vector<VertexData> vert, std::vector<GLuint> ind, std::vector<Texture> texts, Shader * shad);
 	glm::mat4 GetModelMatrix();
 	std::vector<Texture> Textures;
 };
@@ -20,8 +20,8 @@ class Model :
 	public BaseObject
 {
 public:
-	Model(const char * path);
-	std::vector<Mesh *> GetMeshes();
+	Model(const char * path, Shader * shad);
+	std::vector<Mesh> GetMeshes();
 
 	void SetPosition(glm::vec3 pos);
 	glm::vec3 GetPosition();
@@ -32,9 +32,10 @@ private:
 	Mesh processMesh(aiMesh * mesh, const aiScene * scene);
 	std::vector<Texture> loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName);
 	
-	std::vector<Mesh *> _meshes;
+	std::vector<Mesh> _meshes;
 	std::string _directory;
 	std::vector<Texture> _textures_loaded;
+	Shader * _shader;
 
 	glm::vec3 Position;
 };
