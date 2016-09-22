@@ -176,3 +176,13 @@ void Renderer::SetDirLight(LightDirectional * light)
 {
 	_lightDir = light;
 }
+
+int Renderer::GetNumPointLights()
+{
+	return _lightPointList.size();
+}
+
+int Renderer::GetNumSpotLights()
+{
+	return _lightSpotList.size();
+}

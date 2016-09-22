@@ -29,6 +29,9 @@ public:
 	void AddSpotLight(LightSpot * light);
 	void SetDirLight(LightDirectional * light);
 
+	int GetNumPointLights();
+	int GetNumSpotLights();
+
 	glm::vec4 ClearColor;
 private:
 	std::vector<BaseDrawable *> _drawList;
