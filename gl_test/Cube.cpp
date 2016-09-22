@@ -47,8 +47,8 @@ GLfloat vertices[] = {
 	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 };
 
-Cube::Cube(glm::vec3 pos, glm::vec3 ang, Material & mat) :
-	BaseObject(pos, ang), BaseDrawable(vertices, (sizeof(vertices) / sizeof(vertices[0])), mat)
+Cube::Cube(glm::vec3 pos, glm::vec3 ang, Shader * shad, Material & mat) :
+	BaseObject(pos, ang), BaseDrawable(vertices, (sizeof(vertices) / sizeof(vertices[0])), shad, mat)
 { 
 	Scale = glm::vec3(1.0f, 1.0f, 1.0f);
 }
