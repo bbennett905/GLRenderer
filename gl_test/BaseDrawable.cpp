@@ -5,9 +5,10 @@
 BaseDrawable::BaseDrawable() { }
 
 BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
-	Material & mat) :
-	MatObj(mat)
+	Shader * shad, Material & mat) :
+	ShaderObj(shad)
 {
+	Materials.push_back(mat);
 	for (int i = 0; i < verticesSize; i+=8)// ? ok
 	{
 		VertexData data = { glm::vec3(vertices[i], vertices[i+1], vertices[i+2]),	//Pos
@@ -18,12 +19,26 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 	bUsesIndices = false; //TODO this is probably irrelevant
 }
 
-BaseDrawable::BaseDrawable(std::vector<VertexData> vert) :
-	Vertices(vert)
+BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, 
+	Shader * shad, std::vector<Material> & mat) :
+	ShaderObj(shad), Materials(mat)
+{
+	for (int i = 0; i < verticesSize; i += 8)// ? ok
+	{
+		VertexData data = { glm::vec3(vertices[i], vertices[i + 1], vertices[i + 2]),	//Pos
+			glm::vec3(vertices[i + 3], vertices[i + 4], vertices[i + 5]),	//Norm
+			glm::vec2(vertices[i + 6], vertices[i + 7]) };				//TexCoord
+		Vertices.push_back(data);
+	}
+	bUsesIndices = false; //TODO this is probably irrelevant
+}
+
+BaseDrawable::BaseDrawable(std::vector<VertexData> vert, Shader * shad) :
+	Vertices(vert), ShaderObj(shad)
 { }
 
-BaseDrawable::BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind) :
-	Vertices(vert), Indices(ind)
+BaseDrawable::BaseDrawable(std::vector<VertexData> vert, std::vector<GLuint> ind, Shader * shad) :
+	Vertices(vert), Indices(ind), ShaderObj(shad)
 { }
 
 glm::mat4 BaseDrawable::GetModelMatrix()
