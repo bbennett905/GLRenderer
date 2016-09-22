@@ -187,7 +187,8 @@ void Renderer::AddToDrawList(Model * model)
 	for (uint32_t i = 0; i < model->GetMeshes().size(); i++)
 	{
 		Mesh * mesh = &(model->GetMeshes()[i]);
-		_drawList.push_back(mesh);
+		AddToDrawList(mesh);
+		//_drawList.push_back(mesh);
 	}
 }
 
