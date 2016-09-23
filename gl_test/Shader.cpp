@@ -2,7 +2,8 @@
 
 #include "Utils.h"
 
-Shader::Shader(const char * vertexPath, const char * fragPath)
+Shader::Shader(const char * vertexPath, const char * fragPath) :
+	TextureCount(0)
 {
 	std::string vertexSource;
 	std::string fragSource;
@@ -78,7 +79,8 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 }
 
 //Another way to do this would be a preprocessor - something like #REPLACE VERSION, or #REPLACE NUM_MAT?
-Shader::Shader(GLShaderVersion version, uint32_t numPointLights, uint32_t numSpotLights, uint32_t numMaterials)
+Shader::Shader(GLShaderVersion version, uint32_t numPointLights, uint32_t numSpotLights, uint32_t numMaterials) :
+	TextureCount(0)
 {
 	std::string fragSource = "";
 	std::string vertexSource = "";

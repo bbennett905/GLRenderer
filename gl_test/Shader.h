@@ -27,6 +27,7 @@ public:
 	void Use();
 
 	GLuint Program;
+	int TextureCount;
 
 private:
 	void preprocessShader(std::string vertexSource, std::string fragSource, GLShaderVersion version, int numPointLights, int numSpotLights, int numMaterials);
