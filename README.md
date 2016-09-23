@@ -2,7 +2,8 @@
 
 A work-in-progress OpenGL renderer, partially based on code from [LearnOpenGL](http://learnopengl.com/).
 
-Requires:
+
+# Requires: #
 
 * [Assimp](http://www.assimp.org/)
 
