@@ -212,3 +212,6 @@ _Pvt_Extensions/
 ModelManifest.xml
 gl_test.VC.db
 gl_test.VC.VC.opendb
+*.sln
+*.vcxproj
+*.filters
