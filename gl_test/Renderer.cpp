@@ -39,24 +39,33 @@ void Renderer::Draw()
 	{
 		//new method of handling materials
 		obj->ShaderObj->Use();
-		int textureCount = 0;
+
 		for (uint32_t i = 0; i < obj->Materials.size(); i++)
 		{
+			GLenum err = glGetError(); //1281 0x0501 invalid value
+			//TODO this will actually give it multiple copies of the same texture
 			if (obj->Materials[i].DiffuseMap != nullptr)
 			{
-				glActiveTexture(GL_TEXTURE0 + textureCount);
+				glActiveTexture(GL_TEXTURE0 + obj->ShaderObj->TextureCount);
+				err = glGetError(); //no error
 				obj->Materials[i].DiffuseMap->Bind();
-				glUniform1i(glGetUniformLocation(obj->ShaderObj->Program,
-					("materials[" + std::to_string(i) + "].DiffMap").c_str()), textureCount);
-				textureCount++;
+				err = glGetError(); //1282 0x0502 invalid operation
+				GLuint loc = glGetUniformLocation(obj->ShaderObj->Program,
+					("materials[" + std::to_string(i) + "].DiffMap").c_str());
+				err = glGetError(); //no error
+				glUniform1i(loc, GL_TEXTURE0 + obj->ShaderObj->TextureCount);
+				err = glGetError(); //1281, 0x0501 invalid value
+				obj->ShaderObj->TextureCount++;
 			}
+			
 			if (obj->Materials[i].SpecularMap != nullptr)
 			{
-				glActiveTexture(GL_TEXTURE0 + textureCount);
+				glActiveTexture(GL_TEXTURE0 + obj->ShaderObj->TextureCount);
 				obj->Materials[i].SpecularMap->Bind();
 				glUniform1i(glGetUniformLocation(obj->ShaderObj->Program,
-					("materials[" + std::to_string(i) + "].SpecMap").c_str()), textureCount);
-				textureCount++;
+					("materials[" + std::to_string(i) + "].SpecMap").c_str()), 
+					GL_TEXTURE0 + obj->ShaderObj->TextureCount);
+				obj->ShaderObj->TextureCount++;
 			}
 
 			//It'd be nice if there was some way to check what params a shader has, before providing it
