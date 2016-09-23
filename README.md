@@ -12,3 +12,5 @@ A work-in-progress OpenGL renderer, partially based on code from [LearnOpenGL](h
 * [GLFW3](http://www.glfw.org/)
 
 * [GLEW](http://glew.sourceforge.net/)
+
+* [SOIL](http://www.lonesock.net/soil.html)
