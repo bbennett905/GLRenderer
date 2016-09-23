@@ -21,13 +21,6 @@ struct Material
 	//Texture for specular highlights
 	Texture * SpecularMap;
 
-	//doing this means we need to change the shader - 
-	//can do like tutorial - diffusemap1, 2, 3, etc, specmap1, 2 .... 
-	//or arrays maybe
-	//1 MaterialProperties struct, with strength, shininess values, with array of Sampler2D outsisde struct
-	std::vector<Texture *> DiffuseMaps;
-	std::vector<Texture *> SpecularMaps;
-
 	//Reflection properties
 	float AmbientStrength;
 	float DiffuseStrength;
