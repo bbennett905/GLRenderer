@@ -1,4 +1,4 @@
-# README #
+# Description #
 
 A work-in-progress OpenGL renderer, partially based on code from [LearnOpenGL](http://learnopengl.com/).
 
