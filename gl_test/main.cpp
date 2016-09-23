@@ -93,7 +93,7 @@ int main()
 		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
 
 	Renderer render(window, &camera);
-	render.ClearColor = glm::vec4(0.0f, 0.05f, 0.1f, 1.0f);
+	render.ClearColor = glm::vec4(0.0f, 0.2f, 0.5f, 1.0f);
 	render.SetDirLight(&dirLight);
 	render.AddPointLight(&pointLight);
 	render.AddSpotLight(&spotLight);
