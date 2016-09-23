@@ -6,6 +6,8 @@ Texture::Texture(const char * path)
 	int texWidth, texHeight;
 	unsigned char * image = SOIL_load_image(path, &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
 
+	if (image == nullptr) printf("ERROR: Failed loading image %s!\n", path);
+
 	glGenTextures(1, &ID);
 	glBindTexture(GL_TEXTURE_2D, ID);
 
