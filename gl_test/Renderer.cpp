@@ -161,11 +161,11 @@ void Renderer::AddToDrawList(BaseDrawable * obj)
 
 void Renderer::AddToDrawList(Model * model)
 {
-	for (uint32_t i = 0; i < model->GetMeshes().size(); i++)
+	std::vector<Mesh> * meshes = model->GetMeshes();
+	for (uint32_t i = 0; i < meshes->size(); i++)
 	{
-		Mesh * mesh = &(model->GetMeshes()[i]);
+		Mesh * mesh = &((*meshes)[i]);
 		AddToDrawList(mesh);
-		//_drawList.push_back(mesh);
 	}
 }
 

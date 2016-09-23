@@ -20,7 +20,7 @@ class Model :
 {
 public:
 	Model(const char * path, Shader * shad);
-	std::vector<Mesh> GetMeshes();
+	std::vector<Mesh> * GetMeshes();
 
 	void SetPosition(glm::vec3 pos);
 	glm::vec3 GetPosition();

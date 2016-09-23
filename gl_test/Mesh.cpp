@@ -26,9 +26,10 @@ Model::Model(const char * path, Shader * shad) :
 	loadModel(path);
 }
 
-std::vector<Mesh> Model::GetMeshes()
+//TODO if this is a pointer why not just make it public
+std::vector<Mesh> * Model::GetMeshes()
 {
-	return _meshes;
+	return &_meshes;
 }
 
 void Model::SetPosition(glm::vec3 pos)
