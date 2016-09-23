@@ -36,7 +36,6 @@ public:
 private:
 	std::vector<BaseDrawable *> _drawList;
 
-	//TODO this will be broken if exceeds or not equal to NR_POINT_LIGHTS in shader!
 	std::vector<LightPoint *> _lightPointList;
 	std::vector<LightSpot *> _lightSpotList;
 	LightDirectional * _lightDir;

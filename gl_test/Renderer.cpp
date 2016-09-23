@@ -33,34 +33,11 @@ void Renderer::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	for (auto obj : _drawList)
 	{
-		//Sets which shaderprogram we should use for rendering this
-		//TODO what if its a mesh and doesnt use MatObj? separate list for models/meshes?
-		//obj->MatObj.ShaderObj->Use();
-		//Set all the material uniforms in the shader
-		/*if (obj->MatObj.DiffuseMap != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			obj->MatObj.DiffuseMap->Bind();
-			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Texture1"), 0);
-		}
-		if (obj->MatObj.SpecularMap != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE2);
-			obj->MatObj.SpecularMap->Bind();
-			glUniform1i(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.SpecMap"), 2);
-		}
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.AmbientStrength"), obj->MatObj.AmbientStrength);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.DiffuseStrength"), obj->MatObj.DiffuseStrength);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.SpecularStrength"), obj->MatObj.SpecularStrength);
-		glUniform1f(glGetUniformLocation(obj->MatObj.ShaderObj->Program, "material.Shininess"), obj->MatObj.Shininess);*/
-
 		//new method of handling materials
 		obj->ShaderObj->Use();
 		int textureCount = 0;
 		for (uint32_t i = 0; i < obj->Materials.size(); i++)
 		{
-			//obj->Materials[i].ShaderObj->Use();
-			
 			if (obj->Materials[i].DiffuseMap != nullptr)
 			{
 				glActiveTexture(GL_TEXTURE0 + textureCount);

@@ -102,10 +102,12 @@ int main()
 	Texture specMap("../images/container2_specular.png");
 
 	Shader shader(ShaderVersion330Core, render.GetNumPointLights(), render.GetNumSpotLights(), 1);
-	//Shader newShader("../shaders/default.vert", "../shaders/default.frag");
 
 	Material mat1(&texture1, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
+
+	Model * suit = new Model("../nanosuit/nanosuit.obj", &shader);
+	render.AddToDrawList(suit);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shader, mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
@@ -116,14 +118,6 @@ int main()
 	render.AddToDrawList(cube3);
 	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shader, mat1);
 	render.AddToDrawList(cube4);
-
-	//TODO model will also need a shader to use? and pos, ang, etc
-	//shader could be created in basedrawable? or, we could do something like render.CreateShader(numMat)?
-	//bc render has # of each light already
-	//also, shaderobj should not be member of material - since more than 1 material can be used in a given shader?
-	//it's a pointer, so we could still use it
-	Model * suit = new Model("../nanosuit/nanosuit.obj", &shader);
-	render.AddToDrawList(suit);
 
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);

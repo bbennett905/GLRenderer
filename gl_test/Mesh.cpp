@@ -68,8 +68,7 @@ void Model::processNode(aiNode * node, const aiScene * scene)
 	for (uint32_t i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh * mesh = scene->mMeshes[node->mMeshes[i]];
-		Mesh m = processMesh(mesh, scene);
-		_meshes.push_back(m);
+		_meshes.push_back(processMesh(mesh, scene));
 	}
 	for (uint32_t i = 0; i < node->mNumChildren; i++)
 		processNode(node->mChildren[i], scene);
@@ -79,7 +78,6 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<VertexData> vertices;
 	std::vector<GLuint> indices;
-	//std::vector<Texture> textures;
 	std::vector<Material> materials;
 
 	for (uint32_t i = 0; i < mesh->mNumVertices; i++)
@@ -117,13 +115,9 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
-		//TODO here we want to load materials instead
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		//textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	
 		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-		//textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
+		
 		for (uint32_t i = 0; i < diffuseMaps.size(); i++)
 		{
 			//Use default for other params when we create the Material
@@ -133,13 +127,8 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		}
 	}
 
-	
-	Mesh m(vertices, indices, materials, _shader);
-	return m;
+	return Mesh(vertices, indices, materials, _shader);
 }
-
-//each mesh has 1 aiMaterial
-//each aiMaterial can have N diffuse textures and M specular
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
 {
