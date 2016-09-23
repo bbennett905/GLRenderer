@@ -2,8 +2,8 @@
 
 #include <gtc\matrix_transform.hpp>
 
-Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> & texts, Shader * shad) :
-	BaseDrawable(vert, ind, shad,  texts)
+Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> * texts, Shader * shad) :
+	BaseDrawable(vert, ind, shad, *texts)
 { }
 
 glm::mat4 Mesh::GetModelMatrix()
@@ -115,6 +115,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 
 	if (mesh->mMaterialIndex >= 0)
 	{
+		//TODO redo this and loadMatTextures
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
 		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
@@ -128,7 +129,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		}
 	}
 
-	return Mesh(vertices, indices, materials, _shader);
+	return Mesh(vertices, indices, &materials, _shader);
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
@@ -151,7 +152,8 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType
 		}
 		if (!skip)
 		{
-			Texture texture(str.C_Str());
+			std::string path = _directory + "/" + std::string(str.C_Str());
+			Texture texture(path.c_str());
 			texture.Type = typeName;
 			textures.push_back(texture);
 			_textures_loaded.push_back(texture);

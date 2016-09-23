@@ -11,7 +11,7 @@ class Mesh :
 	public BaseDrawable, public BaseObject
 {
 public:
-	Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> & texts, Shader * shad);
+	Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> * texts, Shader * shad);
 	glm::mat4 GetModelMatrix();
 };
 
