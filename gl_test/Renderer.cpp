@@ -19,11 +19,15 @@ Renderer::Renderer(Window & window, Camera * cam) :
 
 Renderer::~Renderer()
 {
-	for (BaseDrawable * obj : _drawList)
+	for (auto obj : _drawList)
 	{
-		glDeleteVertexArrays(1, &(obj->VertexArrayObj));
-		glDeleteBuffers(1, &(obj->VertexBufferObj));
-		delete obj;
+		if (obj != nullptr)
+		{
+			glDeleteVertexArrays(1, &(obj->VertexArrayObj));
+			glDeleteBuffers(1, &(obj->VertexBufferObj));
+			//TODO error!
+			//delete obj;
+		}
 	}
 }
 
