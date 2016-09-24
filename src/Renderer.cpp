@@ -53,7 +53,7 @@ void Renderer::Draw()
 				GLuint loc = glGetUniformLocation(obj->ShaderObj->Program,
 					("materials[" + std::to_string(i) + "].DiffMap").c_str());
 				err = glGetError(); //no error
-				glUniform1i(loc, GL_TEXTURE0 + obj->ShaderObj->TextureCount);
+				glUniform1i(loc, obj->ShaderObj->TextureCount);
 				err = glGetError(); //1281, 0x0501 invalid value
 				obj->ShaderObj->TextureCount++;
 			}
@@ -64,7 +64,7 @@ void Renderer::Draw()
 				obj->Materials[i].SpecularMap->Bind();
 				glUniform1i(glGetUniformLocation(obj->ShaderObj->Program,
 					("materials[" + std::to_string(i) + "].SpecMap").c_str()), 
-					GL_TEXTURE0 + obj->ShaderObj->TextureCount);
+					obj->ShaderObj->TextureCount);
 				obj->ShaderObj->TextureCount++;
 			}
 
