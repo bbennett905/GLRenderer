@@ -70,7 +70,7 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 void HandleMovement(double deltaTime)
 {
-	float cameraSpeed = 0.1f * float(deltaTime);
+	float cameraSpeed = 1.5f * float(deltaTime);
 	if (keys[GLFW_KEY_W])
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
 	if (keys[GLFW_KEY_S])
@@ -130,13 +130,13 @@ int main()
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - lastTime;
 		numFrames++;
-		if (deltaTime >= 0.2) 
+		if (numFrames >= 300) 
 		{
 			double timePerFrame = deltaTime / double(numFrames);
 			printf("FPS: %f (%f ms)\n", 1.0 / timePerFrame, timePerFrame * 1000.0);
 			numFrames = 0;
-			lastTime = glfwGetTime();
 		}
+		lastTime = glfwGetTime();
 
 		glm::vec3 rotate(GLfloat(glfwGetTime() * -40.0f), GLfloat(glfwGetTime() * 25.0f), 0.0f);
 		cube->SetAngles(rotate);
