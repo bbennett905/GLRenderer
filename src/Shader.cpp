@@ -35,7 +35,11 @@ Shader::Shader(const char * vertexPath, const char * fragPath) :
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 }
 
-void Shader::Use() { glUseProgram(Program); }
+void Shader::Use() 
+{ 
+	glUseProgram(Program); 
+	TextureCount = 0;
+}
 
 void Shader::createShaders(const char * vertexSource, const char * fragSource)
 {
