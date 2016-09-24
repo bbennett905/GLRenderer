@@ -138,7 +138,9 @@ void Renderer::Draw()
 		//Bind our VAO so we have the correct vertex attribute configuration
 		glBindVertexArray(obj->VertexArrayObj);
 		//Draw! - type of primitive, starting index of vertex array, number of vertices
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		if (obj->Indices.size() > 0) glDrawElements(GL_TRIANGLES, obj->Indices.size(), GL_UNSIGNED_INT, 0);
+		else glDrawArrays(GL_TRIANGLES, 0, obj->Vertices.size());
 		glBindVertexArray(0);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -151,6 +153,7 @@ void Renderer::AddToDrawList(BaseDrawable * obj)
 
 	glGenVertexArrays(1, &(obj->VertexArrayObj));
 	glGenBuffers(1, &(obj->VertexBufferObj));
+	glGenBuffers(1, &(obj->ElementBufferObj));
 
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 	glBindVertexArray(obj->VertexArrayObj);
@@ -158,8 +161,15 @@ void Renderer::AddToDrawList(BaseDrawable * obj)
 	//bind the VBO to array_buffer - it is now actually what we want it to be
 	glBindBuffer(GL_ARRAY_BUFFER, obj->VertexBufferObj);
 	//copies vertex data into buffer's memory - last arg means data is not likely to change, or only rarely
-	glBufferData(GL_ARRAY_BUFFER, obj->Vertices.size() * sizeof(VertexData), &(obj->Vertices)[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, obj->Vertices.size() * sizeof(VertexData), 
+		&(obj->Vertices)[0], GL_STATIC_DRAW);
 
+	if (obj->Indices.size() > 0)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->ElementBufferObj);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, obj->Indices.size() * sizeof(GLuint),
+			&(obj->Indices), GL_STATIC_DRAW);
+	}
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid *)(offsetof(VertexData, Normal)));
