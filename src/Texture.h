@@ -15,4 +15,3 @@ public:
 	std::string Type;
 	std::string Path;
 };
-

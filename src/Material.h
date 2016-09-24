@@ -11,11 +11,6 @@
 
 struct Material
 {
-	//shader needs to be for each MESH not material
-	//Shader used for this material
-	//Shader * ShaderObj;
-
-	//TODO what if THESE were vectors of each map?
 	//Primary texture
 	Texture * DiffuseMap;
 	//Texture for specular highlights
@@ -27,8 +22,6 @@ struct Material
 	float SpecularStrength;
 	float Shininess;
 
-	//Material(Shader * shad) :
-	//	ShaderObj(shad) { }
 	Material(Texture * tex1,
 		Texture * specMap = nullptr,
 		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) : 

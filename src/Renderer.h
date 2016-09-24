@@ -13,6 +13,7 @@
 #include "Camera.h"
 #include "Window.h"
 #include "Mesh.h"
+#include "Model.h"
 #include "Lights.h"
 
 class Renderer

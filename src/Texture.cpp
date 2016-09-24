@@ -27,5 +27,3 @@ Texture::Texture(const char * path)
 }
 
 void Texture::Bind() { glBindTexture(GL_TEXTURE_2D, ID); }
-
-
