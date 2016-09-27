@@ -35,6 +35,7 @@ void Renderer::Draw()
 {
 	glClearColor(ClearColor.x, ClearColor.y, ClearColor.z, ClearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	for (auto obj : _drawList)
 	{
 		//new method of handling materials
@@ -42,19 +43,14 @@ void Renderer::Draw()
 
 		for (uint32_t i = 0; i < obj->Materials.size(); i++)
 		{
-			GLenum err = glGetError(); //1281 0x0501 invalid value
 			//TODO this will actually give it multiple copies of the same texture
 			if (obj->Materials[i].DiffuseMap != nullptr)
 			{
 				glActiveTexture(GL_TEXTURE0 + obj->ShaderObj->TextureCount);
-				err = glGetError(); //no error
 				obj->Materials[i].DiffuseMap->Bind();
-				err = glGetError(); //1282 0x0502 invalid operation
 				GLuint loc = glGetUniformLocation(obj->ShaderObj->Program,
 					("materials[" + std::to_string(i) + "].DiffMap").c_str());
-				err = glGetError(); //no error
 				glUniform1i(loc, obj->ShaderObj->TextureCount);
-				err = glGetError(); //1281, 0x0501 invalid value
 				obj->ShaderObj->TextureCount++;
 			}
 			
