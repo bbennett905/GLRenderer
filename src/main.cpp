@@ -101,22 +101,36 @@ int main()
 	Texture texture1("../images/container2.png");
 	Texture specMap("../images/container2_specular.png");
 
-	Shader shader(ShaderVersion330Core, render.GetNumPointLights(), render.GetNumSpotLights(), 1);
+	ShaderCreateInfo shaderCreateCube;
+	shaderCreateCube.Version = ShaderVersion330Core;
+	shaderCreateCube.NumPointLights = render.GetNumPointLights();
+	shaderCreateCube.NumSpotLights = render.GetNumSpotLights();
+	shaderCreateCube.NumMaterials = 1;
+
+	Shader shaderCube(shaderCreateCube);
 
 	Material mat1(&texture1, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 
-	Model * suit = new Model("../nanosuit/nanosuit.obj", &shader);
-	render.AddToDrawList(suit);
+	//Model * suit = new Model("../nanosuit/nanosuit.obj", &shader);
+	//render.AddToDrawList(suit);
 
-	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shader, mat1);
+	ShaderCreateInfo shaderCreateModel;
+	shaderCreateModel.Version = ShaderVersion330Core;
+	shaderCreateModel.NumPointLights = render.GetNumPointLights();
+	shaderCreateModel.NumSpotLights = render.GetNumSpotLights();
+
+	Model * poke = new Model("../ampli/AMPLI.obj", shaderCreateModel);
+	render.AddToDrawList(poke);
+
+	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
 	render.AddToDrawList(cube);
-	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shader, mat1);
+	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
 	render.AddToDrawList(cube2);
-	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shader, mat1);
+	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
 	render.AddToDrawList(cube3);
-	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shader, mat1);
+	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
 	render.AddToDrawList(cube4);
 
 	//Set where we handle input

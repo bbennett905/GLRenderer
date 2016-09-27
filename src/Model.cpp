@@ -3,8 +3,8 @@
 #include <Importer.hpp>
 #include <postprocess.h>
 
-Model::Model(const char * path, Shader * shad) :
-	_shader(shad)
+Model::Model(const char * path, ShaderCreateInfo shaderInfo) :
+	_shader_create_info(shaderInfo)
 {
 	loadModel(path);
 }
@@ -100,21 +100,11 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	{
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
 		materials = loadMaterials(material);
-		/*
-		//TODO redo this and loadMatTextures
-		
-		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-
-		for (uint32_t i = 0; i < diffuseMaps.size(); i++)
-		{
-			//Use default for other params when we create the Material
-			if (int(specularMaps.size()) <= int(i) - 1)
-				materials.push_back(Material(diffuseMaps[i], specularMaps[i]));
-			else materials.push_back(Material(diffuseMaps[i]));
-		}*/
 	}
-	return Mesh(vertices, indices, materials, _shader);
+	_shader_create_info.NumMaterials = materials.size();
+	Shader * s = new Shader(_shader_create_info);
+
+	return Mesh(vertices, indices, materials, s);
 }
 
 std::vector<Material> Model::loadMaterials(aiMaterial * mat)

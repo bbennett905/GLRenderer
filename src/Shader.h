@@ -12,6 +12,14 @@ enum GLShaderVersion {
 	ShaderVersion330Core
 };
 
+struct ShaderCreateInfo
+{
+	GLShaderVersion Version;
+	uint32_t NumPointLights;
+	uint32_t NumSpotLights;
+	uint32_t NumMaterials;
+};
+
 class Shader
 {
 public:
@@ -21,15 +29,13 @@ public:
 	//doing numMaterials, set 1 diff and 1 spec per material, and vector of mix values between each mat?
 	//TODO edit materials to 1 diff 1 spec
 	//Create a typical shader dynamically, given certain parameters
-	Shader(GLShaderVersion version,
-		uint32_t numPointLights, uint32_t numSpotLights,
-		uint32_t numMaterials);
+	Shader(ShaderCreateInfo & info);
 	void Use();
 
 	GLuint Program;
 	int TextureCount;
 
 private:
-	void preprocessShader(std::string vertexSource, std::string fragSource, GLShaderVersion version, int numPointLights, int numSpotLights, int numMaterials);
+	void preprocessShader(std::string vertexSource, std::string fragSource, ShaderCreateInfo info);
 	void createShaders(const char * vertexSource, const char * fragSource);
 };

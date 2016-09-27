@@ -7,11 +7,12 @@
 #include "BaseObject.h"
 #include "Mesh.h"
 
+
 class Model :
 	public BaseObject
 {
 public:
-	Model(const char * path, Shader * shad);
+	Model(const char * path, ShaderCreateInfo shaderInfo);
 	std::vector<Mesh> * GetMeshes();
 
 	void SetPosition(glm::vec3 pos);
@@ -28,6 +29,7 @@ private:
 	std::string _directory;
 	std::vector<Texture> _textures_loaded;
 	Shader * _shader;
+	ShaderCreateInfo _shader_create_info;
 
 	glm::vec3 Position;
 };

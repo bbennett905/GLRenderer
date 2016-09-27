@@ -83,14 +83,14 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 }
 
 //Another way to do this would be a preprocessor - something like #REPLACE VERSION, or #REPLACE NUM_MAT?
-Shader::Shader(GLShaderVersion version, uint32_t numPointLights, uint32_t numSpotLights, uint32_t numMaterials) :
+Shader::Shader(ShaderCreateInfo & info) :
 	TextureCount(0)
 {
 	std::string fragSource = "";
 	std::string vertexSource = "";
 
 	//Add the version macro for each shader at the beginning
-	switch (version)
+	switch (info.Version)
 	{
 	case ShaderVersion330Core:
 		fragSource += "#version 330 core\n";
@@ -165,10 +165,10 @@ Shader::Shader(GLShaderVersion version, uint32_t numPointLights, uint32_t numSpo
 		"    float Shininess;\n"
 		"};\n"
 		"\n"
-		"uniform LightDirectional directionalLight;\n"
-		"uniform LightPoint pointLights[" + std::to_string(numPointLights) + "];\n"
-		"uniform LightSpot spotLights[" + std::to_string(numSpotLights) + "];\n"
-		"uniform Material materials[" + std::to_string(numMaterials) + "];\n"
+		"uniform LightDirectional directionalLight;\n"	//TODO what if these are 0?
+		"uniform LightPoint pointLights[" + std::to_string(info.NumPointLights) + "];\n"
+		"uniform LightSpot spotLights[" + std::to_string(info.NumSpotLights) + "];\n"
+		"uniform Material materials[" + std::to_string(info.NumMaterials) + "];\n"
 		"uniform vec3 viewPos;\n"
 		"\n"
 		"vec3 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir);\n"
@@ -267,9 +267,9 @@ Shader::Shader(GLShaderVersion version, uint32_t numPointLights, uint32_t numSpo
 
 //TODO finish and implement this
 void Shader::preprocessShader(std::string vertexSource, std::string fragSource,
-	GLShaderVersion version, int numPointLights, int numSpotLights, int numMaterials)
+	ShaderCreateInfo info)
 {
-	switch (version)
+	switch (info.Version)
 	{
 	case ShaderVersion330Core:
 		FindAndReplaceAll(vertexSource, "#insert version", "#version 330 core");
@@ -281,10 +281,10 @@ void Shader::preprocessShader(std::string vertexSource, std::string fragSource,
 		break;
 	}
 
-	FindAndReplaceAll(vertexSource, "#insert num_point_lights", std::to_string(numPointLights));
-	FindAndReplaceAll(fragSource, "#insert num_point_lights", std::to_string(numPointLights));
-	FindAndReplaceAll(vertexSource, "#insert num_spot_lights", std::to_string(numSpotLights));
-	FindAndReplaceAll(fragSource, "#insert num_spot_lights", std::to_string(numSpotLights));
-	FindAndReplaceAll(vertexSource, "#insert num_materials", std::to_string(numMaterials));
-	FindAndReplaceAll(fragSource, "#insert num_materials", std::to_string(numMaterials));
+	FindAndReplaceAll(vertexSource, "#insert num_point_lights", std::to_string(info.NumPointLights));
+	FindAndReplaceAll(fragSource, "#insert num_point_lights", std::to_string(info.NumPointLights));
+	FindAndReplaceAll(vertexSource, "#insert num_spot_lights", std::to_string(info.NumSpotLights));
+	FindAndReplaceAll(fragSource, "#insert num_spot_lights", std::to_string(info.NumSpotLights));
+	FindAndReplaceAll(vertexSource, "#insert num_materials", std::to_string(info.NumMaterials));
+	FindAndReplaceAll(fragSource, "#insert num_materials", std::to_string(info.NumMaterials));
 }
