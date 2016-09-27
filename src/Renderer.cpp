@@ -168,7 +168,7 @@ void Renderer::AddToDrawList(BaseDrawable * obj)
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->ElementBufferObj);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, obj->Indices.size() * sizeof(GLuint),
-			&(obj->Indices), GL_STATIC_DRAW);
+			&(obj->Indices)[0], GL_STATIC_DRAW);
 	}
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
