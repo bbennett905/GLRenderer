@@ -5,6 +5,7 @@
 #include <glew.h>
 
 #include "Material.h"
+#include "Shader.h"
 
 /*
  * Class that any 3D drawable object inherits from

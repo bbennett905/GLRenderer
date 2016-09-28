@@ -3,11 +3,13 @@
 #include <glm.hpp>
 #include <vector>
 
-#include "Shader.h"
 #include "Texture.h"
 
+/*
+ * Struct with Textures and material properties
+ */
+
 //TODO we could load these from a file (like vmt)
-//and this could also bind textures + other uniforms for the shader,
 
 struct Material
 {
@@ -16,10 +18,13 @@ struct Material
 	//Texture for specular highlights
 	Texture * SpecularMap;
 
-	//Reflection properties
+	//Ambient reflection strength
 	float AmbientStrength;
+	//Diffuse reflection strength
 	float DiffuseStrength;
+	//Specular reflection strength
 	float SpecularStrength;
+	//Shininess exponent
 	float Shininess;
 
 	Material(Texture * tex1,
