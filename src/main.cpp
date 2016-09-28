@@ -13,7 +13,7 @@
 #include "Window.h"
 #include "Cube.h"
 #include "Renderer.h"
-#include "Mesh.h"
+#include "Model.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
