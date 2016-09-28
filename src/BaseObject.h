@@ -1,11 +1,11 @@
-/* 
- * Class to inherit from for any object located in 3D space
- */
-
 #pragma once
 
 //Use glm until separate vector classes made
 #include <glm.hpp>
+
+/*
+ * Class to inherit from for any object located in 3D space
+ */
 
 class BaseObject
 {

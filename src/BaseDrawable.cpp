@@ -16,7 +16,6 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 							glm::vec2(vertices[i+6], vertices[i+7]) };				//TexCoord
 		Vertices.push_back(data);
 	}
-	bUsesIndices = false; //TODO this is probably irrelevant
 }
 
 BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, 
@@ -30,7 +29,6 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 			glm::vec2(vertices[i + 6], vertices[i + 7]) };				//TexCoord
 		Vertices.push_back(data);
 	}
-	bUsesIndices = false; //TODO this is probably irrelevant
 }
 
 BaseDrawable::BaseDrawable(std::vector<VertexData> vert, Shader * shad) :

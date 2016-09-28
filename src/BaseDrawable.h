@@ -6,6 +6,10 @@
 
 #include "Material.h"
 
+/*
+ * Class that any 3D drawable object inherits from
+ */
+
 struct VertexData
 {
 	glm::vec3 Position;
@@ -13,11 +17,12 @@ struct VertexData
 	glm::vec2 TexCoords;
 };
 
+//TODO add scale member, see Cube class for implementation
+
 class BaseDrawable
 {
 public:
 	BaseDrawable();
-	//TODO more constructors
 	BaseDrawable(const GLfloat vertices[], int verticesSize, Shader * shad,
 		Material & mat);
 	BaseDrawable(const GLfloat vertices[], int verticesSize, Shader * shad,
@@ -25,17 +30,23 @@ public:
 	BaseDrawable(std::vector<VertexData> vert, Shader * shad);
 	BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, Shader * shad, std::vector<Material> & mat);
 
+	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();
 
+	//List of Vertices of the object
 	std::vector<VertexData> Vertices;
+	//List of Indices, if used by the object
 	std::vector<GLuint> Indices;
-
-	Shader * ShaderObj;
+	//List of Materials this obj uses
 	std::vector<Material> Materials;
 
-	GLuint VertexArrayObj;
-	GLuint VertexBufferObj;
-	GLuint ElementBufferObj;
+	//The shader that this object uses
+	Shader * ShaderObj;
 
-	bool bUsesIndices;
+	//OpenGL Vertex Array Object
+	GLuint VertexArrayObj;
+	//OpenGL Vertex Buffer Object
+	GLuint VertexBufferObj;
+	//OpenGL Element Buffer Object
+	GLuint ElementBufferObj;
 };
