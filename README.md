@@ -2,7 +2,10 @@
 
 A work-in-progress OpenGL renderer, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/). Can take any model format supported by ASSIMP.
 
+
 # What you need #
+
+All listed files are included in /include/ or /lib/ directory.
 ### Requires ###
 
 * [Assimp](http://www.assimp.org/) - Model loader
@@ -17,7 +20,7 @@ A work-in-progress OpenGL renderer, partially based on code in and using assets 
 
 ### Recommended ###
 
-* [GLIntercept](https://github.com/dtrebilco/glintercept) - Extremely useful for debugging OpenGL errors
+* [GLIntercept](https://github.com/dtrebilco/glintercept) - Extremely useful for debugging OpenGL errors (can be found in /glintercept/ directory)
 
 
 # More Information #
