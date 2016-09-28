@@ -217,3 +217,4 @@ gl_test.VC.VC.opendb
 *.filters
 
 !lib/*
+!glintercept/*
