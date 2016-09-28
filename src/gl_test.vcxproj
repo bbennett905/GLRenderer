@@ -42,13 +42,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\New folder %282%29\include\assimp;E:\New folder %282%29\include\SOIL;E:\New folder %282%29\include\glm;E:\New folder %282%29\include\GLFW;E:\New folder %282%29\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\New folder %282%29\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\include\assimp;..\include\SOIL;..\include\glm;..\include\GLFW;..\include\GL;$(IncludePath)</IncludePath>
+    <LibraryPath>..\lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>E:\New folder %282%29\include\assimp;E:\New folder %282%29\include\SOIL;E:\New folder %282%29\include\glm;E:\New folder %282%29\include\GLFW;E:\New folder %282%29\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\New folder %282%29\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\include\assimp;..\include\SOIL;..\include\glm;..\include\GLFW;..\include\GL;$(IncludePath)</IncludePath>
+    <LibraryPath>..\lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
