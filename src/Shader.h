@@ -4,6 +4,11 @@
 
 #include <glew.h>
 
+/*
+ * Shader object class which can dynamically create shaders for the specific scene 
+ * being rendered - params for shader creation in ShaderCreateInfo struct
+ */
+
 //We can add more versions here later on, but for now leave it as this
 enum GLShaderVersion {
 	ShaderVersion330Core

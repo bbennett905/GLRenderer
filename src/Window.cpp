@@ -4,11 +4,11 @@
 Window::Window(int width, int height, const char * title)
 {
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);	//this sets the opengl version to use
+	//TODO take this as an arg? or windowcreateinfo struct, with all these things
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
 
 	_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 

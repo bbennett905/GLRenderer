@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include <string>
+#include <iostream>
 
 Renderer::Renderer(Window & window, Camera * cam) :
 	_window(window), _camera(cam)

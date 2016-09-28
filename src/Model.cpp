@@ -138,7 +138,6 @@ std::vector<Material> Model::loadMaterials(aiMaterial * mat)
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
 			text = new Texture(path.c_str());
-			text->Type = "texture_diffuse";
 			_textures_loaded.push_back(*text);
 			mats.push_back(Material(text));
 		}
@@ -168,7 +167,6 @@ std::vector<Material> Model::loadMaterials(aiMaterial * mat)
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
 			text = new Texture(path.c_str());
-			text->Type = "texture_diffuse";
 			_textures_loaded.push_back(*text);
 
 			//Make sure we dont have more specular maps than diffuse - if we do, discard
@@ -202,7 +200,6 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
 			Texture texture(path.c_str());
-			texture.Type = typeName;
 			textures.push_back(texture);
 			_textures_loaded.push_back(texture);
 		}
