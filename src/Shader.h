@@ -1,9 +1,6 @@
 #pragma once
 
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 
 #include <glew.h>
 
@@ -12,11 +9,16 @@ enum GLShaderVersion {
 	ShaderVersion330Core
 };
 
+//Information to pass in the Shader constructor giving requirements for the shader
 struct ShaderCreateInfo
 {
+	//Shader API version to use - currently limited to 330 core
 	GLShaderVersion Version;
+	//Number of point lights this shader will take
 	uint32_t NumPointLights;
+	//Number of spot lights this shader will take
 	uint32_t NumSpotLights;
+	//Number of materials this shader will take
 	uint32_t NumMaterials;
 };
 
@@ -25,14 +27,17 @@ class Shader
 public:
 	//Create a shader from file
 	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info);
-	//version, (numDiffuse, numSpec)->(numMaterials?), numLights, numSpotLights,
-	//doing numMaterials, set 1 diff and 1 spec per material, and vector of mix values between each mat?
-	//TODO edit materials to 1 diff 1 spec
+
 	//Create a typical shader dynamically, given certain parameters
 	Shader(ShaderCreateInfo & info);
+
+	//Tells OpenGL to use this shader
 	void Use();
 
+	//OpenGL shader program object of this Shader
 	GLuint Program;
+
+	//USED BY RENDERER, DO NOT MODIFY
 	int TextureCount;
 
 private:
