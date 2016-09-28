@@ -215,3 +215,5 @@ gl_test.VC.VC.opendb
 *.sln
 *.vcxproj
 *.filters
+
+!lib/*
