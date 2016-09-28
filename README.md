@@ -29,3 +29,23 @@ This uses typical GLSL shaders (currently no geometry shader support) with a few
 * *#insert num_materials* - Inserts the number of materials for the object being rendered.
 
 Suffix of *_nomat* on a shader file name means that it does not take materials; *_unlit* means no lights.
+
+# ToDo #
+
+* Fix FPS counter
+
+* Remove unnecessary includes, use forward declaration
+
+* Check that everything is being properly destroyed
+
+* Create more primitives, possibly generating vertices & indices
+
+* Input abstraction
+
+* Load materials from file
+
+* More shaders and shader naming changes
+
+* Add more advanced OpenGL things, such as FBOs, geometry shaders, etc.
+
+* See in-file TODOs for others...
