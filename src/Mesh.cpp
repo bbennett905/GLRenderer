@@ -2,7 +2,8 @@
 
 #include <gtc\matrix_transform.hpp>
 
-Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> texts, Shader * shad) :
+Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, 
+	Shader * shad, std::vector<Material> texts) :
 	BaseDrawable(vert, ind, shad, texts)
 { }
 

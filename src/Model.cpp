@@ -9,7 +9,6 @@ Model::Model(const char * path, ShaderCreateInfo shaderInfo) :
 	loadModel(path);
 }
 
-//TODO if this is a pointer why not just make it public
 std::vector<Mesh> * Model::GetMeshes()
 {
 	return &_meshes;
@@ -111,7 +110,7 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 			"../shaders/default_nomat.frag",
 			_shader_create_info);
 
-	return Mesh(vertices, indices, materials, s);
+	return Mesh(vertices, indices, s, materials);
 }
 
 std::vector<Material> Model::loadMaterials(aiMaterial * mat)

@@ -7,17 +7,27 @@
 #include "BaseObject.h"
 #include "Mesh.h"
 
+/*
+ * Class representing a 3D model, imported using Assimp
+ * Composed of several meshes
+ */
 
 class Model :
 	public BaseObject
 {
 public:
 	Model(const char * path, ShaderCreateInfo shaderInfo);
+
+	//Returns the list of Meshes this model is composed of
 	std::vector<Mesh> * GetMeshes();
 
+	//Sets world position
 	void SetPosition(glm::vec3 pos);
+	//Returns world position
 	glm::vec3 GetPosition();
+	//Sets angles
 	void SetAngles(glm::vec3 ang);
+
 private:
 	void loadModel(std::string path);
 	void processNode(aiNode * node, const aiScene * scene);
