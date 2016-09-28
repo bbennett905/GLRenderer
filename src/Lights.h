@@ -1,6 +1,10 @@
 #pragma once
 #include "BaseObject.h"
 
+/*
+ * Classes for various types of light entities
+ */
+
 class BaseLight :
 	public BaseObject
 {
