@@ -120,9 +120,6 @@ int main()
 	Model * suit = new Model("../nanosuit/nanosuit.obj", shaderCreateModel);
 	render.AddToDrawList(suit);
 
-	//Model * poke = new Model("../ampli/AMPLI.obj", shaderCreateModel);
-	//render.AddToDrawList(poke);
-
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
 	render.AddToDrawList(cube);
