@@ -15,6 +15,8 @@ Renderer::Renderer(Window & window, Camera * cam) :
 
 	glViewport(0, 0, _window.GetWidth(), _window.GetHeight());
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
 	ClearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
