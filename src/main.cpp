@@ -135,16 +135,19 @@ int main()
 	window.SetCursorCallback(MouseCallback);
 
 	double lastTime = glfwGetTime();
+	double lastPrintTime = glfwGetTime();
 	int numFrames = 0;
 	while (!window.ShouldClose())
 	{
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - lastTime;
+		double deltaPrintTime = currentTime - lastPrintTime;
 		numFrames++;
-		if (numFrames >= 300) 
+		if (deltaPrintTime >= 0.2) 
 		{
-			double timePerFrame = deltaTime / double(numFrames);
+			double timePerFrame = deltaPrintTime / double(numFrames);
 			printf("FPS: %f (%f ms)\n", 1.0 / timePerFrame, timePerFrame * 1000.0);
+			lastPrintTime = glfwGetTime();
 			numFrames = 0;
 		}
 		lastTime = glfwGetTime();
