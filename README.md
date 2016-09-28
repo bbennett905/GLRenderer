@@ -41,8 +41,6 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 
 ### ToDo List ###
 
-* Fix FPS counter
-
 * Remove unnecessary includes, use forward declaration
 
 * Check that everything is being properly destroyed
