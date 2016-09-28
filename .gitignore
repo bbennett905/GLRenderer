@@ -17,7 +17,7 @@
 [Rr]eleases/
 x64/
 x86/
-build/
+#build/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -218,3 +218,6 @@ gl_test.VC.VC.opendb
 
 !lib/*
 !glintercept/*
+build/*
+!build/glew32.dll
+!build/assimp-vc130-mt.dll
