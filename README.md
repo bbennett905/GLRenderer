@@ -1,22 +1,27 @@
-# Description #
+# Summary #
 
-A work-in-progress OpenGL renderer, partially based on code and using assets from [LearnOpenGL](http://learnopengl.com/). Can take any model format supported by ASSIMP.
+A work-in-progress OpenGL renderer, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/). Can take any model format supported by ASSIMP.
+
+# What you need #
+### Requires ###
+
+* [Assimp](http://www.assimp.org/) - Model loader
+
+* [GLM](http://glm.g-truc.net/) - Matrix header-only library, intended for OpenGL use
+
+* [GLFW3](http://www.glfw.org/) - Window and input library, intended for OpenGL use
+
+* [GLEW](http://glew.sourceforge.net/) - OpenGL Extension library
+
+* [SOIL](http://www.lonesock.net/soil.html) - Image loader
+
+### Recommended ###
+
+* [GLIntercept](https://github.com/dtrebilco/glintercept) - Extremely useful for debugging OpenGL errors
 
 
-# Requires: #
-
-* [Assimp](http://www.assimp.org/)
-
-* [GLM](http://glm.g-truc.net/)
-
-* [GLFW3](http://www.glfw.org/)
-
-* [GLEW](http://glew.sourceforge.net/)
-
-* [SOIL](http://www.lonesock.net/soil.html)
-
-
-# Shaders #
+# More Information #
+### Shaders ###
 
 This uses typical GLSL shaders (currently no geometry shader support) with a few extras used for dynamically creating the shaders as needed by the renderer:
 
@@ -30,7 +35,8 @@ This uses typical GLSL shaders (currently no geometry shader support) with a few
 
 Suffix of *_nomat* on a shader file name means that it does not take materials; *_unlit* means no lights.
 
-# ToDo #
+
+### ToDo List ###
 
 * Fix FPS counter
 
