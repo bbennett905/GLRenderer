@@ -102,7 +102,14 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		materials = loadMaterials(material);
 	}
 	_shader_create_info.NumMaterials = materials.size();
-	Shader * s = new Shader(_shader_create_info);
+
+	Shader * s;
+	if (_shader_create_info.NumMaterials > 0)
+		s = new Shader(_shader_create_info);
+	else
+		s = new Shader("../shaders/default_nomat.vert", 
+			"../shaders/default_nomat.frag",
+			_shader_create_info);
 
 	return Mesh(vertices, indices, materials, s);
 }

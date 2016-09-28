@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 
-Shader::Shader(const char * vertexPath, const char * fragPath) :
+Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info) :
 	TextureCount(0)
 {
 	std::string vertexSource;
@@ -32,6 +32,7 @@ Shader::Shader(const char * vertexPath, const char * fragPath) :
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 	}
 
+	preprocessShader(vertexSource, fragSource, info);
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 }
 
@@ -266,7 +267,7 @@ Shader::Shader(ShaderCreateInfo & info) :
 }
 
 //TODO finish and implement this
-void Shader::preprocessShader(std::string vertexSource, std::string fragSource,
+void Shader::preprocessShader(std::string & vertexSource, std::string & fragSource,
 	ShaderCreateInfo info)
 {
 	switch (info.Version)

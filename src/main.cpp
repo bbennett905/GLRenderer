@@ -112,16 +112,16 @@ int main()
 	Material mat1(&texture1, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 
-	//Model * suit = new Model("../nanosuit/nanosuit.obj", &shader);
-	//render.AddToDrawList(suit);
-
 	ShaderCreateInfo shaderCreateModel;
 	shaderCreateModel.Version = ShaderVersion330Core;
 	shaderCreateModel.NumPointLights = render.GetNumPointLights();
 	shaderCreateModel.NumSpotLights = render.GetNumSpotLights();
 
-	Model * poke = new Model("../ampli/AMPLI.obj", shaderCreateModel);
-	render.AddToDrawList(poke);
+	Model * suit = new Model("../nanosuit/nanosuit.obj", shaderCreateModel);
+	render.AddToDrawList(suit);
+
+	//Model * poke = new Model("../ampli/AMPLI.obj", shaderCreateModel);
+	//render.AddToDrawList(poke);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);

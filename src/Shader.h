@@ -24,7 +24,7 @@ class Shader
 {
 public:
 	//Create a shader from file
-	Shader(const char * vertexPath, const char * fragPath);
+	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info);
 	//version, (numDiffuse, numSpec)->(numMaterials?), numLights, numSpotLights,
 	//doing numMaterials, set 1 diff and 1 spec per material, and vector of mix values between each mat?
 	//TODO edit materials to 1 diff 1 spec
@@ -36,6 +36,6 @@ public:
 	int TextureCount;
 
 private:
-	void preprocessShader(std::string vertexSource, std::string fragSource, ShaderCreateInfo info);
+	void preprocessShader(std::string & vertexSource, std::string & fragSource, ShaderCreateInfo info);
 	void createShaders(const char * vertexSource, const char * fragSource);
 };
