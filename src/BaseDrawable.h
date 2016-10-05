@@ -20,6 +20,8 @@ struct VertexData
 
 //TODO add scale member, see Cube class for implementation
 
+class SceneRenderer;
+
 class BaseDrawable
 {
 public:
@@ -35,7 +37,7 @@ public:
 	virtual glm::mat4 GetModelMatrix();
 
 	//TODO this will be called from a Scene object or somthing, that is where drawlist will be?
-	virtual void Draw();
+	virtual void Draw(SceneRenderer * scene_renderer);
 
 	//List of Vertices of the object
 	std::vector<VertexData> Vertices;
