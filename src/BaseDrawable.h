@@ -34,6 +34,9 @@ public:
 	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();
 
+	//TODO this will be called from a Scene object or somthing, that is where drawlist will be?
+	virtual void Draw();
+
 	//List of Vertices of the object
 	std::vector<VertexData> Vertices;
 	//List of Indices, if used by the object
