@@ -57,7 +57,7 @@ void BaseDrawable::Draw()
 
 	for (uint32_t i = 0; i < Materials.size(); i++)
 	{
-		//TODO this will actually give it multiple copies of the same texture
+		//TODO this will actually give it multiple copies of the same texture (will it)?
 		if (Materials[i].DiffuseMap != nullptr)
 		{
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
