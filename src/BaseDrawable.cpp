@@ -50,7 +50,7 @@ glm::mat4 BaseDrawable::GetModelMatrix()
 //Scene calls this - basedrawable should also have flags - one for transparency
 //so that transparent objects can actually WORK
 //scene will draw objects in a specific order
-void BaseDrawable::Draw()
+void BaseDrawable::Draw(SceneRenderer * scene_renderer)
 {
 	//new method of handling materials
 	ShaderObj->Use();
