@@ -6,11 +6,13 @@
 
 //see Scene.h for most info,
 //but this is basically what is currently the Renderer class with a little moved to BaseDrawable
-//DOES NOT NEED A WINDOW ARG
+
+class Window;
+
 class SceneRenderer
 {
 public:
-	SceneRenderer();
+	SceneRenderer(Window * window);
 	~SceneRenderer();
 
 	//TODO
@@ -21,6 +23,8 @@ private:
 	std::vector<LightPoint *>	_point_light_list;
 	std::vector<LightSpot *>	_spot_light_list;
 	LightDirectional *			_directional_light;
+
+	glm::vec4 _clear_color;
 
 	Camera * _camera;
 };
