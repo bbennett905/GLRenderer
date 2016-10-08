@@ -2,6 +2,7 @@
 
 #include "BaseDrawable.h"
 #include "BaseObject.h"
+#include "SceneRenderer.h"
 
 Scene::Scene()
 {
@@ -20,7 +21,8 @@ void Scene::AddObjectToScene(BaseObject * obj)
 	BaseDrawable * drawable = dynamic_cast<BaseDrawable *>(obj);
 	if (drawable)
 	{
-		_draw_list.push_back(drawable);
+		_scene_renderer->AddDrawable(drawable);
+		//_draw_list.push_back(drawable);
 	}
 }
 
@@ -31,8 +33,9 @@ void Scene::Update(double delta_time)
 	{
 		//obj->Update(delta_time);
 	}
-	for (auto draw : _draw_list)
+	/*for (auto draw : _draw_list)
 	{
 		draw->Draw(_scene_renderer);
-	}
+	}*/
+	_scene_renderer->Draw();
 }

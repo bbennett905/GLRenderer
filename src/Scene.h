@@ -23,7 +23,7 @@ public:
 
 private:
 	SceneRenderer * _scene_renderer;
-	std::vector<BaseDrawable *> _draw_list;
+	//std::vector<BaseDrawable *> _draw_list; //moved to scenerenderer
 	std::vector<BaseObject *> _object_list;
 };
 

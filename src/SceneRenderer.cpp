@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Window.h"
+#include "BaseDrawable.h"
 
 SceneRenderer::SceneRenderer(Window * window)
 {
@@ -24,4 +25,36 @@ SceneRenderer::SceneRenderer(Window * window)
 SceneRenderer::~SceneRenderer()
 {
 	//TODO we probably need to destroy things here (lights)?
+}
+
+void SceneRenderer::AddPointLight(LightPoint * light)
+{
+	_point_light_list.push_back(light);
+}
+
+void SceneRenderer::AddSpotLight(LightSpot * light)
+{
+	_spot_light_list.push_back(light);
+}
+
+void SceneRenderer::SetDirectionalLight(LightDirectional * light)
+{
+	_directional_light = light;
+}
+
+void SceneRenderer::AddDrawable(BaseDrawable * drawable)
+{
+	_draw_list.push_back(drawable);
+}
+
+void SceneRenderer::Draw()
+{
+	glClearColor(_clear_color.x, _clear_color.y, _clear_color.z, _clear_color.w);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	for (auto obj : _draw_list)
+	{
+		//TODO give this light info
+		obj->Draw();
+	}
 }
