@@ -6,12 +6,8 @@
 #include <sstream>
 #include <iostream>
 
-//TODO Rather than passing a path to constructor, pass name of shader - eg "default"
-//Then, look in ../shaders/ for default.vert & default.frag, or if no materials look
-//for one with the _nomat suffix (_unlit for no lights)
-
-//TODO this will break if given 0 point lights or 0 spot lights
-//possible workaround could be pass 1 light always, with 0 brightness
+//TODO Make sure Draw sets the numMaterials uniform!
+//Also, this means we no longer need _nomat shaders
 
 Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info) :
 	TextureCount(0)
@@ -109,8 +105,10 @@ void Shader::preprocessShader(std::string & vertexSource, std::string & fragSour
 	FindAndReplaceAll(fragSource, "#insert num_point_lights", std::to_string(info.NumPointLights));
 	FindAndReplaceAll(vertexSource, "#insert num_spot_lights", std::to_string(info.NumSpotLights));
 	FindAndReplaceAll(fragSource, "#insert num_spot_lights", std::to_string(info.NumSpotLights));
-	FindAndReplaceAll(vertexSource, "#insert num_materials", std::to_string(info.NumMaterials));
-	FindAndReplaceAll(fragSource, "#insert num_materials", std::to_string(info.NumMaterials));
+
+	//rather crude way to pass a #define through, but it works for now
+	FindAndReplaceAll(vertexSource, "MAX_MATERIALS", std::to_string(MAX_MATERIALS));
+	FindAndReplaceAll(fragSource, "MAX_MATERIALS", std::to_string(MAX_MATERIALS));
 }
 
 void Shader::createShaders(const char * vertexSource, const char * fragSource)

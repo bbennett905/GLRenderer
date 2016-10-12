@@ -106,11 +106,5 @@
     <None Include="..\shaders\default.vert">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\shaders\default_nomat.frag">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\shaders\default_nomat.vert">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

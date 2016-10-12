@@ -9,6 +9,9 @@
  * being rendered - params for shader creation in ShaderCreateInfo struct
  */
 
+//I really have no idea if this is a reasonable number
+#define MAX_MATERIALS 8
+
 //We can add more versions here later on, but for now leave it as this
 enum GLShaderVersion {
 	ShaderVersion330Core
@@ -23,8 +26,6 @@ struct ShaderCreateInfo
 	uint32_t NumPointLights;
 	//Number of spot lights this shader will take
 	uint32_t NumSpotLights;
-	//Number of materials this shader will take
-	uint32_t NumMaterials;
 };
 
 class Shader
