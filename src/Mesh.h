@@ -10,6 +10,6 @@ class Mesh :
 {
 public:
 	Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, 
-		Shader * shad, std::vector<Material> texts);
+		std::vector<Material> texts);
 	glm::mat4 GetModelMatrix();
 };

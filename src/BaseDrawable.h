@@ -26,12 +26,10 @@ class BaseDrawable
 {
 public:
 	BaseDrawable();
-	BaseDrawable(const GLfloat vertices[], int verticesSize, Shader * shad,
-		Material & mat);
-	BaseDrawable(const GLfloat vertices[], int verticesSize, Shader * shad,
-		std::vector<Material> & mat);
-	BaseDrawable(std::vector<VertexData> vert, Shader * shad);
-	BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, Shader * shad, std::vector<Material> & mat);
+	BaseDrawable(const GLfloat vertices[], int verticesSize, Material & mat);
+	BaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<Material> & mat);
+	BaseDrawable(std::vector<VertexData> vert);
+	BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> & mat);
 
 	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();

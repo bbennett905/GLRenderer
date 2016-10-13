@@ -4,9 +4,7 @@
 
 BaseDrawable::BaseDrawable() { }
 
-BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
-	Shader * shad, Material & mat) :
-	ShaderObj(shad)
+BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, Material & mat)
 {
 	Materials.push_back(mat);
 	for (int i = 0; i < verticesSize; i+=8)// ? ok
@@ -19,8 +17,8 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 }
 
 BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, 
-	Shader * shad, std::vector<Material> & mat) :
-	ShaderObj(shad), Materials(mat)
+	std::vector<Material> & mat) :
+	Materials(mat)
 {
 	for (int i = 0; i < verticesSize; i += 8)// ? ok
 	{
@@ -31,14 +29,17 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 	}
 }
 
-BaseDrawable::BaseDrawable(std::vector<VertexData> vert, Shader * shad) :
-	Vertices(vert), ShaderObj(shad)
+BaseDrawable::BaseDrawable(std::vector<VertexData> vert) :
+	Vertices(vert)
 { }
 
-BaseDrawable::BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, Shader * shad,
+BaseDrawable::BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
 	std::vector<Material> & mat) :
-	Vertices(vert), Indices(ind), ShaderObj(shad), Materials(mat)
-{ }
+	Vertices(vert), Indices(ind), Materials(mat)
+{ 
+	//TODO do this better
+	assert(mat.size() > MAX_MATERIALS && "An object exceeded MAX_MATERIALS!");
+}
 
 glm::mat4 BaseDrawable::GetModelMatrix()
 {

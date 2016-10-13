@@ -2,9 +2,9 @@
 
 #include <gtc\matrix_transform.hpp>
 
-Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, 
-	Shader * shad, std::vector<Material> texts) :
-	BaseDrawable(vert, ind, shad, texts)
+Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
+	std::vector<Material> texts) :
+	BaseDrawable(vert, ind, texts)
 { }
 
 glm::mat4 Mesh::GetModelMatrix()

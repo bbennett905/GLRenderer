@@ -16,7 +16,7 @@ class Model :
 	public BaseObject
 {
 public:
-	Model(const char * path, ShaderCreateInfo shaderInfo);
+	Model(const char * path);
 
 	//Returns the list of Meshes this model is composed of
 	std::vector<Mesh> * GetMeshes();
@@ -39,7 +39,7 @@ private:
 	std::string _directory;
 	std::vector<Texture> _textures_loaded;
 	Shader * _shader;
-	ShaderCreateInfo _shader_create_info;
+	//ShaderCreateInfo _shader_create_info;
 
 	glm::vec3 Position;
 };

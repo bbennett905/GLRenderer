@@ -3,8 +3,7 @@
 #include <Importer.hpp>
 #include <postprocess.h>
 
-Model::Model(const char * path, ShaderCreateInfo shaderInfo) :
-	_shader_create_info(shaderInfo)
+Model::Model(const char * path)
 {
 	loadModel(path);
 }
@@ -100,7 +99,8 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
 		materials = loadMaterials(material);
 	}
-	_shader_create_info.NumMaterials = materials.size();
+
+	/*_shader_create_info.NumMaterials = materials.size();
 
 	Shader * s;
 	if (_shader_create_info.NumMaterials > 0)
@@ -108,9 +108,9 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	else
 		s = new Shader("../shaders/default_nomat.vert", 
 			"../shaders/default_nomat.frag",
-			_shader_create_info);
+			_shader_create_info);*/
 
-	return Mesh(vertices, indices, s, materials);
+	return Mesh(vertices, indices, materials);
 }
 
 std::vector<Material> Model::loadMaterials(aiMaterial * mat)
