@@ -41,18 +41,22 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 
 ### ToDo List ###
 
-* Remove unnecessary includes, use forward declaration
+* Refactoring Renderer, and add Scene objects (in progress)
 
-* Check that everything is being properly destroyed
+* Remove unnecessary includes, use forward declaration whenever possible
 
-* Create more primitives, possibly generating vertices & indices
+* Ensure that everything is being properly destroyed (hint: its not)
+
+* Create more primitives (possibly generating vertices & indices)
 
 * Input abstraction
 
-* Load materials from file
+* Load materials/scenes from file
 
 * More shaders and shader naming changes
 
-* Add more advanced OpenGL things, such as FBOs, geometry shaders, etc.
+* Implement transparency support
+
+* Add logging system
 
 * See in-file TODOs for others...
