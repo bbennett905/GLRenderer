@@ -32,10 +32,10 @@ class Shader
 {
 public:
 	//Create a shader from file
-	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info);
+	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info);
 
 	//Create a typical shader dynamically, given certain parameters
-	Shader(ShaderCreateInfo & info);
+	Shader(ShaderCreateInfo info);
 
 	//Tells OpenGL to use this shader
 	void Use();
@@ -45,6 +45,9 @@ public:
 
 	//USED BY RENDERER, DO NOT MODIFY
 	int TextureCount;
+
+	//Holds the info used to create this shader
+	ShaderCreateInfo CreateInfo;
 
 private:
 	void preprocessShader(std::string & vertexSource, std::string & fragSource, ShaderCreateInfo info);

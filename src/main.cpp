@@ -105,7 +105,6 @@ int main()
 	shaderCreateCube.Version = ShaderVersion330Core;
 	shaderCreateCube.NumPointLights = render.GetNumPointLights();
 	shaderCreateCube.NumSpotLights = render.GetNumSpotLights();
-	shaderCreateCube.NumMaterials = 1;
 
 	Shader shaderCube(shaderCreateCube);
 

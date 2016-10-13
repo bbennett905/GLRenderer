@@ -9,8 +9,8 @@
 //TODO Make sure Draw sets the numMaterials uniform!
 //Also, this means we no longer need _nomat shaders
 
-Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info) :
-	TextureCount(0)
+Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info) :
+	TextureCount(0), CreateInfo(info)
 {
 	std::string vertexSource;
 	std::string fragSource;
@@ -43,8 +43,8 @@ Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo 
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 }
 
-Shader::Shader(ShaderCreateInfo & info) :
-	TextureCount(0)
+Shader::Shader(ShaderCreateInfo info) :
+	TextureCount(0), CreateInfo(info)
 {
 	char * vertexPath = "../shaders/default.vert";
 	char * fragPath = "../shaders/default.frag";
