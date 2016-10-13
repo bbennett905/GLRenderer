@@ -24,9 +24,12 @@ public:
 
 	void AddDrawable(BaseDrawable * drawable);
 
+	bool BuildShaders();
+
 	void Draw();
 
 private:
+	std::vector<Shader *>		_shader_list;
 	std::vector<LightPoint *>	_point_light_list;
 	std::vector<LightSpot *>	_spot_light_list;
 	LightDirectional *			_directional_light;

@@ -44,7 +44,50 @@ void SceneRenderer::SetDirectionalLight(LightDirectional * light)
 
 void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 {
+	//TODO shader gets created here probably? or on basedraw constructor?
+	//as it works right now, it will need number of each lights, num materials, version
+	//so lights must be added FIRST, not really ideal
+	//but this does mean that it can't work with simply basedraw, needs to interact with this
+	// -OR-
+	//SceneRenderer::BuildShaders()
+	//	for (drawable in draw_list)
+	//		drawable->BuildShader(ShaderCreateInfo)
+	//where shadercreateinfo doesnt have nummaterials
+	//TODO V that V
+	//Problem here - we can't reuse a shader. Mostly because we need to set NumMaterials
+	//at shader compile time, but if we fix this, it should be more like: 
+	//SceneRenderer::BuildShaders()
+	//	for (drawable in draw_list)
+	//		Shader * shad = buildShader(drawable);
+	//		drawable->ShaderObj = shad;
+	//		this->_shader_list.push_back(shad);
+	//where 
+	//Shader * SceneRenderer::buildShader(BaseDrawable * drawable)
 	_draw_list.push_back(drawable);
+}
+
+bool SceneRenderer::BuildShaders()
+{
+	ShaderCreateInfo shader_create_info;
+	shader_create_info.Version =		ShaderVersion330Core;
+	shader_create_info.NumPointLights = _point_light_list.size();
+	shader_create_info.NumSpotLights =	_spot_light_list.size();
+
+	for (auto drawable : _draw_list)
+	{
+		//TODO this is probably terrible
+		//Do we already have a shader matching the requirements? if so, use it!
+		for (auto shader : _shader_list)
+		{
+			//TODO does this do what i want? prob not
+			if (shader->CreateInfo == shader_create_info)
+				drawable->ShaderObj = shader;
+		}
+
+		drawable->ShaderObj = new Shader(shader_create_info);
+		_shader_list.push_back(drawable->ShaderObj);
+	}
+	return true;
 }
 
 void SceneRenderer::Draw()
@@ -52,9 +95,9 @@ void SceneRenderer::Draw()
 	glClearColor(_clear_color.x, _clear_color.y, _clear_color.z, _clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto obj : _draw_list)
+	for (auto drawable : _draw_list)
 	{
 		//TODO give this light info
-		obj->Draw();
+		drawable->Draw();
 	}
 }
