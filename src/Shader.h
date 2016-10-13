@@ -26,6 +26,13 @@ struct ShaderCreateInfo
 	uint32_t NumPointLights;
 	//Number of spot lights this shader will take
 	uint32_t NumSpotLights;
+	//Flags to use for this shader
+	uint32_t Flags;
+};
+
+enum ShaderFlags
+{
+	Shader_Translucent = 1 << 0
 };
 
 class Shader

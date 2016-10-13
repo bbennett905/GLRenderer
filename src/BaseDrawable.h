@@ -18,6 +18,11 @@ struct VertexData
 	glm::vec2 TexCoords;
 };
 
+enum DrawableFlags
+{
+	Drawable_Translucent = 1 << 0
+};
+
 //TODO add scale member, see Cube class for implementation
 
 class SceneRenderer;
@@ -46,6 +51,9 @@ public:
 
 	//The shader that this object uses
 	Shader * ShaderObj;
+
+	//Draw flags for this drawable
+	uint32_t Flags;
 
 	//OpenGL Vertex Array Object
 	GLuint VertexArrayObj;

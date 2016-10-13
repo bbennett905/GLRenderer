@@ -44,25 +44,6 @@ void SceneRenderer::SetDirectionalLight(LightDirectional * light)
 
 void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 {
-	//TODO shader gets created here probably? or on basedraw constructor?
-	//as it works right now, it will need number of each lights, num materials, version
-	//so lights must be added FIRST, not really ideal
-	//but this does mean that it can't work with simply basedraw, needs to interact with this
-	// -OR-
-	//SceneRenderer::BuildShaders()
-	//	for (drawable in draw_list)
-	//		drawable->BuildShader(ShaderCreateInfo)
-	//where shadercreateinfo doesnt have nummaterials
-	//TODO V that V
-	//Problem here - we can't reuse a shader. Mostly because we need to set NumMaterials
-	//at shader compile time, but if we fix this, it should be more like: 
-	//SceneRenderer::BuildShaders()
-	//	for (drawable in draw_list)
-	//		Shader * shad = buildShader(drawable);
-	//		drawable->ShaderObj = shad;
-	//		this->_shader_list.push_back(shad);
-	//where 
-	//Shader * SceneRenderer::buildShader(BaseDrawable * drawable)
 	_draw_list.push_back(drawable);
 }
 
@@ -75,17 +56,26 @@ bool SceneRenderer::BuildShaders()
 
 	for (auto drawable : _draw_list)
 	{
-		//TODO this is probably terrible
+		//If we have new ShaderCreateInfo params or flags, go under here
+		if (drawable->Flags & Drawable_Translucent)
+			shader_create_info.Flags |= Shader_Translucent;
+
 		//Do we already have a shader matching the requirements? if so, use it!
 		for (auto shader : _shader_list)
 		{
-			//TODO does this do what i want? prob not
-			if (shader->CreateInfo == shader_create_info)
-				drawable->ShaderObj = shader;
+			//TODO does this work?
+			if (shader->CreateInfo.Version == shader_create_info.Version &&
+				shader->CreateInfo.NumPointLights == shader_create_info.NumPointLights &&
+				shader->CreateInfo.NumSpotLights == shader_create_info.NumSpotLights &&
+				shader->CreateInfo.Flags == shader_create_info.Flags)
+					drawable->ShaderObj = shader;
 		}
 
-		drawable->ShaderObj = new Shader(shader_create_info);
-		_shader_list.push_back(drawable->ShaderObj);
+		if (drawable->ShaderObj == nullptr)
+		{
+			drawable->ShaderObj = new Shader(shader_create_info);
+			_shader_list.push_back(drawable->ShaderObj);
+		}
 	}
 	return true;
 }
