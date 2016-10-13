@@ -9,6 +9,7 @@
 
 class Window;
 class BaseDrawable;
+class Shader;
 
 class SceneRenderer
 {

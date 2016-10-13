@@ -116,7 +116,7 @@ int main()
 	shaderCreateModel.NumPointLights = render.GetNumPointLights();
 	shaderCreateModel.NumSpotLights = render.GetNumSpotLights();
 
-	Model * suit = new Model("../nanosuit/nanosuit.obj", shaderCreateModel);
+	Model * suit = new Model("../nanosuit/nanosuit.obj");
 	render.AddToDrawList(suit);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);

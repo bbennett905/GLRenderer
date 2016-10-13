@@ -6,6 +6,7 @@
 
 #include "Material.h"
 #include "Shader.h"
+#include "Lights.h"
 
 /*
  * Class that any 3D drawable object inherits from
@@ -26,6 +27,7 @@ enum DrawableFlags
 //TODO add scale member, see Cube class for implementation
 
 class SceneRenderer;
+class Camera;
 
 class BaseDrawable
 {
@@ -40,7 +42,8 @@ public:
 	virtual glm::mat4 GetModelMatrix();
 
 	//TODO this will be called from a Scene object or somthing, that is where drawlist will be?
-	virtual void Draw(SceneRenderer * scene_renderer);
+	virtual void Draw(Camera * camera, std::vector<LightPoint *> & point_light_list,
+		std::vector<LightSpot *> & spot_light_list, LightDirectional * directional_light);
 
 	//List of Vertices of the object
 	std::vector<VertexData> Vertices;

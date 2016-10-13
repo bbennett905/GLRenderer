@@ -85,9 +85,10 @@ void SceneRenderer::Draw()
 	glClearColor(_clear_color.x, _clear_color.y, _clear_color.z, _clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//TODO sort this by transparent textures
 	for (auto drawable : _draw_list)
 	{
 		//TODO give this light info
-		drawable->Draw();
+		drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
 }

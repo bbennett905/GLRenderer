@@ -1,6 +1,9 @@
 #include "BaseDrawable.h"
 
 #include <gtc\matrix_transform.hpp>
+#include <gtc\type_ptr.hpp>
+
+#include "Camera.h"
 
 BaseDrawable::BaseDrawable() { }
 
@@ -38,7 +41,7 @@ BaseDrawable::BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> &
 	Vertices(vert), Indices(ind), Materials(mat)
 { 
 	//TODO do this better
-	assert(mat.size() > MAX_MATERIALS && "An object exceeded MAX_MATERIALS!");
+	assert(mat.size() < MAX_MATERIALS && "An object exceeded MAX_MATERIALS!");
 }
 
 glm::mat4 BaseDrawable::GetModelMatrix()
@@ -51,7 +54,10 @@ glm::mat4 BaseDrawable::GetModelMatrix()
 //Scene calls this - basedrawable should also have flags - one for transparency
 //so that transparent objects can actually WORK
 //scene will draw objects in a specific order
-void BaseDrawable::Draw(SceneRenderer * scene_renderer)
+void BaseDrawable::Draw(Camera * camera, 
+	std::vector<LightPoint *> & point_light_list,
+	std::vector<LightSpot *> & spot_light_list, 
+	LightDirectional * directional_light)
 {
 	//new method of handling materials
 	ShaderObj->Use();
@@ -79,79 +85,116 @@ void BaseDrawable::Draw(SceneRenderer * scene_renderer)
 			ShaderObj->TextureCount++;
 		}
 
-		//It'd be nice if there was some way to check what params a shader has, before providing it
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].AmbientStrength").c_str()), Materials[i].AmbientStrength);
+			("materials[" + std::to_string(i) + "].AmbientStrength").c_str()), 
+			Materials[i].AmbientStrength);
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].DiffuseStrength").c_str()), Materials[i].DiffuseStrength);
+			("materials[" + std::to_string(i) + "].DiffuseStrength").c_str()), 
+			Materials[i].DiffuseStrength);
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].SpecularStrength").c_str()), Materials[i].SpecularStrength);
+			("materials[" + std::to_string(i) + "].SpecularStrength").c_str()),
+			Materials[i].SpecularStrength);
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].Shininess").c_str()), Materials[i].Shininess);
+			("materials[" + std::to_string(i) + "].Shininess").c_str()), 
+			Materials[i].Shininess);
 	}
 
-	//model matrix is the matrix that transforms model space to world space - rotation and translation
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "model"), 1, GL_FALSE, glm::value_ptr(obj->GetModelMatrix()));
+	//model matrix transforms model space to world space - rotation and translation
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "model"), 1, GL_FALSE, 
+		glm::value_ptr(GetModelMatrix()));
 
 	//view matrix moves the world relative to the camera - rotation + translation
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "view"), 1, GL_FALSE, glm::value_ptr(_camera->GetViewMatrix()));
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "view"), 1, GL_FALSE, 
+		glm::value_ptr(camera->GetViewMatrix()));
 	//projection matrix is the projection of the camera, perspective or orthogonal
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "projection"), 1, GL_FALSE, glm::value_ptr(_camera->GetProjMatrix()));
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "projection"), 1, GL_FALSE, 
+		glm::value_ptr(camera->GetProjMatrix()));
 
-	glUniform3f(glGetUniformLocation(ShaderObj->Program, "viewPos"), _camera->GetPos().x, _camera->GetPos().y, _camera->GetPos().z);
+	glUniform3f(glGetUniformLocation(ShaderObj->Program, "viewPos"),
+		camera->GetPos().x, camera->GetPos().y, camera->GetPos().z);
 
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numPointLights"), _lightPointList.size());
-	for (uint32_t i = 0; i < _lightPointList.size(); i++)
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numPointLights"), 
+		point_light_list.size());
+	for (uint32_t i = 0; i < point_light_list.size(); i++)
 	{
-		glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Position").c_str()),
-			_lightPointList[i]->Position.x, _lightPointList[i]->Position.y, _lightPointList[i]->Position.z);
-		glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Color").c_str()),
-			_lightPointList[i]->Color.x, _lightPointList[i]->Color.y, _lightPointList[i]->Color.z);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Intensity").c_str()),
-			_lightPointList[i]->Intensity);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Constant").c_str()),
-			_lightPointList[i]->Constant);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Linear").c_str()),
-			_lightPointList[i]->Linear);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("pointLights[" + std::to_string(i) + "].Quadratic").c_str()),
-			_lightPointList[i]->Quadratic);
+		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
+			("pointLights[" + std::to_string(i) + "].Position").c_str()),
+			point_light_list[i]->Position.x, point_light_list[i]->Position.y, 
+			point_light_list[i]->Position.z);
+		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
+			("pointLights[" + std::to_string(i) + "].Color").c_str()),
+			point_light_list[i]->Color.x, point_light_list[i]->Color.y, 
+			point_light_list[i]->Color.z);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("pointLights[" + std::to_string(i) + "].Intensity").c_str()),
+			point_light_list[i]->Intensity);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("pointLights[" + std::to_string(i) + "].Constant").c_str()),
+			point_light_list[i]->Constant);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("pointLights[" + std::to_string(i) + "].Linear").c_str()),
+			point_light_list[i]->Linear);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("pointLights[" + std::to_string(i) + "].Quadratic").c_str()),
+			point_light_list[i]->Quadratic);
 	}
 
-	glUniform1i(glGetUniformLocation(obj->ShaderObj->Program, "numSpotLights"), _lightSpotList.size());
-	for (uint32_t i = 0; i < _lightSpotList.size(); i++)
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numSpotLights"), 
+		spot_light_list.size());
+	for (uint32_t i = 0; i < spot_light_list.size(); i++)
 	{
-		glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Position").c_str()),
-			_lightSpotList[i]->Position.x, _lightSpotList[i]->Position.y, _lightSpotList[i]->Position.z);
-		glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Direction").c_str()),
-			_lightSpotList[i]->GetForward().x, _lightSpotList[i]->GetForward().y, _lightSpotList[i]->GetForward().z);
-		glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Color").c_str()),
-			_lightSpotList[i]->Color.x, _lightSpotList[i]->Color.y, _lightSpotList[i]->Color.z);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].InnerCutOff").c_str()),
-			glm::cos(glm::radians(_lightSpotList[i]->InnerCutOff)));
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].OuterCutOff").c_str()),
-			glm::cos(glm::radians(_lightSpotList[i]->OuterCutOff)));
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Intensity").c_str()),
-			_lightSpotList[i]->Intensity);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Constant").c_str()),
-			_lightSpotList[i]->Constant);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Linear").c_str()),
-			_lightSpotList[i]->Linear);
-		glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, ("spotLights[" + std::to_string(i) + "].Quadratic").c_str()),
-			_lightSpotList[i]->Quadratic);
+		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Position").c_str()),
+			spot_light_list[i]->Position.x, spot_light_list[i]->Position.y, 
+			spot_light_list[i]->Position.z);
+		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Direction").c_str()),
+			spot_light_list[i]->GetForward().x, spot_light_list[i]->GetForward().y, 
+			spot_light_list[i]->GetForward().z);
+		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Color").c_str()),
+			spot_light_list[i]->Color.x, spot_light_list[i]->Color.y, 
+			spot_light_list[i]->Color.z);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].InnerCutOff").c_str()),
+			glm::cos(glm::radians(spot_light_list[i]->InnerCutOff)));
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].OuterCutOff").c_str()),
+			glm::cos(glm::radians(spot_light_list[i]->OuterCutOff)));
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Intensity").c_str()),
+			spot_light_list[i]->Intensity);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Constant").c_str()),
+			spot_light_list[i]->Constant);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Linear").c_str()),
+			spot_light_list[i]->Linear);
+		glUniform1f(glGetUniformLocation(ShaderObj->Program, 
+			("spotLights[" + std::to_string(i) + "].Quadratic").c_str()),
+			spot_light_list[i]->Quadratic);
 	}
 	//Handle directional light
-	glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, "directionalLight.Direction"), _lightDir->GetForward().x, _lightDir->GetForward().y, _lightDir->GetForward().z);
-	glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, "directionalLight.Color"), _lightDir->Color.x, _lightDir->Color.y, _lightDir->Color.z);
-	glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, "directionalLight.Intensity"), _lightDir->Intensity);
-	glUniform3f(glGetUniformLocation(obj->ShaderObj->Program, "directionalLight.AmbientColor"), _lightDir->AmbientColor.x, _lightDir->AmbientColor.y, _lightDir->AmbientColor.z);
-	glUniform1f(glGetUniformLocation(obj->ShaderObj->Program, "directionalLight.AmbientIntensity"), _lightDir->AmbientIntensity);
+	glUniform3f(glGetUniformLocation(ShaderObj->Program, "directionalLight.Direction"),
+		directional_light->GetForward().x, directional_light->GetForward().y, 
+		directional_light->GetForward().z);
+	glUniform3f(glGetUniformLocation(ShaderObj->Program, "directionalLight.Color"), 
+		directional_light->Color.x, directional_light->Color.y, 
+		directional_light->Color.z);
+	glUniform1f(glGetUniformLocation(ShaderObj->Program, "directionalLight.Intensity"), 
+		directional_light->Intensity);
+	glUniform3f(glGetUniformLocation(ShaderObj->Program, "directionalLight.AmbientColor"), 
+		directional_light->AmbientColor.x, directional_light->AmbientColor.y,
+		directional_light->AmbientColor.z);
+	glUniform1f(glGetUniformLocation(ShaderObj->Program, "directionalLight.AmbientIntensity"), 
+		directional_light->AmbientIntensity);
 
 	//Bind our VAO so we have the correct vertex attribute configuration
-	glBindVertexArray(obj->VertexArrayObj);
+	glBindVertexArray(VertexArrayObj);
 	//Draw! - type of primitive, starting index of vertex array, number of vertices
 
-	if (obj->Indices.size() > 0) glDrawElements(GL_TRIANGLES, obj->Indices.size(), GL_UNSIGNED_INT, 0);
-	else glDrawArrays(GL_TRIANGLES, 0, obj->Vertices.size());
+	if (Indices.size() > 0) glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, Vertices.size());
 	glBindVertexArray(0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
