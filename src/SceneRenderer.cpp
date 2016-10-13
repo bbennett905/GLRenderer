@@ -4,7 +4,8 @@
 #include "Window.h"
 #include "BaseDrawable.h"
 
-SceneRenderer::SceneRenderer(Window * window)
+SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
+	_camera(camera)
 {
 	glewExperimental = GL_TRUE;
 	GLenum f = glewInit();
@@ -20,7 +21,6 @@ SceneRenderer::SceneRenderer(Window * window)
 	//TODO remove this once cubemaps/skybox 
 	_clear_color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }
-
 
 SceneRenderer::~SceneRenderer()
 {
@@ -73,8 +73,9 @@ bool SceneRenderer::BuildShaders()
 
 		if (drawable->ShaderObj == nullptr)
 		{
-			drawable->ShaderObj = new Shader(shader_create_info);
-			_shader_list.push_back(drawable->ShaderObj);
+			Shader * shader = new Shader(shader_create_info);
+			drawable->ShaderObj = shader;
+			_shader_list.push_back(shader);
 		}
 	}
 	return true;

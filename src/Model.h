@@ -18,7 +18,7 @@ class Model :
 public:
 	Model(const char * path);
 
-	//Returns the list of Meshes this model is composed of
+	//Returns the list of Meshes this model is composed of (why do i do this?)
 	std::vector<Mesh> * GetMeshes();
 
 	//Sets world position

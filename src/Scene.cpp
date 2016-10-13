@@ -3,11 +3,13 @@
 #include "BaseDrawable.h"
 #include "BaseObject.h"
 #include "SceneRenderer.h"
+#include "Model.h"
+#include "Lights.h"
 
-Scene::Scene()
+Scene::Scene(Window * window, Camera * camera)
 {
+	_scene_renderer = new SceneRenderer(window, camera);
 }
-
 
 Scene::~Scene()
 {
@@ -22,8 +24,41 @@ void Scene::AddObjectToScene(BaseObject * obj)
 	if (drawable)
 	{
 		_scene_renderer->AddDrawable(drawable);
-		//_draw_list.push_back(drawable);
 	}
+
+	Model * model = dynamic_cast<Model *>(obj);
+	if (model)
+	{
+		//TODO change this, should model have public std::vector<Mesh *> Meshes?
+		std::vector<Mesh> meshes = *model->GetMeshes();
+		for (auto mesh : meshes)
+		{
+			_scene_renderer->AddDrawable(&mesh);
+		}
+	}
+
+	LightPoint * point_light = dynamic_cast<LightPoint *>(obj);
+	if (point_light)
+	{
+		_scene_renderer->AddPointLight(point_light);
+	}
+
+	LightSpot * spot_light = dynamic_cast<LightSpot *>(obj);
+	if (spot_light)
+	{
+		_scene_renderer->AddSpotLight(spot_light);
+	}
+
+	LightDirectional * directional_light = dynamic_cast<LightDirectional *>(obj);
+	if (directional_light)
+	{
+		_scene_renderer->SetDirectionalLight(directional_light);
+	}
+}
+
+void Scene::PrepareScene()
+{
+	_scene_renderer->BuildShaders();
 }
 
 void Scene::Update(double delta_time)
@@ -33,9 +68,6 @@ void Scene::Update(double delta_time)
 	{
 		//obj->Update(delta_time);
 	}
-	/*for (auto draw : _draw_list)
-	{
-		draw->Draw(_scene_renderer);
-	}*/
+
 	_scene_renderer->Draw();
 }

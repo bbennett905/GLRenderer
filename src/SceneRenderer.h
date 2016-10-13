@@ -14,7 +14,7 @@ class Shader;
 class SceneRenderer
 {
 public:
-	SceneRenderer(Window * window);
+	SceneRenderer(Window * window, Camera * camera);
 	~SceneRenderer();
 
 	//TODO

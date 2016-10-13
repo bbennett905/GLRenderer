@@ -9,21 +9,23 @@
 class SceneRenderer;
 class BaseDrawable;
 class BaseObject;
+class Camera;
+class Window;
 
 class Scene
 {
 public:
-	Scene();
+	Scene(Window * window, Camera * camera);
 	~Scene();
 
 	void AddObjectToScene(BaseObject * obj);
 
-	//TODO have draw inside update? or called externally?
+	void PrepareScene();
+
 	void Update(double delta_time);
 
 private:
 	SceneRenderer * _scene_renderer;
-	//std::vector<BaseDrawable *> _draw_list; //moved to scenerenderer
 	std::vector<BaseObject *> _object_list;
 };
 
