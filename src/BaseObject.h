@@ -20,6 +20,9 @@ public:
 	//Position of this object in 3D space
 	glm::vec3 Position;
 
+	//Size scaling of the object in 3 dimensions
+	glm::vec3 Scale;
+
 	//Returns the upwards vector from this object
 	glm::vec3 GetUp();
 	//Returns the rightwards vector from this object

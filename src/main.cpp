@@ -105,6 +105,9 @@ int main()
 
 	Model * suit = new Model("../nanosuit/nanosuit.obj");
 	scene->AddObjectToScene(suit);
+	suit->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
+	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
+	suit->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);

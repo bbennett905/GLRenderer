@@ -27,6 +27,18 @@ void Model::SetAngles(glm::vec3 ang)
 		Meshes[i]->SetAngles(ang); //i THINK this should work
 }
 
+glm::vec3 Model::GetScale()
+{
+	return Scale;
+}
+
+void Model::SetScale(glm::vec3 scale)
+{
+	Scale = scale;
+	for (uint32_t i = 0; i < Meshes.size(); i++)
+		Meshes[i]->Scale = scale; //i THINK this should work
+}
+
 void Model::loadModel(std::string path)
 {
 	Assimp::Importer importer;
@@ -94,16 +106,6 @@ Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
 		materials = loadMaterials(material);
 	}
-
-	/*_shader_create_info.NumMaterials = materials.size();
-
-	Shader * s;
-	if (_shader_create_info.NumMaterials > 0)
-		s = new Shader(_shader_create_info);
-	else
-		s = new Shader("../shaders/default_nomat.vert", 
-			"../shaders/default_nomat.frag",
-			_shader_create_info);*/
 
 	return new Mesh(vertices, indices, materials);
 }

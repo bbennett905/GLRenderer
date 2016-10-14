@@ -5,6 +5,7 @@ BaseObject::BaseObject(glm::vec3 pos, glm::vec3 ang)
 {
 	Position = pos;
 	_angles = ang;
+	Scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	updateVectors();
 }
 

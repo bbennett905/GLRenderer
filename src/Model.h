@@ -24,6 +24,10 @@ public:
 	glm::vec3 GetPosition();
 	//Sets angles
 	void SetAngles(glm::vec3 ang);
+	//Gets object scale vector
+	glm::vec3 GetScale();
+	//Sets object scale vector
+	void SetScale(glm::vec3 scale);
 
 	std::vector<Mesh *> Meshes;
 
@@ -37,7 +41,7 @@ private:
 	std::string _directory;
 	std::vector<Texture> _textures_loaded;
 	Shader * _shader;
-	//ShaderCreateInfo _shader_create_info;
 
 	glm::vec3 Position;
+	glm::vec3 Scale;
 };

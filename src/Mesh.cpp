@@ -17,5 +17,6 @@ glm::mat4 Mesh::GetModelMatrix()
 	model = glm::rotate(model, glm::radians(ang.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(ang.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
+	model = glm::scale(model, Scale);
 	return model;
 }
