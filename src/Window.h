@@ -1,10 +1,11 @@
 #pragma once
 
+#include <SDL.h>
+#include <SDL_opengl.h>
+
 /*
  * Wrapper class for GLFW window management
  */
-
-class SDL_Window;
 
 class Window
 {
@@ -14,10 +15,10 @@ public:
 	~Window();
 
 	//Sets if the window should close next frame
-	void SetShouldClose(bool val);
+	//void SetShouldClose(bool val);
 
 	//Gets if the window should close next frame
-	bool ShouldClose();
+	//bool ShouldClose();
 
 	//Calls the previously specified callbacks
 	void PollEvents();
@@ -27,7 +28,7 @@ public:
 	
 	//TODO replace with own callback
 	//Sets the function to call on keypress
-	void SetKeyCallback(void (* keyCallback));
+	void SetKeyCallback(void (* keyCallback)(const Uint8 *));
 	
 	//Sets the function to call on mouse movement
 	void SetCursorCallback(void(* cursorCallback));
@@ -36,11 +37,15 @@ public:
 	int GetWidth();
 	//Returns window height
 	int GetHeight();
+
+	bool ShouldExit;
 	
 private:
 	//GLFWwindow * _window;
 	SDL_Window * _window;
+	SDL_GLContext _context;
 	int _width;
 	int _height;
+	void (* _key_callback)(const Uint8 *);
 };
 

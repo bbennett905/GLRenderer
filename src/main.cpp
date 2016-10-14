@@ -4,6 +4,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
+#include <SDL_keycode.h>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -15,6 +16,8 @@
 #include "Model.h"
 #include "Scene.h"
 
+#undef main //Thanks, SDL!
+
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 
@@ -23,7 +26,7 @@
 Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-bool keys[1024];
+/*bool keys[1024];
 void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mode)
 {
 	if (action == GLFW_PRESS)
@@ -34,6 +37,11 @@ void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 	{
 		keys[key] = false;
 	}
+}*/
+
+void KeyCallback(const Uint8 * keys)
+{
+
 }
 
 double lastX, lastY;
@@ -80,7 +88,7 @@ void HandleMovement(double deltaTime)
 	if (keys[GLFW_KEY_D])
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
 	if (keys[GLFW_KEY_ESCAPE])
-		window.SetShouldClose(true);
+		window.ShouldExit = true;
 }
 
 int main()
@@ -131,8 +139,20 @@ int main()
 	double lastTime = glfwGetTime();
 	double lastPrintTime = glfwGetTime();
 	int numFrames = 0;
-	while (!window.ShouldClose())
+
+	SDL_Event e;
+
+	while (!window.ShouldExit)
 	{
+		while (SDL_PollEvent(&e) != 0)
+		{
+			if (e.type == SDL_QUIT)
+			{
+				window.ShouldExit = true;
+				break;
+			}
+		}
+
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - lastTime;
 		double deltaPrintTime = currentTime - lastPrintTime;
