@@ -106,17 +106,21 @@ int main()
 	scene->AddObjectToScene(suit);
 	suit->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
 	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
-	suit->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
-	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube = new Cube(glm::vec3(0.0f, 2.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
 	scene->AddObjectToScene(cube);
 	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	scene->AddObjectToScene(cube2);
 	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	scene->AddObjectToScene(cube3);
-	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube4 = new Cube(glm::vec3(-1.5f, 1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	scene->AddObjectToScene(cube4);
+
+	Cube * floor = new Cube(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
+	scene->AddObjectToScene(floor);
 
 	scene->PrepareScene();
 
