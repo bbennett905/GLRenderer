@@ -59,7 +59,7 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 
 * See in-file TODOs for others...
 
-# License # 
+# License #
 
 MIT License
 
