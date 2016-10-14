@@ -47,7 +47,7 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 
 * Create more primitives (possibly generating vertices & indices)
 
-* Input abstraction
+* Switch from GLFW to SDL for window management
 
 * Load materials/scenes from file
 
