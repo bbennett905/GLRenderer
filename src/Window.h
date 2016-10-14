@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glfw3.h>
-
 /*
  * Wrapper class for GLFW window management
  */
+
+class SDL_Window;
 
 class Window
 {
@@ -38,7 +38,8 @@ public:
 	int GetHeight();
 	
 private:
-	GLFWwindow * _window;
+	//GLFWwindow * _window;
+	SDL_Window * _window;
 	int _width;
 	int _height;
 };

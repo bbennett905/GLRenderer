@@ -1,6 +1,9 @@
 #include "Window.h"
 #include <iostream>
 
+#include <SDL.h>
+#include <SDL_opengl.h>
+
 Window::Window(int width, int height, const char * title)
 {
 	glfwInit();
@@ -20,6 +23,21 @@ Window::Window(int width, int height, const char * title)
 	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glfwGetFramebufferSize(_window, &_width, &_height);
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		printf("SDL Failed to initialize! Error:%s\n", SDL_GetError());
+		return;
+	}
+	_window = SDL_CreateWindow("OpenGL Testing",
+		                       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		                       width, height);
+	if (_window == nullptr)
+	{
+		printf("Failed to create SDL window! Error:%s\n", SDL_GetError());
+		return;
+	}
+
 }
 
 Window::~Window()
