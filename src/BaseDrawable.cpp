@@ -65,6 +65,9 @@ void BaseDrawable::Draw(Camera * camera,
 	for (uint32_t i = 0; i < Materials.size(); i++)
 	{
 		//TODO this will actually give it multiple copies of the same texture (will it)?
+		//TODO this DEFINITELY shouldn't work if there isnt a diffusemap and a specularmap
+		//for each material, see default.frag
+		//Best way to fix would be a bool in shader material struct - HasDiffuse, HasSpecular
 		if (Materials[i].DiffuseMap != nullptr)
 		{
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
@@ -98,6 +101,9 @@ void BaseDrawable::Draw(Camera * camera,
 			("materials[" + std::to_string(i) + "].Shininess").c_str()), 
 			Materials[i].Shininess);
 	}
+
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numMaterials"), 
+		ShaderObj->TextureCount);
 
 	//model matrix transforms model space to world space - rotation and translation
 	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "model"), 1, GL_FALSE, 
