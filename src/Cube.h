@@ -2,7 +2,7 @@
 #include "BaseDrawable.h"
 
 /*
- * A 3D cube that can be scaled 
+ * A 3D cube primitive
  */
 
 class Cube :

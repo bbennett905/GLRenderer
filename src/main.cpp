@@ -99,7 +99,6 @@ int main()
 
 	Texture texture1("../images/container2.png");
 	Texture specMap("../images/container2_specular.png");
-
 	Material mat1(&texture1, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 

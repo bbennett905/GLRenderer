@@ -12,7 +12,7 @@
 //I really have no idea if this is a reasonable number
 #define MAX_MATERIALS 8
 
-//We can add more versions here later on, but for now leave it as this
+//We can add more versions here later on, but for now this is good enough
 enum GLShaderVersion {
 	ShaderVersion330Core
 };
@@ -30,6 +30,7 @@ struct ShaderCreateInfo
 	uint32_t Flags;
 };
 
+//Any flags indicating different behaviour needed from the shader, ie translucency
 enum ShaderFlags
 {
 	Shader_Translucent = 1 << 0

@@ -12,7 +12,7 @@ void Model::SetPosition(glm::vec3 pos)
 {
 	Position = pos;
 	for (uint32_t i = 0; i < Meshes.size(); i++)
-		Meshes[i]->Position = pos; //i THINK this should work
+		Meshes[i]->Position = pos;
 }
 
 glm::vec3 Model::GetPosition()
@@ -24,7 +24,7 @@ void Model::SetAngles(glm::vec3 ang)
 {
 	BaseObject::SetAngles(ang);
 	for (uint32_t i = 0; i < Meshes.size(); i++)
-		Meshes[i]->SetAngles(ang); //i THINK this should work
+		Meshes[i]->SetAngles(ang);
 }
 
 glm::vec3 Model::GetScale()
@@ -36,7 +36,7 @@ void Model::SetScale(glm::vec3 scale)
 {
 	Scale = scale;
 	for (uint32_t i = 0; i < Meshes.size(); i++)
-		Meshes[i]->Scale = scale; //i THINK this should work
+		Meshes[i]->Scale = scale;
 }
 
 void Model::loadModel(std::string path)

@@ -17,7 +17,6 @@ Scene::~Scene()
 
 void Scene::AddObjectToScene(BaseObject * obj)
 {
-	//TODO test this! its very likely that this doesnt quite work this way
 	_object_list.push_back(obj);
 
 	BaseDrawable * drawable = dynamic_cast<BaseDrawable *>(obj);
@@ -29,7 +28,6 @@ void Scene::AddObjectToScene(BaseObject * obj)
 	Model * model = dynamic_cast<Model *>(obj);
 	if (model)
 	{
-		//TODO change this, should model have public std::vector<Mesh *> Meshes?
 		for (auto mesh : model->Meshes)
 		{
 			_scene_renderer->AddDrawable(mesh);

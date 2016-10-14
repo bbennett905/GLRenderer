@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-//this will have a SceneRenderer, containing light info and such?
-//also this will have a list of all objects in scene, and call BaseDrawable::Draw(SceneRenderer)
-//each frame. Or that could be within the scenerenderer, which passes relevant information to 
-//BaseDrawable::Draw(lights, etc)
+
+/*
+ * Used to hold all objects being used, and update/draw them every tick
+ */
 
 class SceneRenderer;
 class BaseDrawable;

@@ -96,7 +96,6 @@ bool SceneRenderer::BuildShaders()
 		//Do we already have a shader matching the requirements? if so, use it!
 		for (auto shader : _shader_list)
 		{
-			//TODO does this work?
 			if (shader->CreateInfo.Version == shader_create_info.Version &&
 				shader->CreateInfo.NumPointLights == shader_create_info.NumPointLights &&
 				shader->CreateInfo.NumSpotLights == shader_create_info.NumSpotLights &&
@@ -122,7 +121,6 @@ void SceneRenderer::Draw()
 	//TODO sort this by transparent textures
 	for (auto drawable : _draw_list)
 	{
-		//TODO give this light info
 		drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
 }

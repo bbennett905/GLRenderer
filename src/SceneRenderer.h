@@ -4,8 +4,9 @@
 #include "Lights.h"
 #include "Camera.h"
 
-//see Scene.h for most info,
-//but this is basically what is currently the Renderer class with a little moved to BaseDrawable
+/*
+ * Used by Scene class to render everything in the scene
+ */
 
 class Window;
 class BaseDrawable;
@@ -18,7 +19,7 @@ public:
 	~SceneRenderer();
 
 	//TODO
-	//Set Light uniforms method
+	//Set Light uniforms method? Doing this means not passing light info to Drawable::Draw
 	void AddPointLight(LightPoint * light);
 	void AddSpotLight(LightSpot * light);
 	void SetDirectionalLight(LightDirectional * light);
