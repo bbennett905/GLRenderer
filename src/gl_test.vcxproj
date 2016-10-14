@@ -42,12 +42,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\include\assimp;..\include\SOIL;..\include\glm;..\include\GLFW;..\include\GL;$(IncludePath)</IncludePath>
+    <IncludePath>..\include\SDL2;..\include\assimp;..\include\SOIL;..\include\glm;..\include\GLFW;..\include\GL;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\include\assimp;..\include\SOIL;..\include\glm;..\include\GLFW;..\include\GL;$(IncludePath)</IncludePath>
+    <IncludePath>..\include\SDL2;..\include\assimp;..\include\SOIL;..\include\glm;..\include\GLFW;..\include\GL;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
@@ -59,7 +59,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;SOIL.lib;assimp-vc130-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;SOIL.lib;assimp-vc130-mt.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,7 +74,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;SOIL.lib;assimp-vc130-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;SOIL.lib;assimp-vc130-mt.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

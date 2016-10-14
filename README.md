@@ -18,6 +18,8 @@ All listed files are included in /include/ or /lib/ directory.
 
 * [SOIL](http://www.lonesock.net/soil.html) - Image loader
 
+* [SDL2](https://www.libsdl.org/) - Window management and input, replacing GLFW3
+
 ### Recommended ###
 
 * [GLIntercept](https://github.com/dtrebilco/glintercept) - Extremely useful for debugging OpenGL errors (can be found in /glintercept/ directory)

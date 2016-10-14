@@ -218,3 +218,4 @@ gl_test.VC.VC.opendb
 build/*
 !build/glew32.dll
 !build/assimp-vc130-mt.dll
+!build/SDL2.dll
