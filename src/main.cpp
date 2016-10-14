@@ -97,12 +97,6 @@ int main()
 	scene->AddObjectToScene(&pointLight);
 	scene->AddObjectToScene(&spotLight);
 
-	//Renderer render(window, &camera);
-	//render.ClearColor = glm::vec4(0.0f, 0.2f, 0.5f, 1.0f);
-	//render.SetDirLight(&dirLight);
-	//render.AddPointLight(&pointLight);
-	//render.AddSpotLight(&spotLight);
-
 	Texture texture1("../images/container2.png");
 	Texture specMap("../images/container2_specular.png");
 
@@ -111,21 +105,16 @@ int main()
 
 	Model * suit = new Model("../nanosuit/nanosuit.obj");
 	scene->AddObjectToScene(suit);
-	//render.AddToDrawList(suit);
 
 	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
 	scene->AddObjectToScene(cube);
-	//render.AddToDrawList(cube);
 	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	scene->AddObjectToScene(cube2);
-	//render.AddToDrawList(cube2);
 	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	scene->AddObjectToScene(cube3);
-	//render.AddToDrawList(cube3);
 	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	scene->AddObjectToScene(cube4);
-	//render.AddToDrawList(cube4);
 
 	scene->PrepareScene();
 
@@ -165,7 +154,6 @@ int main()
 		HandleMovement(deltaTime);
 
 		scene->Update(deltaTime);
-		//render.Draw();
 
 		window.SwapBuffers();
 	}
