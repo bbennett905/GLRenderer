@@ -12,7 +12,6 @@
 #include "Material.h"
 #include "Window.h"
 #include "Cube.h"
-#include "Renderer.h"
 #include "Model.h"
 #include "Scene.h"
 
