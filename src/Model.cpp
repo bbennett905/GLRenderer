@@ -3,22 +3,16 @@
 #include <Importer.hpp>
 #include <postprocess.h>
 
-Model::Model(const char * path, ShaderCreateInfo shaderInfo) :
-	_shader_create_info(shaderInfo)
+Model::Model(const char * path)
 {
 	loadModel(path);
-}
-
-std::vector<Mesh> * Model::GetMeshes()
-{
-	return &_meshes;
 }
 
 void Model::SetPosition(glm::vec3 pos)
 {
 	Position = pos;
-	for (uint32_t i = 0; i < _meshes.size(); i++)
-		_meshes[i].Position = pos; //i THINK this should work
+	for (uint32_t i = 0; i < Meshes.size(); i++)
+		Meshes[i]->Position = pos; //i THINK this should work
 }
 
 glm::vec3 Model::GetPosition()
@@ -29,8 +23,8 @@ glm::vec3 Model::GetPosition()
 void Model::SetAngles(glm::vec3 ang)
 {
 	BaseObject::SetAngles(ang);
-	for (uint32_t i = 0; i < _meshes.size(); i++)
-		_meshes[i].SetAngles(ang); //i THINK this should work
+	for (uint32_t i = 0; i < Meshes.size(); i++)
+		Meshes[i]->SetAngles(ang); //i THINK this should work
 }
 
 void Model::loadModel(std::string path)
@@ -51,13 +45,13 @@ void Model::processNode(aiNode * node, const aiScene * scene)
 	for (uint32_t i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh * mesh = scene->mMeshes[node->mMeshes[i]];
-		_meshes.push_back(processMesh(mesh, scene));
+		Meshes.push_back(processMesh(mesh, scene));
 	}
 	for (uint32_t i = 0; i < node->mNumChildren; i++)
 		processNode(node->mChildren[i], scene);
 }
 
-Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
+Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<VertexData> vertices;
 	std::vector<GLuint> indices;
@@ -100,7 +94,8 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		aiMaterial * material = scene->mMaterials[mesh->mMaterialIndex];
 		materials = loadMaterials(material);
 	}
-	_shader_create_info.NumMaterials = materials.size();
+
+	/*_shader_create_info.NumMaterials = materials.size();
 
 	Shader * s;
 	if (_shader_create_info.NumMaterials > 0)
@@ -108,9 +103,9 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	else
 		s = new Shader("../shaders/default_nomat.vert", 
 			"../shaders/default_nomat.frag",
-			_shader_create_info);
+			_shader_create_info);*/
 
-	return Mesh(vertices, indices, s, materials);
+	return new Mesh(vertices, indices, materials);
 }
 
 std::vector<Material> Model::loadMaterials(aiMaterial * mat)

@@ -51,9 +51,8 @@ uniform LightSpot spotLights[
 #insert num_spot_lights
     ];
 
-uniform Material materials[
-#insert num_materials
-    ];
+uniform Material materials[MAX_MATERIALS];
+uniform int numMaterials;
 
 uniform vec3 viewPos;
 
@@ -98,8 +97,7 @@ vec3 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     float distance = length(light.Position - fragPos);
     float attenuation = 1.0f / (light.Constant + light.Linear * distance + 
         light.Quadratic * (distance * distance));
-    return ( (diffuse * SumDiffMaps()) +
-        (specular * SumSpecMaps()) ) * attenuation;
+    return ( (diffuse * SumDiffMaps()) + (specular * SumSpecMaps()) ) * attenuation;
 }
 
 vec3 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
@@ -110,40 +108,41 @@ vec3 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), AvgShininess());
     vec3 specular = light.Color * light.Intensity * spec;
     float distance = length(light.Position - fragPos);
-    float attenuation = 1.0f / (light.Constant + light.Linear * distance + light.Quadratic * (distance * distance));
+    float attenuation = 1.0f / (light.Constant + light.Linear * distance + 
+	                            light.Quadratic * (distance * distance));
     float theta = dot(lightDir, normalize(-light.Direction));
     float epsilon = light.InnerCutOff - light.OuterCutOff;
     float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
-    return intensity * attenuation * ((diffuse * SumDiffMaps()) + 
-                            (specular * SumSpecMaps()) );
+    return intensity * attenuation * ( (diffuse * SumDiffMaps()) + 
+                                       (specular * SumSpecMaps()) );
 }
 
 vec3 SumDiffMaps() {
     vec3 sum = vec3(0.0f, 0.0f, 0.0f);
-    for (int i = 0; i < materials.length(); i++)
+    for (int i = 0; i < numMaterials; i++)
         sum += (texture(materials[i].DiffMap, TexCoord).xyz * materials[i].DiffuseStrength);
     return sum;
 }
 
 vec3 SumSpecMaps() {
     vec3 sum = vec3(0.0f, 0.0f, 0.0f);
-    for (int i = 0; i < materials.length(); i++)
+    for (int i = 0; i < numMaterials; i++)
         sum += (texture(materials[i].SpecMap, TexCoord).xyz * materials[i].SpecularStrength);
     return sum;
 }
 
 float AvgShininess() {
     float sum = 0.0f;
-    for (int i = 0; i < materials.length(); i++)
+    for (int i = 0; i < numMaterials; i++)
         sum += materials[i].Shininess;
-    sum /= materials.length();
+    sum /= numMaterials;
     return sum;
 }
 
 float AvgAmbientStrength() {
     float sum = 0.0f;
-    for (int i = 0; i < materials.length(); i++)
+    for (int i = 0; i < numMaterials; i++)
         sum += materials[i].AmbientStrength;
-    sum /= materials.length();
+    sum /= numMaterials;
     return sum;
 }

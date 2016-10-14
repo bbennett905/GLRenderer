@@ -9,6 +9,9 @@
  * being rendered - params for shader creation in ShaderCreateInfo struct
  */
 
+//I really have no idea if this is a reasonable number
+#define MAX_MATERIALS 8
+
 //We can add more versions here later on, but for now leave it as this
 enum GLShaderVersion {
 	ShaderVersion330Core
@@ -23,18 +26,23 @@ struct ShaderCreateInfo
 	uint32_t NumPointLights;
 	//Number of spot lights this shader will take
 	uint32_t NumSpotLights;
-	//Number of materials this shader will take
-	uint32_t NumMaterials;
+	//Flags to use for this shader
+	uint32_t Flags;
+};
+
+enum ShaderFlags
+{
+	Shader_Translucent = 1 << 0
 };
 
 class Shader
 {
 public:
 	//Create a shader from file
-	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo & info);
+	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info);
 
 	//Create a typical shader dynamically, given certain parameters
-	Shader(ShaderCreateInfo & info);
+	Shader(ShaderCreateInfo info);
 
 	//Tells OpenGL to use this shader
 	void Use();
@@ -44,6 +52,9 @@ public:
 
 	//USED BY RENDERER, DO NOT MODIFY
 	int TextureCount;
+
+	//Holds the info used to create this shader
+	ShaderCreateInfo CreateInfo;
 
 private:
 	void preprocessShader(std::string & vertexSource, std::string & fragSource, ShaderCreateInfo info);

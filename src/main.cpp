@@ -12,8 +12,8 @@
 #include "Material.h"
 #include "Window.h"
 #include "Cube.h"
-#include "Renderer.h"
 #include "Model.h"
+#include "Scene.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -92,43 +92,42 @@ int main()
 	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 90.0f, 0.0f),
 		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
 
-	Renderer render(window, &camera);
-	render.ClearColor = glm::vec4(0.0f, 0.2f, 0.5f, 1.0f);
-	render.SetDirLight(&dirLight);
-	render.AddPointLight(&pointLight);
-	render.AddSpotLight(&spotLight);
+	Scene * scene = new Scene(&window, &camera);
+	scene->AddObjectToScene(&dirLight);
+	scene->AddObjectToScene(&pointLight);
+	scene->AddObjectToScene(&spotLight);
+
+	//Renderer render(window, &camera);
+	//render.ClearColor = glm::vec4(0.0f, 0.2f, 0.5f, 1.0f);
+	//render.SetDirLight(&dirLight);
+	//render.AddPointLight(&pointLight);
+	//render.AddSpotLight(&spotLight);
 
 	Texture texture1("../images/container2.png");
 	Texture specMap("../images/container2_specular.png");
 
-	ShaderCreateInfo shaderCreateCube;
-	shaderCreateCube.Version = ShaderVersion330Core;
-	shaderCreateCube.NumPointLights = render.GetNumPointLights();
-	shaderCreateCube.NumSpotLights = render.GetNumSpotLights();
-	shaderCreateCube.NumMaterials = 1;
-
-	Shader shaderCube(shaderCreateCube);
-
 	Material mat1(&texture1, &specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 
-	ShaderCreateInfo shaderCreateModel;
-	shaderCreateModel.Version = ShaderVersion330Core;
-	shaderCreateModel.NumPointLights = render.GetNumPointLights();
-	shaderCreateModel.NumSpotLights = render.GetNumSpotLights();
+	Model * suit = new Model("../nanosuit/nanosuit.obj");
+	scene->AddObjectToScene(suit);
+	//render.AddToDrawList(suit);
 
-	Model * suit = new Model("../nanosuit/nanosuit.obj", shaderCreateModel);
-	render.AddToDrawList(suit);
-
-	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
+	Cube * cube = new Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
-	render.AddToDrawList(cube);
-	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
-	render.AddToDrawList(cube2);
-	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
-	render.AddToDrawList(cube3);
-	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), &shaderCube, mat1);
-	render.AddToDrawList(cube4);
+	scene->AddObjectToScene(cube);
+	//render.AddToDrawList(cube);
+	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	scene->AddObjectToScene(cube2);
+	//render.AddToDrawList(cube2);
+	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	scene->AddObjectToScene(cube3);
+	//render.AddToDrawList(cube3);
+	Cube * cube4 = new Cube(glm::vec3(-1.5f, -1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	scene->AddObjectToScene(cube4);
+	//render.AddToDrawList(cube4);
+
+	scene->PrepareScene();
 
 	//Set where we handle input
 	window.SetKeyCallback(KeyCallback);
@@ -165,7 +164,8 @@ int main()
 		window.PollEvents();
 		HandleMovement(deltaTime);
 
-		render.Draw();
+		scene->Update(deltaTime);
+		//render.Draw();
 
 		window.SwapBuffers();
 	}
