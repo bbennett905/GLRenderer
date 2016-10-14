@@ -30,10 +30,9 @@ void Scene::AddObjectToScene(BaseObject * obj)
 	if (model)
 	{
 		//TODO change this, should model have public std::vector<Mesh *> Meshes?
-		std::vector<Mesh> meshes = *model->GetMeshes();
-		for (auto mesh : meshes)
+		for (auto mesh : model->Meshes)
 		{
-			_scene_renderer->AddDrawable(&mesh);
+			_scene_renderer->AddDrawable(mesh);
 		}
 	}
 

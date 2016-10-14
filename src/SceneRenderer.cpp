@@ -19,7 +19,7 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	glEnable(GL_CULL_FACE);
 
 	//TODO remove this once cubemaps/skybox 
-	_clear_color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	_clear_color = glm::vec4(0.7f, 0.0f, 0.0f, 1.0f);
 }
 
 SceneRenderer::~SceneRenderer()
@@ -45,6 +45,39 @@ void SceneRenderer::SetDirectionalLight(LightDirectional * light)
 void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 {
 	_draw_list.push_back(drawable);
+
+	glGenVertexArrays(1, &(drawable->VertexArrayObj));
+	glGenBuffers(1, &(drawable->VertexBufferObj));
+	glGenBuffers(1, &(drawable->ElementBufferObj));
+
+	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+	glBindVertexArray(drawable->VertexArrayObj);
+
+	//bind the VBO to array_buffer - it is now actually what we want it to be
+	glBindBuffer(GL_ARRAY_BUFFER, drawable->VertexBufferObj);
+	//copies vertex data into buffer's memory - last arg means data is not likely to change, or only rarely
+	glBufferData(GL_ARRAY_BUFFER, drawable->Vertices.size() * sizeof(VertexData),
+		&(drawable->Vertices)[0], GL_STATIC_DRAW);
+
+	if (drawable->Indices.size() > 0)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawable->ElementBufferObj);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, drawable->Indices.size() * sizeof(GLuint),
+			&(drawable->Indices)[0], GL_STATIC_DRAW);
+	}
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
+		(GLvoid *)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
+		(GLvoid *)(offsetof(VertexData, Normal)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
+		(GLvoid*)(offsetof(VertexData, TexCoords)));
+	glEnableVertexAttribArray(2);
+
+	//unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 bool SceneRenderer::BuildShaders()
