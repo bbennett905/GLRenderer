@@ -34,14 +34,12 @@ This uses typical GLSL shaders (currently no geometry shader support) with a few
 
 * *#insert num_spot_lights* - Inserts the number of spot lights in the scene.
 
-* *#insert num_materials* - Inserts the number of materials for the object being rendered.
+* *MAX_MATERIALS* - Defined in Shader.h, sets the max materials that can be used for a single drawable object
 
 Suffix of *_nomat* on a shader file name means that it does not take materials; *_unlit* means no lights.
 
 
 ### ToDo List ###
-
-* Refactoring Renderer, and add Scene objects (in progress)
 
 * Remove unnecessary includes, use forward declaration whenever possible
 
