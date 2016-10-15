@@ -1,6 +1,6 @@
 # Summary #
 
-A work-in-progress OpenGL renderer, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/). Can take any model format supported by ASSIMP.
+A work-in-progress OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/). Currently can take any model format supported by ASSIMP.
 
 
 # What you need #
@@ -12,13 +12,11 @@ All listed files are included in /include/ or /lib/ directory.
 
 * [GLM](http://glm.g-truc.net/) - Matrix header-only library, intended for OpenGL use
 
-* [GLFW3](http://www.glfw.org/) - Window and input library, intended for OpenGL use
-
 * [GLEW](http://glew.sourceforge.net/) - OpenGL Extension library
 
 * [SOIL](http://www.lonesock.net/soil.html) - Image loader
 
-* [SDL2](https://www.libsdl.org/) - Window management and input, replacing GLFW3
+* [SDL2](https://www.libsdl.org/) - Window management and input (replaced GLFW3 in this project)
 
 ### Recommended ###
 
@@ -48,8 +46,6 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 * Ensure that everything is being properly destroyed (hint: its not)
 
 * Create more primitives (possibly generating vertices & indices)
-
-* Switch from GLFW to SDL for window management
 
 * Load materials/scenes from file
 
