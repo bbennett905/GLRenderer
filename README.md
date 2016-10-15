@@ -8,15 +8,15 @@ A work-in-progress OpenGL renderer/engine, partially based on code in and using 
 All listed files are included in /include/ or /lib/ directory.
 ### Requires ###
 
-* [Assimp](http://www.assimp.org/) - Model loader
+* [Assimp](http://www.assimp.org/) ([License](http://www.assimp.org/main_license.html)) - Model loader
 
-* [GLM](http://glm.g-truc.net/) - Matrix header-only library, intended for OpenGL use
+* [GLM](http://glm.g-truc.net/) ([License](http://glm.g-truc.net/copying.txt)) - Matrix header-only library, intended for OpenGL use
 
-* [GLEW](http://glew.sourceforge.net/) - OpenGL Extension library
+* [GLEW](http://glew.sourceforge.net/) ([License](https://github.com/nigels-com/glew#copyright-and-licensing)) - OpenGL Extension library
 
-* [SOIL](http://www.lonesock.net/soil.html) - Image loader
+* [SOIL](http://www.lonesock.net/soil.html) ([License](http://www.lonesock.net/soil.html)) - Image loader
 
-* [SDL2](https://www.libsdl.org/) - Window management and input (replaced GLFW3 in this project)
+* [SDL2](https://www.libsdl.org/) ([License](https://www.libsdl.org/license.php)) - Window management and input (replaced GLFW3 in this project)
 
 ### Recommended ###
 
