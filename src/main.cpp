@@ -39,7 +39,6 @@ void KeyCallback(const Uint8 * keys, double delta_time)
 	if (keys[SDL_SCANCODE_ESCAPE]) window.ShouldExit = true;
 }
 
-//TODO capture + lock cursor!
 void CursorCallback(int delta_x, int delta_y)
 {
 	float sensitivity = 0.075f;

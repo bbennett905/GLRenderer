@@ -49,12 +49,14 @@ void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 	glGenBuffers(1, &(drawable->VertexBufferObj));
 	glGenBuffers(1, &(drawable->ElementBufferObj));
 
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) 
+	//and attribute pointer(s).
 	glBindVertexArray(drawable->VertexArrayObj);
 
 	//bind the VBO to array_buffer - it is now actually what we want it to be
 	glBindBuffer(GL_ARRAY_BUFFER, drawable->VertexBufferObj);
-	//copies vertex data into buffer's memory - last arg means data is not likely to change, or only rarely
+	//copies vertex data into buffer's memory
+	//last arg means data is not likely to change, or only rarely
 	glBufferData(GL_ARRAY_BUFFER, drawable->Vertices.size() * sizeof(VertexData),
 		&(drawable->Vertices)[0], GL_STATIC_DRAW);
 
