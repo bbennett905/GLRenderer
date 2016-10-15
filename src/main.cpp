@@ -39,13 +39,14 @@ void KeyCallback(const Uint8 * keys, double delta_time)
 	if (keys[SDL_SCANCODE_ESCAPE]) window.ShouldExit = true;
 }
 
+//TODO capture + lock cursor!
 void CursorCallback(int delta_x, int delta_y)
 {
 	float sensitivity = 0.05f;
 
 	glm::vec3 ang = camera.GetAngles();
 	ang.y += float(delta_x) * sensitivity; //Yaw
-	ang.x += float(delta_y) * sensitivity; //Pitch
+	ang.x -= float(delta_y) * sensitivity; //Pitch
 
 	if (ang.x > 89.0f)
 		ang.x = 89.0f;
@@ -117,10 +118,10 @@ int main()
 
 			num_frames = 0;
 		}
-		printf("ang: %f %f %F\n", camera.GetAngles().x, camera.GetAngles().y, camera.GetAngles().z);
 
-		glm::vec3 rotate(GLfloat(SDL_GetPerformanceCounter() * -40.0f), 
-						 GLfloat(SDL_GetPerformanceCounter() * 25.0f), 0.0f);
+		//TODO this rotation is really jittery
+		glm::vec3 rotate(GLfloat(40.0f * float(SDL_GetPerformanceCounter()) / SDL_GetPerformanceFrequency()), 
+						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) / SDL_GetPerformanceFrequency()), 0.0f);
 		cube->SetAngles(rotate);
 		cube2->SetAngles(rotate);
 		cube3->SetAngles(rotate);

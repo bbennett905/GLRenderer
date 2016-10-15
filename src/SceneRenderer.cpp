@@ -14,7 +14,6 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 		std::cout << "GLEW initialization failed!" << std::endl;
 	}
 
-	glViewport(0, 0, window->GetWidth(), window->GetHeight());
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
