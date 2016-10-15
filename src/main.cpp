@@ -27,7 +27,7 @@ Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 void KeyCallback(const Uint8 * keys, double delta_time)
 {
-	float cameraSpeed = 1.5f * float(delta_time);
+	float cameraSpeed = 3.0f * float(delta_time);
 	if (keys[SDL_SCANCODE_W]) 
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
 	if (keys[SDL_SCANCODE_A]) 
@@ -42,7 +42,7 @@ void KeyCallback(const Uint8 * keys, double delta_time)
 //TODO capture + lock cursor!
 void CursorCallback(int delta_x, int delta_y)
 {
-	float sensitivity = 0.05f;
+	float sensitivity = 0.075f;
 
 	glm::vec3 ang = camera.GetAngles();
 	ang.y += float(delta_x) * sensitivity; //Yaw

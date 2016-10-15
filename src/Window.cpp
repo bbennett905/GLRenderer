@@ -5,7 +5,7 @@
 #include <SDL_opengl.h>
 
 Window::Window(int width, int height, const char * title) :
-	ShouldExit(false)
+	ShouldExit(false), _width(width), _height(height)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -15,7 +15,8 @@ Window::Window(int width, int height, const char * title) :
 	_window = SDL_CreateWindow("OpenGL Testing",
 		                       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		                       width, height,
-		                       SDL_WINDOW_OPENGL);
+		                       SDL_WINDOW_OPENGL | SDL_WINDOW_MOUSE_CAPTURE | 
+		                       SDL_WINDOW_BORDERLESS | SDL_WINDOW_INPUT_GRABBED);
 	if (_window == nullptr)
 	{
 		printf("Failed to create SDL window! Error:%s\n", SDL_GetError());
@@ -35,7 +36,7 @@ Window::Window(int width, int height, const char * title) :
 		return;
 	}
 	
-	SDL_CaptureMouse(SDL_TRUE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 Window::~Window()
@@ -65,6 +66,8 @@ void Window::PollEvents(double delta_time)
 	int x, y;
 	SDL_GetRelativeMouseState(&x, &y);
 	_cursor_callback(x, y);
+
+	SDL_WarpMouseInWindow(_window, _width / 2, _height / 2);
 }
 
 void Window::SwapBuffers()
