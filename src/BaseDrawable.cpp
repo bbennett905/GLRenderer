@@ -114,8 +114,6 @@ void BaseDrawable::Draw(Camera * camera,
 	glUniform3f(glGetUniformLocation(ShaderObj->Program, "viewPos"),
 		camera->GetPos().x, camera->GetPos().y, camera->GetPos().z);
 
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numPointLights"), 
-		point_light_list.size());
 	for (uint32_t i = 0; i < point_light_list.size(); i++)
 	{
 		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
@@ -140,8 +138,6 @@ void BaseDrawable::Draw(Camera * camera,
 			point_light_list[i]->Quadratic);
 	}
 
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numSpotLights"), 
-		spot_light_list.size());
 	for (uint32_t i = 0; i < spot_light_list.size(); i++)
 	{
 		glUniform3f(glGetUniformLocation(ShaderObj->Program, 
