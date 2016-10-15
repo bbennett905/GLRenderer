@@ -102,24 +102,30 @@ int main()
 	window.SetCursorCallback(CursorCallback);
 
 	Uint64 end_time, start_time = SDL_GetPerformanceCounter();
+	Uint64 last_print_time = SDL_GetPerformanceCounter();
 	int num_frames = 0;
 
 	while (!window.ShouldExit)
 	{
+		while (SDL_GetPerformanceCounter() <
+			start_time + (double(1.0f / 300.0f) * SDL_GetPerformanceFrequency()));
+
 		end_time = SDL_GetPerformanceCounter();
 		double delta_time = double(end_time - start_time) / SDL_GetPerformanceFrequency();
 		start_time = SDL_GetPerformanceCounter();
 
 		num_frames++;
-		if (num_frames > 150) 
+		double delta_print_time = double(start_time - last_print_time) /
+			SDL_GetPerformanceFrequency();
+		if (delta_print_time >= 0.5) 
 		{
-			//TODO make this average rather than instantaneous
-			printf("FPS: %f (%f ms)\n", 1.0 / delta_time, delta_time * 1000.0);
-
+			printf("FPS: %f (%f ms)\n", num_frames / delta_print_time, 
+				delta_print_time / num_frames);
+			last_print_time = SDL_GetPerformanceCounter();
 			num_frames = 0;
 		}
 
-		//TODO this rotation is really jittery
+		//TODO this rotation is really jittery on integrated only?
 		glm::vec3 rotate(GLfloat(40.0f * float(SDL_GetPerformanceCounter()) / SDL_GetPerformanceFrequency()), 
 						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) / SDL_GetPerformanceFrequency()), 0.0f);
 		cube->SetAngles(rotate);
