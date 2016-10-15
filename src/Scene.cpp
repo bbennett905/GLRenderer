@@ -21,36 +21,27 @@ void Scene::AddObjectToScene(BaseObject * obj)
 
 	BaseDrawable * drawable = dynamic_cast<BaseDrawable *>(obj);
 	if (drawable)
-	{
 		_scene_renderer->AddDrawable(drawable);
-	}
+	
 
 	Model * model = dynamic_cast<Model *>(obj);
 	if (model)
 	{
 		for (auto mesh : model->Meshes)
-		{
 			_scene_renderer->AddDrawable(mesh);
-		}
 	}
 
 	LightPoint * point_light = dynamic_cast<LightPoint *>(obj);
 	if (point_light)
-	{
 		_scene_renderer->AddPointLight(point_light);
-	}
 
 	LightSpot * spot_light = dynamic_cast<LightSpot *>(obj);
 	if (spot_light)
-	{
 		_scene_renderer->AddSpotLight(spot_light);
-	}
 
 	LightDirectional * directional_light = dynamic_cast<LightDirectional *>(obj);
 	if (directional_light)
-	{
 		_scene_renderer->SetDirectionalLight(directional_light);
-	}
 }
 
 void Scene::PrepareScene()

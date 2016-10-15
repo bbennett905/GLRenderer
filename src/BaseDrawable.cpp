@@ -49,11 +49,6 @@ glm::mat4 BaseDrawable::GetModelMatrix()
 	return glm::mat4(); //Return an identity matrix, no transform
 }
 
-//TODO make this all work
-//will need to take a SceneRenderer or something, which holds Light data
-//Scene calls this - basedrawable should also have flags - one for transparency
-//so that transparent objects can actually WORK
-//scene will draw objects in a specific order
 void BaseDrawable::Draw(Camera * camera, 
 	std::vector<LightPoint *> & point_light_list,
 	std::vector<LightSpot *> & spot_light_list, 

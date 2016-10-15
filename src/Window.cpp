@@ -7,24 +7,6 @@
 Window::Window(int width, int height, const char * title) :
 	ShouldExit(false)
 {
-	/*glfwInit();
-	//TODO take this as an arg? or windowcreateinfo struct, with all these things
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-
-	if (_window == nullptr)
-	{
-		std::cout << "Window creation failed!" << std::endl;
-	}
-	glfwMakeContextCurrent(_window);
-	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	glfwGetFramebufferSize(_window, &_width, &_height);*/
-
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("SDL Failed to initialize! Error:%s\n", SDL_GetError());
@@ -43,6 +25,7 @@ Window::Window(int width, int height, const char * title) :
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	_context = SDL_GL_CreateContext(_window);
 	if (_context == NULL)
@@ -50,48 +33,52 @@ Window::Window(int width, int height, const char * title) :
 		printf("Failed to create GL Context! Error:%s\n", SDL_GetError());
 		return;
 	}
+	
+	SDL_CaptureMouse(SDL_TRUE);
 }
 
 Window::~Window()
 {
+	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
 	SDL_Quit();
-	//glfwDestroyWindow(_window);
-	//glfwTerminate();
 }
 
-/*void Window::SetShouldClose(bool val)
+void Window::PollEvents(double delta_time)
 {
-	glfwSetWindowShouldClose(_window, int(val));
-}
+	SDL_Event e;
+	while (SDL_PollEvent(&e) != 0)
+	{
+		if (e.type == SDL_QUIT)
+		{
+			ShouldExit = true;
+			return;
+		}
+	}
 
-bool Window::ShouldClose()
-{
-	return 1 == glfwWindowShouldClose(_window);
-}*/
-
-void Window::PollEvents()
-{
+	//TODO we could combine callbacks into InputCallback
 	const Uint8 * keys = SDL_GetKeyboardState(NULL);
-	_key_callback(keys);
-	//glfwPollEvents();
+	_key_callback(keys, delta_time);
+
+	//TODO get buttons, and handle somewhere
+	int x, y;
+	SDL_GetRelativeMouseState(&x, &y);
+	_cursor_callback(x, y);
 }
 
 void Window::SwapBuffers()
 {
 	SDL_GL_SwapWindow(_window);
-	//glfwSwapBuffers(_window);
 }
 
-void Window::SetKeyCallback(void (* key_callback)(const Uint8 *))
+void Window::SetKeyCallback(void (* key_callback)(const Uint8 *, double))
 {
 	_key_callback = key_callback;
-	//glfwSetKeyCallback(_window, GLFWkeyfun(keyCallback));
 }
 
-void Window::SetCursorCallback(void (* cursorCallback))
+void Window::SetCursorCallback(void (* cursor_callback)(int, int))
 {
-	//glfwSetCursorPosCallback(_window, GLFWcursorposfun(cursorCallback));
+	_cursor_callback = cursor_callback;
 }
 
 int Window::GetWidth()
