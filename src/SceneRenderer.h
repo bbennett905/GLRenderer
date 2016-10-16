@@ -11,6 +11,8 @@
 class Window;
 class BaseDrawable;
 class Shader;
+struct Material;
+class Texture;
 
 class SceneRenderer
 {
@@ -31,12 +33,15 @@ public:
 	void Draw();
 
 private:
-	std::vector<Shader *>		_shader_list;
 	std::vector<LightPoint *>	_point_light_list;
 	std::vector<LightSpot *>	_spot_light_list;
 	LightDirectional *			_directional_light;
 
 	std::vector<BaseDrawable *> _draw_list;
+
+	std::vector<Material *>		_material_list;
+	std::vector<Texture *>		_texture_list;
+	std::vector<Shader *>		_shader_list;
 
 	glm::vec4 _clear_color;
 

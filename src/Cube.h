@@ -6,10 +6,12 @@
  */
 
 class Cube :
-	public BaseDrawable, public BaseObject //TODO inherit from Primitive class?
+	public BaseObject, public BaseDrawable //TODO inherit from Primitive class?
 {
 public:
-	Cube(glm::vec3 pos, glm::vec3 ang, Material & mat);
+	Cube(Material * mat);
+	~Cube();
+
 	glm::mat4 GetModelMatrix();
 };
 

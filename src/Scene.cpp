@@ -6,6 +6,8 @@
 #include "Model.h"
 #include "Lights.h"
 
+#include "Cube.h"
+
 Scene::Scene(Window * window, Camera * camera)
 {
 	_scene_renderer = new SceneRenderer(window, camera);
@@ -13,6 +15,10 @@ Scene::Scene(Window * window, Camera * camera)
 
 Scene::~Scene()
 {
+	for (auto object : _object_list)
+		delete object;
+
+	delete _scene_renderer;
 }
 
 void Scene::AddObjectToScene(BaseObject * obj)
@@ -22,7 +28,6 @@ void Scene::AddObjectToScene(BaseObject * obj)
 	BaseDrawable * drawable = dynamic_cast<BaseDrawable *>(obj);
 	if (drawable)
 		_scene_renderer->AddDrawable(drawable);
-	
 
 	Model * model = dynamic_cast<Model *>(obj);
 	if (model)
@@ -52,10 +57,11 @@ void Scene::PrepareScene()
 void Scene::Update(double delta_time)
 {
 	//TODO implement BaseObject::Update
-	for (auto obj : _object_list)
+	/*for (auto obj : _object_list)
 	{
 		//obj->Update(delta_time);
-	}
+	}*/
 
 	_scene_renderer->Draw();
+
 }

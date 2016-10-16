@@ -1,11 +1,11 @@
+//#include <vld.h> //For debugging
+
 #include <iostream>
-#include <glew.h>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include <SDL_keycode.h>
 
-#include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
 #include "Lights.h"
@@ -57,21 +57,23 @@ void CursorCallback(int delta_x, int delta_y)
 
 int main()
 {
-	LightDirectional dirLight(glm::vec3(-45.0f, 45.0f, 0.0f),
+	Scene * scene = new Scene(&window, &camera);
+
+	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 3.0f,
 		glm::vec3(0.1f, 0.1f, 0.5f), 0.5f);
-	LightPoint pointLight(glm::vec3(-2.0f, 1.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
-	LightSpot spotLight(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f, 90.0f, 0.0f),
+	LightPoint * pointLight = new LightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
+		glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
+	LightSpot * spotLight = new LightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
+		glm::vec3(0.0f, 90.0f, 0.0f),
 		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
+	scene->AddObjectToScene(dirLight);
+	scene->AddObjectToScene(pointLight);
+	scene->AddObjectToScene(spotLight);
 
-	Scene * scene = new Scene(&window, &camera);
-	scene->AddObjectToScene(&dirLight);
-	scene->AddObjectToScene(&pointLight);
-	scene->AddObjectToScene(&spotLight);
-
-	Texture texture1("../images/container2.png");
-	Texture specMap("../images/container2_specular.png");
-	Material mat1(&texture1, &specMap,
+	Texture * texture1 = new Texture("../images/container2.png");
+	Texture * specMap = new Texture("../images/container2_specular.png");
+	Material * mat1 = new Material(texture1, specMap,
 		0.5f, 1.0f, 1.0f, 32.0f);
 
 	Model * suit = new Model("../nanosuit/nanosuit.obj");
@@ -80,17 +82,22 @@ int main()
 	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
 	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
-	Cube * cube = new Cube(glm::vec3(0.0f, 2.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube = new Cube(mat1);
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
+	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
 	scene->AddObjectToScene(cube);
-	Cube * cube2 = new Cube(glm::vec3(0.0f, 3.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube2 = new Cube(mat1);
+	cube2->Position = glm::vec3(0.0f, 3.0f, 5.0f);
 	scene->AddObjectToScene(cube2);
-	Cube * cube3 = new Cube(glm::vec3(3.0f, 2.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube3 = new Cube(mat1);
+	cube3->Position = glm::vec3(3.0f, 2.0f, 1.0f);
 	scene->AddObjectToScene(cube3);
-	Cube * cube4 = new Cube(glm::vec3(-1.5f, 1.5f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * cube4 = new Cube(mat1);
+	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
 
-	Cube * floor = new Cube(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), mat1);
+	Cube * floor = new Cube(mat1);
+	floor->Position = glm::vec3(0.0f, -1.0f, 0.0f);
 	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
 	scene->AddObjectToScene(floor);
 
@@ -132,8 +139,8 @@ int main()
 		cube3->SetAngles(rotate);
 		cube4->SetAngles(rotate);
 
-		spotLight.Position = camera.GetPos();
-		spotLight.SetAngles(camera.GetAngles());
+		spotLight->Position = camera.GetPos();
+		spotLight->SetAngles(camera.GetAngles());
 
 		//Go to the event callbacks specified before
 		window.PollEvents(delta_time);
@@ -142,6 +149,8 @@ int main()
 
 		window.SwapBuffers();
 	}
+
+	delete scene;
 
 	return 0;
 }

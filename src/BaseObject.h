@@ -11,6 +11,7 @@ class BaseObject
 {
 public:
 	BaseObject(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 ang = glm::vec3(0.0f, 0.0f, 0.0f));
+	virtual ~BaseObject();
 
 	//Returns the Euler angles of the object - pitch, yaw, roll
 	virtual glm::vec3 GetAngles();

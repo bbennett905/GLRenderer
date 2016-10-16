@@ -27,4 +27,9 @@ Texture::Texture(const char * path)
 	Path = path;
 }
 
+Texture::~Texture()
+{
+	glDeleteTextures(1, &_id);
+}
+
 void Texture::Bind() { glBindTexture(GL_TEXTURE_2D, _id); }

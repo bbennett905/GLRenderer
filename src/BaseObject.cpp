@@ -9,6 +9,9 @@ BaseObject::BaseObject(glm::vec3 pos, glm::vec3 ang)
 	updateVectors();
 }
 
+BaseObject::~BaseObject()
+{ }
+
 glm::vec3 BaseObject::GetAngles() { return _angles; }
 void BaseObject::SetAngles(glm::vec3 newAngles)
 {

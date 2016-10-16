@@ -7,7 +7,7 @@
 
 BaseDrawable::BaseDrawable() { }
 
-BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, Material & mat)
+BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, Material * mat)
 {
 	Materials.push_back(mat);
 	for (int i = 0; i < verticesSize; i+=8)// ? ok
@@ -20,7 +20,7 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, Material 
 }
 
 BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, 
-	std::vector<Material> & mat) :
+	std::vector<Material *> & mat) :
 	Materials(mat)
 {
 	for (int i = 0; i < verticesSize; i += 8)// ? ok
@@ -37,11 +37,19 @@ BaseDrawable::BaseDrawable(std::vector<VertexData> vert) :
 { }
 
 BaseDrawable::BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
-	std::vector<Material> & mat) :
+	std::vector<Material *> & mat) :
 	Vertices(vert), Indices(ind), Materials(mat)
 { 
-	//TODO do this better
 	assert(mat.size() < MAX_MATERIALS && "An object exceeded MAX_MATERIALS!");
+}
+
+BaseDrawable::~BaseDrawable()
+{
+	//We DON'T destroy the shader, because they may be shared with other objects
+	//Same with materials/textures
+	glDeleteVertexArrays(1, &VertexArrayObj);
+	glDeleteBuffers(1, &VertexBufferObj);
+	glDeleteBuffers(1, &ElementBufferObj);
 }
 
 glm::mat4 BaseDrawable::GetModelMatrix()
@@ -54,7 +62,6 @@ void BaseDrawable::Draw(Camera * camera,
 	std::vector<LightSpot *> & spot_light_list, 
 	LightDirectional * directional_light)
 {
-	//new method of handling materials
 	ShaderObj->Use();
 
 	for (uint32_t i = 0; i < Materials.size(); i++)
@@ -63,20 +70,20 @@ void BaseDrawable::Draw(Camera * camera,
 		//TODO this DEFINITELY shouldn't work if there isnt a diffusemap and a specularmap
 		//for each material, see default.frag
 		//Best way to fix would be a bool in shader material struct - HasDiffuse, HasSpecular
-		if (Materials[i].DiffuseMap != nullptr)
+		if (Materials[i]->DiffuseMap != nullptr)
 		{
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
-			Materials[i].DiffuseMap->Bind();
+			Materials[i]->DiffuseMap->Bind();
 			GLuint loc = glGetUniformLocation(ShaderObj->Program,
 				("materials[" + std::to_string(i) + "].DiffMap").c_str());
 			glUniform1i(loc, ShaderObj->TextureCount);
 			ShaderObj->TextureCount++;
 		}
 
-		if (Materials[i].SpecularMap != nullptr)
+		if (Materials[i]->SpecularMap != nullptr)
 		{
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
-			Materials[i].SpecularMap->Bind();
+			Materials[i]->SpecularMap->Bind();
 			glUniform1i(glGetUniformLocation(ShaderObj->Program,
 				("materials[" + std::to_string(i) + "].SpecMap").c_str()),
 				ShaderObj->TextureCount);
@@ -85,16 +92,16 @@ void BaseDrawable::Draw(Camera * camera,
 
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
 			("materials[" + std::to_string(i) + "].AmbientStrength").c_str()), 
-			Materials[i].AmbientStrength);
+			Materials[i]->AmbientStrength);
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
 			("materials[" + std::to_string(i) + "].DiffuseStrength").c_str()), 
-			Materials[i].DiffuseStrength);
+			Materials[i]->DiffuseStrength);
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
 			("materials[" + std::to_string(i) + "].SpecularStrength").c_str()),
-			Materials[i].SpecularStrength);
+			Materials[i]->SpecularStrength);
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
 			("materials[" + std::to_string(i) + "].Shininess").c_str()), 
-			Materials[i].Shininess);
+			Materials[i]->Shininess);
 	}
 
 	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numMaterials"), 
@@ -171,7 +178,6 @@ void BaseDrawable::Draw(Camera * camera,
 			("spotLights[" + std::to_string(i) + "].Quadratic").c_str()),
 			spot_light_list[i]->Quadratic);
 	}
-	//Handle directional light
 	glUniform3f(glGetUniformLocation(ShaderObj->Program, "directionalLight.Direction"),
 		directional_light->GetForward().x, directional_light->GetForward().y, 
 		directional_light->GetForward().z);
@@ -189,7 +195,6 @@ void BaseDrawable::Draw(Camera * camera,
 	//Bind our VAO so we have the correct vertex attribute configuration
 	glBindVertexArray(VertexArrayObj);
 	//Draw! - type of primitive, starting index of vertex array, number of vertices
-
 	if (Indices.size() > 0) glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
 	else glDrawArrays(GL_TRIANGLES, 0, Vertices.size());
 	glBindVertexArray(0);

@@ -33,10 +33,11 @@ class BaseDrawable
 {
 public:
 	BaseDrawable();
-	BaseDrawable(const GLfloat vertices[], int verticesSize, Material & mat);
-	BaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<Material> & mat);
+	BaseDrawable(const GLfloat vertices[], int verticesSize, Material * mat);
+	BaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<Material *> & mat);
 	BaseDrawable(std::vector<VertexData> vert);
-	BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material> & mat);
+	BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material *> & mat);
+	virtual ~BaseDrawable();
 
 	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();
@@ -50,7 +51,7 @@ public:
 	//List of Indices, if used by the object
 	std::vector<GLuint> Indices;
 	//List of Materials this obj uses
-	std::vector<Material> Materials;
+	std::vector<Material *> Materials;
 
 	//The shader that this object uses
 	Shader * ShaderObj;

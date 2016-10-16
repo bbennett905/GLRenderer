@@ -23,7 +23,16 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 
 SceneRenderer::~SceneRenderer()
 {
-	//TODO we probably need to destroy things here (lights)?
+	//We only really need to destroy the shaders, materials, textures, 
+	//as all objects themselves are destroyed in Scene destructor
+	for (auto shader : _shader_list)
+		delete shader;
+
+	for (auto texture : _texture_list)
+		delete texture;
+
+	for (auto material : _material_list)
+		delete material;
 }
 
 void SceneRenderer::AddPointLight(LightPoint * light)
@@ -44,6 +53,34 @@ void SceneRenderer::SetDirectionalLight(LightDirectional * light)
 void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 {
 	_draw_list.push_back(drawable);
+
+	//yikes!
+	for (auto new_material : drawable->Materials)
+	{
+		bool in_vector = false;
+		for (auto existing_material : _material_list)
+		{
+			if (new_material == existing_material)
+			{
+				in_vector = true;
+				break;
+			}
+		}
+		if (!in_vector)
+		{
+			_material_list.push_back(new_material);
+			bool diff_in_vector = false, spec_in_vector = false;
+			for (auto texture : _texture_list)
+			{
+				if (texture == new_material->DiffuseMap) diff_in_vector = true;
+				if (texture == new_material->SpecularMap) spec_in_vector = true;
+			}
+			if (!diff_in_vector) 
+				_texture_list.push_back(new_material->DiffuseMap);
+			if (!spec_in_vector) 
+				_texture_list.push_back(new_material->SpecularMap);
+		}
+	}
 
 	glGenVertexArrays(1, &(drawable->VertexArrayObj));
 	glGenBuffers(1, &(drawable->VertexBufferObj));

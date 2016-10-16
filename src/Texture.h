@@ -13,6 +13,7 @@ class Texture
 public:
 	//Path to the texture
 	Texture(const char * path);
+	~Texture();
 
 	//Bind this texture object to the active GL texture
 	void Bind();

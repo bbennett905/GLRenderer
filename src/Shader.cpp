@@ -80,6 +80,11 @@ Shader::Shader(ShaderCreateInfo info) :
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 }
 
+Shader::~Shader()
+{
+	glDeleteProgram(Program);
+}
+
 void Shader::Use()
 {
 	glUseProgram(Program);

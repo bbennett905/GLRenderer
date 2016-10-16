@@ -41,9 +41,9 @@ class Shader
 public:
 	//Create a shader from file
 	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info);
-
 	//Create a typical shader dynamically, given certain parameters
 	Shader(ShaderCreateInfo info);
+	~Shader();
 
 	//Tells OpenGL to use this shader
 	void Use();

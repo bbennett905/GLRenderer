@@ -8,6 +8,12 @@ Model::Model(const char * path)
 	loadModel(path);
 }
 
+Model::~Model()
+{
+	for (auto mesh : Meshes)
+		delete mesh;
+}
+
 void Model::SetPosition(glm::vec3 pos)
 {
 	Position = pos;
@@ -67,7 +73,7 @@ Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<VertexData> vertices;
 	std::vector<GLuint> indices;
-	std::vector<Material> materials;
+	std::vector<Material *> materials;
 
 	for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -110,9 +116,9 @@ Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	return new Mesh(vertices, indices, materials);
 }
 
-std::vector<Material> Model::loadMaterials(aiMaterial * mat)
+std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 {
-	std::vector<Material> mats;
+	std::vector<Material *> mats;
 	for (uint32_t i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); i++)
 	{
 		Texture * text;
@@ -122,10 +128,10 @@ std::vector<Material> Model::loadMaterials(aiMaterial * mat)
 		bool skip = false;
 		for (uint32_t j = 0; j < _textures_loaded.size(); j++)
 		{
-			if (aiString(_textures_loaded[j].Path) == str)
+			if (aiString(_textures_loaded[j]->Path) == str)
 			{
-				text = &_textures_loaded[j];
-				mats.push_back(Material(text));
+				text = _textures_loaded[j];
+				mats.push_back(new Material(text));
 				skip = true;
 				break;
 			}
@@ -134,8 +140,8 @@ std::vector<Material> Model::loadMaterials(aiMaterial * mat)
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
 			text = new Texture(path.c_str());
-			_textures_loaded.push_back(*text);
-			mats.push_back(Material(text));
+			_textures_loaded.push_back(text);
+			mats.push_back(new Material(text));
 		}
 	}
 	for (uint32_t i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); i++)
@@ -147,13 +153,13 @@ std::vector<Material> Model::loadMaterials(aiMaterial * mat)
 		bool skip = false;
 		for (uint32_t j = 0; j < _textures_loaded.size(); j++)
 		{
-			if (aiString(_textures_loaded[j].Path) == str)
+			if (aiString(_textures_loaded[j]->Path) == str)
 			{
-				text = &_textures_loaded[j];
+				text = _textures_loaded[j];
 
 				//Make sure we dont have more specular maps than diffuse - if we do, discard
 				if (mats.size() > i)
-					mats[i].SpecularMap = text;
+					mats[i]->SpecularMap = text;
 
 				skip = true;
 				break;
@@ -163,20 +169,20 @@ std::vector<Material> Model::loadMaterials(aiMaterial * mat)
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
 			text = new Texture(path.c_str());
-			_textures_loaded.push_back(*text);
+			_textures_loaded.push_back(text);
 
 			//Make sure we dont have more specular maps than diffuse - if we do, discard
 			if (mats.size() > i)
-				mats[i].SpecularMap = text;
+				mats[i]->SpecularMap = text;
 		}
 	}
 
 	return mats;
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
+std::vector<Texture *> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
 {
-	std::vector<Texture> textures;
+	std::vector<Texture *> textures;
 
 	for (uint32_t i = 0; i < mat->GetTextureCount(type); i++)
 	{
@@ -185,7 +191,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType
 		bool skip = false;
 		for (uint32_t j = 0; j < _textures_loaded.size(); j++)
 		{
-			if (aiString(_textures_loaded[j].Path) == str)
+			if (aiString(_textures_loaded[j]->Path) == str)
 			{
 				textures.push_back(_textures_loaded[j]);
 				skip = true;
@@ -195,7 +201,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType
 		if (!skip)
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
-			Texture texture(path.c_str());
+			Texture * texture = new Texture(path.c_str());
 			textures.push_back(texture);
 			_textures_loaded.push_back(texture);
 		}

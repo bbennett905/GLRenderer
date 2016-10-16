@@ -36,5 +36,6 @@ struct Material
 		Shininess(shiny) { }
 	Material() { }
 	Material(const Material&) = default;
+	~Material() { }	//We cant destroy textures here, as there is no guarantee they are not shared
 	Material& operator=(const Material&) = default;
 };
