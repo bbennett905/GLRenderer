@@ -20,7 +20,9 @@ All listed files are included in /include/ or /lib/ directory.
 
 ### Recommended ###
 
-* [GLIntercept](https://github.com/dtrebilco/glintercept) - Extremely useful for debugging OpenGL errors (can be found in /glintercept/ directory)
+* [GLIntercept](https://github.com/dtrebilco/glintercept) ([License](https://github.com/dtrebilco/glintercept#license)) - Extremely useful for debugging OpenGL errors and memory leaks (can be found in /glintercept/ directory)
+
+* [VLD](https://vld.codeplex.com/) ([License](https://vld.codeplex.com/SourceControl/latest#COPYING.txt)) - Automatically identifies memory leaks on application shutdown (not included)
 
 
 # More Information #
