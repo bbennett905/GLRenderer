@@ -10,7 +10,7 @@ BaseDrawable::BaseDrawable() { }
 BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize, Material * mat)
 {
 	Materials.push_back(mat);
-	for (int i = 0; i < verticesSize; i+=8)// ? ok
+	for (int i = 0; i < verticesSize; i += 8)// ? ok
 	{
 		VertexData data = { glm::vec3(vertices[i], vertices[i+1], vertices[i+2]),	//Pos
 							glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]),	//Norm
@@ -121,6 +121,7 @@ void BaseDrawable::Draw(Camera * camera,
 	glUniform3f(glGetUniformLocation(ShaderObj->Program, "viewPos"),
 		camera->GetPos().x, camera->GetPos().y, camera->GetPos().z);
 
+	//TODO all this could be moved to a private SceneRenderer::setLightUniforms method
 	for (uint32_t i = 0; i < point_light_list.size(); i++)
 	{
 		glUniform3f(glGetUniformLocation(ShaderObj->Program, 

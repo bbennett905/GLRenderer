@@ -22,7 +22,8 @@
 
 #define MOVE_SPEED 0.1f
 
-Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
+Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 
+	80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 void KeyCallback(const Uint8 * keys, double delta_time)
@@ -131,9 +132,11 @@ int main()
 			num_frames = 0;
 		}
 
-		//TODO this rotation is really jittery on integrated only?
-		glm::vec3 rotate(GLfloat(40.0f * float(SDL_GetPerformanceCounter()) / SDL_GetPerformanceFrequency()), 
-						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) / SDL_GetPerformanceFrequency()), 0.0f);
+		//TODO this rotation is really jittery
+		glm::vec3 rotate(GLfloat(40.0f * float(SDL_GetPerformanceCounter()) 
+										/ SDL_GetPerformanceFrequency()), 
+						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) 
+										/ SDL_GetPerformanceFrequency()), 0.0f);
 		cube->SetAngles(rotate);
 		cube2->SetAngles(rotate);
 		cube3->SetAngles(rotate);

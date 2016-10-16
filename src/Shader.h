@@ -13,7 +13,8 @@
 #define MAX_MATERIALS 8
 
 //We can add more versions here later on, but for now this is good enough
-enum GLShaderVersion {
+enum GLShaderVersion 
+{
 	ShaderVersion330Core
 };
 
@@ -48,9 +49,11 @@ public:
 	//Tells OpenGL to use this shader
 	void Use();
 
+	//TODO this should probably be read-only 
 	//OpenGL shader program object of this Shader
 	GLuint Program;
 
+	//TODO could make IncrementTextureCount and GetTextureCount 
 	//USED BY RENDERER, DO NOT MODIFY
 	int TextureCount;
 
