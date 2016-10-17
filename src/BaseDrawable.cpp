@@ -4,6 +4,10 @@
 #include <gtc\type_ptr.hpp>
 
 #include "Camera.h"
+#include "Material.h"
+#include "Shader.h"
+#include "Lights.h"
+#include "Texture.h"
 
 BaseDrawable::BaseDrawable() { }
 

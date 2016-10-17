@@ -44,5 +44,3 @@ void Camera::updateMatrices()
 	_viewMatrix = glm::lookAt(Position, Position + GetForward(), GetUp());
 	_projMatrix = glm::perspective(_fov, _aspectRatio, 0.1f, 1000.0f);
 }
-
-

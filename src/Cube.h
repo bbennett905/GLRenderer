@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseDrawable.h"
+#include "BaseObject.h"
 
 /*
  * A 3D cube primitive

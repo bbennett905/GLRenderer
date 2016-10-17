@@ -3,6 +3,11 @@
 #include <Importer.hpp>
 #include <postprocess.h>
 
+#include "Mesh.h"
+#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
+
 Model::Model(const char * path)
 {
 	loadModel(path);

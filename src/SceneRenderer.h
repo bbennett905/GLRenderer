@@ -1,8 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Lights.h"
-#include "Camera.h"
+#include <glm.hpp>
 
 /*
  * Used by Scene class to render everything in the scene
@@ -13,6 +12,10 @@ class BaseDrawable;
 class Shader;
 struct Material;
 class Texture;
+class Camera;
+class LightPoint;
+class LightSpot;
+class LightDirectional;
 
 class SceneRenderer
 {

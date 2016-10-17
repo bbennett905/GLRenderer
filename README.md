@@ -43,8 +43,6 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 
 ### ToDo List ###
 
-* Remove unnecessary includes, use forward declaration whenever possible
-
 * Create more primitives (possibly generating vertices & indices)
 
 * Load materials/scenes from file

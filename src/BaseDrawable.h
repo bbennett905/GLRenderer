@@ -1,12 +1,8 @@
 #pragma once
-#include "BaseObject.h"
 
 #include <vector>
 #include <glew.h>
-
-#include "Material.h"
-#include "Shader.h"
-#include "Lights.h"
+#include <glm.hpp>
 
 /*
  * Class that any 3D drawable object inherits from
@@ -28,6 +24,11 @@ enum DrawableFlags
 
 class SceneRenderer;
 class Camera;
+class Shader;
+struct Material;
+class LightPoint;
+class LightSpot;
+class LightDirectional;
 
 class BaseDrawable
 {

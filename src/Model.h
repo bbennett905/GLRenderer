@@ -5,12 +5,16 @@
 #include <scene.h>
 
 #include "BaseObject.h"
-#include "Mesh.h"
 
 /*
  * Class representing a 3D model, imported using Assimp
  * Composed of several meshes
  */
+
+class Texture;
+struct Material;
+class Shader;
+class Mesh;
 
 class Model :
 	public BaseObject

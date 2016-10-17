@@ -1,4 +1,5 @@
 #include "BaseObject.h"
+
 #include <gtc/matrix_transform.hpp>
 
 BaseObject::BaseObject(glm::vec3 pos, glm::vec3 ang)

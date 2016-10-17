@@ -3,11 +3,11 @@
 #include <glm.hpp>
 #include <vector>
 
-#include "Texture.h"
-
 /*
  * Struct with Textures and material properties
  */
+
+class Texture;
 
 //TODO we could load these from a file (like vmt)
 

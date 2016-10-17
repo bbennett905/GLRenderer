@@ -5,6 +5,7 @@
 #include "SceneRenderer.h"
 #include "Model.h"
 #include "Lights.h"
+#include "Mesh.h"
 
 #include "Cube.h"
 

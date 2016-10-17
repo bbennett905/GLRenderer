@@ -1,8 +1,6 @@
 #include "Window.h"
-#include <iostream>
 
-#include <SDL.h>
-#include <SDL_opengl.h>
+#include <iostream>
 
 Window::Window(int width, int height, const char * title) :
 	ShouldExit(false), _width(width), _height(height)

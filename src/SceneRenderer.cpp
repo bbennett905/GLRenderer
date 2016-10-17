@@ -1,8 +1,13 @@
 #include "SceneRenderer.h"
 
 #include <iostream>
+#include <glew.h>
+
 #include "Window.h"
 #include "BaseDrawable.h"
+#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
 
 SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	_camera(camera)

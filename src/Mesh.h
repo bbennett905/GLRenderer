@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseDrawable.h"
+#include "BaseObject.h"
 
 /*
  * Mesh object, used by Model class. Essentially combination of BaseDrawable and BaseObject
