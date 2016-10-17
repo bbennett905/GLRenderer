@@ -124,10 +124,14 @@ Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 {
 	std::vector<Material *> mats;
+
 	for (uint32_t i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); i++)
 	{
-		Texture * text;
+		Texture * diffuse = nullptr;
+		Texture * specular = nullptr;
+		Material * material;
 
+		//Check if the texture has already been loaded for this model
 		aiString str;
 		mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
 		bool skip = false;
@@ -135,8 +139,7 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 		{
 			if (aiString(_textures_loaded[j]->Path) == str)
 			{
-				text = _textures_loaded[j];
-				mats.push_back(new Material(text));
+				diffuse = _textures_loaded[j];
 				skip = true;
 				break;
 			}
@@ -144,42 +147,34 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 		if (!skip)
 		{
 			std::string path = _directory + "/" + std::string(str.C_Str());
-			text = new Texture(path.c_str());
-			_textures_loaded.push_back(text);
-			mats.push_back(new Material(text));
+			diffuse = new Texture(path.c_str());
+			_textures_loaded.push_back(diffuse);
 		}
-	}
-	for (uint32_t i = 0; i < mat->GetTextureCount(aiTextureType_SPECULAR); i++)
-	{
-		Texture * text;
 
-		aiString str;
-		mat->GetTexture(aiTextureType_SPECULAR, i, &str);
-		bool skip = false;
-		for (uint32_t j = 0; j < _textures_loaded.size(); j++)
+		if (i < mat->GetTextureCount(aiTextureType_SPECULAR))
 		{
-			if (aiString(_textures_loaded[j]->Path) == str)
+			//Check if the specular map has already been loaded
+			mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+			skip = false;
+			for (uint32_t j = 0; j < _textures_loaded.size(); j++)
 			{
-				text = _textures_loaded[j];
-
-				//Make sure we dont have more specular maps than diffuse - if we do, discard
-				if (mats.size() > i)
-					mats[i]->SpecularMap = text;
-
-				skip = true;
-				break;
+				if (aiString(_textures_loaded[j]->Path) == str)
+				{
+					specular = _textures_loaded[j];
+					skip = true;
+					break;
+				}
+			}
+			if (!skip)
+			{
+				std::string path = _directory + "/" + std::string(str.C_Str());
+				specular = new Texture(path.c_str());
+				_textures_loaded.push_back(specular);
 			}
 		}
-		if (!skip)
-		{
-			std::string path = _directory + "/" + std::string(str.C_Str());
-			text = new Texture(path.c_str());
-			_textures_loaded.push_back(text);
-
-			//Make sure we dont have more specular maps than diffuse - if we do, discard
-			if (mats.size() > i)
-				mats[i]->SpecularMap = text;
-		}
+		//Create a material
+		material = new Material(diffuse, specular);
+		mats.push_back(material);
 	}
 
 	return mats;
