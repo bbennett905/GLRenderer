@@ -154,7 +154,7 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 		if (i < mat->GetTextureCount(aiTextureType_SPECULAR))
 		{
 			//Check if the specular map has already been loaded
-			mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
+			mat->GetTexture(aiTextureType_SPECULAR, i, &str);
 			skip = false;
 			for (uint32_t j = 0; j < _textures_loaded.size(); j++)
 			{
