@@ -179,32 +179,3 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 
 	return mats;
 }
-
-std::vector<Texture *> Model::loadMaterialTextures(aiMaterial * mat, aiTextureType type, std::string typeName)
-{
-	std::vector<Texture *> textures;
-
-	for (uint32_t i = 0; i < mat->GetTextureCount(type); i++)
-	{
-		aiString str;
-		mat->GetTexture(type, i, &str);
-		bool skip = false;
-		for (uint32_t j = 0; j < _textures_loaded.size(); j++)
-		{
-			if (aiString(_textures_loaded[j]->Path) == str)
-			{
-				textures.push_back(_textures_loaded[j]);
-				skip = true;
-				break;
-			}
-		}
-		if (!skip)
-		{
-			std::string path = _directory + "/" + std::string(str.C_Str());
-			Texture * texture = new Texture(path.c_str());
-			textures.push_back(texture);
-			_textures_loaded.push_back(texture);
-		}
-	}
-	return textures;
-}
