@@ -34,6 +34,7 @@ public:
 	bool ShouldExit;
 	
 private:
+	bool _has_focus;
 	SDL_Window * _window;
 	SDL_GLContext _context;
 	int _width;

@@ -54,6 +54,18 @@ void Window::PollEvents(double delta_time)
 			ShouldExit = true;
 			return;
 		}
+		if (e.type == SDL_WINDOWEVENT)
+		{
+			switch (e.window.event)
+			{
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+				_has_focus = true;
+				break;
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+				_has_focus = false;
+				break;
+			}
+		}
 	}
 
 	//TODO we could combine callbacks into InputCallback
@@ -65,7 +77,8 @@ void Window::PollEvents(double delta_time)
 	SDL_GetRelativeMouseState(&x, &y);
 	_cursor_callback(x, y);
 
-	SDL_WarpMouseInWindow(_window, _width / 2, _height / 2);
+	if (_has_focus)
+		SDL_WarpMouseInWindow(_window, _width / 2, _height / 2);
 }
 
 void Window::SwapBuffers()
