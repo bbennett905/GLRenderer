@@ -68,6 +68,10 @@ void BaseDrawable::Draw(Camera * camera,
 {
 	ShaderObj->Use();
 
+	if (Materials.size())
+		glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 1);
+	else
+		glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 0);
 	for (uint32_t i = 0; i < Materials.size(); i++)
 	{
 		//The reason the shader works even when one of these uniforms isn't set is because

@@ -55,6 +55,7 @@ uniform LightSpot spotLights[
 
 uniform Material materials[MAX_MATERIALS];
 uniform int numMaterials;
+uniform bool hasMaterials;
 
 uniform vec3 viewPos;
 
@@ -67,6 +68,11 @@ float AvgShininess();
 float AvgAmbientStrength();
 
 void main(void) {
+	if (!hasMaterials)
+	{
+		color = vec4(Normal, 1.0f);
+		return;
+	}
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
     vec4 result = CalcDirLight(directionalLight, norm, viewDir);
@@ -77,7 +83,6 @@ void main(void) {
     color = result;
 }
 
-//TODO loss of alpha channel occurs in here (and probably in other light calculations)
 vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
     vec3 lightDir = normalize(-light.Direction);
     vec3 ambient  = light.AmbientColor * light.AmbientIntensity * AvgAmbientStrength();
