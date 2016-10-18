@@ -33,7 +33,9 @@ struct LightSpot {
     float Quadratic;
 };
 struct Material {
+	bool HasDiffMap;
     sampler2D DiffMap;
+	bool HasSpecMap;
     sampler2D SpecMap;
     float AmbientStrength;
     float DiffuseStrength;
@@ -56,26 +58,27 @@ uniform int numMaterials;
 
 uniform vec3 viewPos;
 
-vec3 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir);
-vec3 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir);
-vec3 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir);
-vec3 SumDiffMaps();
-vec3 SumSpecMaps();
+vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir);
+vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir);
+vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir);
+vec4 SumDiffMaps();
+vec4 SumSpecMaps();
 float AvgShininess();
 float AvgAmbientStrength();
 
 void main(void) {
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 result = CalcDirLight(directionalLight, norm, viewDir);
+    vec4 result = CalcDirLight(directionalLight, norm, viewDir);
     for (int i = 0; i < pointLights.length(); i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     for (int i = 0; i < spotLights.length(); i++)
         result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
-    color = vec4(result, 1.0f);
+    color = result;
 }
 
-vec3 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
+//TODO loss of alpha channel occurs in here (and probably in other light calculations)
+vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
     vec3 lightDir = normalize(-light.Direction);
     vec3 ambient  = light.AmbientColor * light.AmbientIntensity * AvgAmbientStrength();
     float diff = max(dot(norm, lightDir), 0.0);
@@ -83,11 +86,11 @@ vec3 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), AvgShininess());
     vec3 specular = light.Color * light.Intensity * spec;
-    return ((ambient + diffuse) * SumDiffMaps()) + 
-        (specular * SumSpecMaps());
+    return (vec4((ambient + diffuse), 1.0f) * SumDiffMaps()) + 
+        (vec4(specular, 1.0f) * SumSpecMaps());
 }
 
-vec3 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
+vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     vec3 lightDir = normalize(light.Position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.Color * light.Intensity * diff;
@@ -97,10 +100,11 @@ vec3 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     float distance = length(light.Position - fragPos);
     float attenuation = 1.0f / (light.Constant + light.Linear * distance + 
         light.Quadratic * (distance * distance));
-    return ( (diffuse * SumDiffMaps()) + (specular * SumSpecMaps()) ) * attenuation;
+    return ( (vec4(diffuse, 1.0f) * SumDiffMaps()) + 
+	    (vec4(specular, 1.0f) * SumSpecMaps()) ) * attenuation;
 }
 
-vec3 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
+vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     vec3 lightDir = normalize(light.Position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.Color * light.Intensity * diff;
@@ -113,21 +117,27 @@ vec3 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     float theta = dot(lightDir, normalize(-light.Direction));
     float epsilon = light.InnerCutOff - light.OuterCutOff;
     float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
-    return intensity * attenuation * ( (diffuse * SumDiffMaps()) + 
-                                       (specular * SumSpecMaps()) );
+    return intensity * attenuation * ( (vec4(diffuse, 1.0f) * SumDiffMaps()) + 
+                                       (vec4(specular, 1.0f) * SumSpecMaps()) );
 }
 
-vec3 SumDiffMaps() {
-    vec3 sum = vec3(0.0f, 0.0f, 0.0f);
+vec4 SumDiffMaps() {
+    vec4 sum = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     for (int i = 0; i < numMaterials; i++)
-        sum += (texture(materials[i].DiffMap, TexCoord).xyz * materials[i].DiffuseStrength);
+	{
+	    if (materials[i].HasDiffMap)
+            sum += texture(materials[i].DiffMap, TexCoord) * materials[i].DiffuseStrength;
+	}
     return sum;
 }
 
-vec3 SumSpecMaps() {
-    vec3 sum = vec3(0.0f, 0.0f, 0.0f);
+vec4 SumSpecMaps() {
+    vec4 sum = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     for (int i = 0; i < numMaterials; i++)
-        sum += (texture(materials[i].SpecMap, TexCoord).xyz * materials[i].SpecularStrength);
+	{
+	    if (materials[i].HasSpecMap)
+            sum += texture(materials[i].SpecMap, TexCoord) * materials[i].SpecularStrength;
+	}
     return sum;
 }
 

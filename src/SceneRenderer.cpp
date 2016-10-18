@@ -25,7 +25,7 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//TODO remove this once cubemaps/skybox 
-	_clear_color = glm::vec4(0.7f, 0.0f, 0.0f, 1.0f);
+	_clear_color = glm::vec4(0.0f, 0.0f, 0.5f, 1.0f);
 }
 
 SceneRenderer::~SceneRenderer()
@@ -166,6 +166,12 @@ void SceneRenderer::Draw()
 	//TODO sort this by transparent textures
 	for (auto drawable : _draw_list)
 	{
-		drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+		if (!(drawable->Flags & Drawable_Translucent))
+			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+	}
+	for (auto drawable : _draw_list)
+	{
+		if (drawable->Flags & Drawable_Translucent)
+			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
 }

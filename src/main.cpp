@@ -97,16 +97,18 @@ int main()
 	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
 
+	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
+	Material * glass_material = new Material(glass_diffuse);
+	Cube * glass = new Cube(glass_material);
+	glass->Flags |= Drawable_Translucent;
+	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
+	glass->Position = glm::vec3(0.5f, 0.3f, 0.0f);
+	scene->AddObjectToScene(glass);
+
 	Cube * floor = new Cube(mat1);
 	floor->Position = glm::vec3(0.0f, -1.0f, 0.0f);
 	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
 	scene->AddObjectToScene(floor);
-
-	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
-	Material * glass_material = new Material(glass_diffuse);
-	Cube * glass = new Cube(glass_material);
-	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
-	scene->AddObjectToScene(glass);
 
 	scene->PrepareScene();
 

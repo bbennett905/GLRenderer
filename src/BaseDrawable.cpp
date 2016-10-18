@@ -74,22 +74,36 @@ void BaseDrawable::Draw(Camera * camera,
 		//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
 		if (Materials[i]->DiffuseMap != nullptr)
 		{
+			glUniform1i(glGetUniformLocation(ShaderObj->Program,
+				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 1);
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
 			Materials[i]->DiffuseMap->Bind();
-			GLuint loc = glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].DiffMap").c_str());
-			glUniform1i(loc, ShaderObj->TextureCount);
+			glUniform1i(glGetUniformLocation(ShaderObj->Program,
+				("materials[" + std::to_string(i) + "].DiffMap").c_str()), 
+				ShaderObj->TextureCount);
 			ShaderObj->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(ShaderObj->Program,
+				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 0);
 		}
 
 		if (Materials[i]->SpecularMap != nullptr)
 		{
+			glUniform1i(glGetUniformLocation(ShaderObj->Program,
+				("materials[" + std::to_string(i) + "].HasSpecMap").c_str()), 1);
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
 			Materials[i]->SpecularMap->Bind();
 			glUniform1i(glGetUniformLocation(ShaderObj->Program,
 				("materials[" + std::to_string(i) + "].SpecMap").c_str()),
 				ShaderObj->TextureCount);
 			ShaderObj->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(ShaderObj->Program,
+				("materials[" + std::to_string(i) + "].HasSpecMap").c_str()), 0);
 		}
 
 		glUniform1f(glGetUniformLocation(ShaderObj->Program,
