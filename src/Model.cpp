@@ -83,23 +83,18 @@ Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 	for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 	{
 		VertexData vertex;
-		glm::vec3 vec;
-		vec.x = mesh->mVertices[i].x;
-		vec.y = mesh->mVertices[i].y;
-		vec.z = mesh->mVertices[i].z;
-		vertex.Position = vec;
+		vertex.Position.x = mesh->mVertices[i].x;
+		vertex.Position.y = mesh->mVertices[i].y;
+		vertex.Position.z = mesh->mVertices[i].z;
 
-		vec.x = mesh->mNormals[i].x;
-		vec.y = mesh->mNormals[i].y;
-		vec.z = mesh->mNormals[i].z;
-		vertex.Normal = vec;
+		vertex.Normal.x = mesh->mNormals[i].x;
+		vertex.Normal.y = mesh->mNormals[i].y;
+		vertex.Normal.z = mesh->mNormals[i].z;
 
 		if (mesh->mTextureCoords[0])
 		{
-			glm::vec2 vector;
-			vector.x = mesh->mTextureCoords[0][i].x;
-			vector.y = mesh->mTextureCoords[0][i].y;
-			vertex.TexCoords = vector;
+			vertex.TexCoords.x = mesh->mTextureCoords[0][i].x;
+			vertex.TexCoords.y = mesh->mTextureCoords[0][i].y;
 		}
 		else vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 		vertices.push_back(vertex);
