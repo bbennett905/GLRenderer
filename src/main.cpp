@@ -110,6 +110,11 @@ int main()
 	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
 	scene->AddObjectToScene(floor);
 
+	Model * cone = new Model("../cone/cone.obj");
+	cone->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+	cone->SetPosition(glm::vec3(-0.01f, 2.02f, 1.0f));
+	scene->AddObjectToScene(cone);
+
 	scene->PrepareScene();
 
 	//Set where we handle input
