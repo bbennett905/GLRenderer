@@ -6,8 +6,6 @@
 #include <sstream>
 #include <iostream>
 
-//TODO Make sure Draw sets the numMaterials uniform!
-
 Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info) :
 	TextureCount(0), CreateInfo(info)
 {

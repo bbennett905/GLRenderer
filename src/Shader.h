@@ -48,11 +48,11 @@ public:
 	//Tells OpenGL to use this shader
 	void Use();
 
-	//TODO this should probably be read-only 
+	//TODO this should probably be read-only (or friend renderer)
 	//OpenGL shader program object of this Shader
 	GLuint Program;
 
-	//TODO could make IncrementTextureCount and GetTextureCount 
+	//TODO could make IncrementTextureCount and GetTextureCount (or use friend Renderer and make private)
 	//USED BY RENDERER, DO NOT MODIFY
 	int TextureCount;
 

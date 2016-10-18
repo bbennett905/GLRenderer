@@ -23,8 +23,7 @@ public:
 	SceneRenderer(Window * window, Camera * camera);
 	~SceneRenderer();
 
-	//TODO
-	//Set Light uniforms method? Doing this means not passing light info to Drawable::Draw
+	//TODO Set Light uniforms method? Doing this means not passing light info to Drawable::Draw
 	void AddPointLight(LightPoint * light);
 	void AddSpotLight(LightSpot * light);
 	void SetDirectionalLight(LightDirectional * light);

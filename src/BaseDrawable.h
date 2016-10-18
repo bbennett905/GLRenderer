@@ -20,8 +20,6 @@ enum DrawableFlags
 	Drawable_Translucent = 1 << 0
 };
 
-//TODO add scale member, see Cube class for implementation
-
 class SceneRenderer;
 class Camera;
 class Shader;
@@ -43,7 +41,6 @@ public:
 	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();
 
-	//TODO this will be called from a Scene object or somthing, that is where drawlist will be?
 	virtual void Draw(Camera * camera, std::vector<LightPoint *> & point_light_list,
 		std::vector<LightSpot *> & spot_light_list, LightDirectional * directional_light);
 

@@ -70,10 +70,8 @@ void BaseDrawable::Draw(Camera * camera,
 
 	for (uint32_t i = 0; i < Materials.size(); i++)
 	{
-		//TODO this will actually give it multiple copies of the same texture (will it)?
-		//TODO this DEFINITELY shouldn't work if there isnt a diffusemap and a specularmap
-		//for each material, see default.frag
-		//Best way to fix would be a bool in shader material struct - HasDiffuse, HasSpecular
+		//The reason the shader works even when one of these uniforms isn't set is because
+		//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
 		if (Materials[i]->DiffuseMap != nullptr)
 		{
 			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
