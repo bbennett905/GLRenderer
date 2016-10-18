@@ -21,6 +21,8 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//TODO remove this once cubemaps/skybox 
 	_clear_color = glm::vec4(0.7f, 0.0f, 0.0f, 1.0f);

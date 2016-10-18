@@ -102,6 +102,12 @@ int main()
 	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
 	scene->AddObjectToScene(floor);
 
+	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
+	Material * glass_material = new Material(glass_diffuse);
+	Cube * glass = new Cube(glass_material);
+	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
+	scene->AddObjectToScene(glass);
+
 	scene->PrepareScene();
 
 	//Set where we handle input
