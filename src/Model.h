@@ -20,7 +20,7 @@ class Model :
 	public BaseObject
 {
 public:
-	Model(const char * path);
+	Model(std::string path);
 	~Model();
 
 	//Sets world position
@@ -42,6 +42,9 @@ private:
 	Mesh * processMesh(aiMesh * mesh, const aiScene * scene);
 	std::vector<Material *> loadMaterials(aiMaterial * mat);
 
+	static std::vector<Model *> _models_loaded;
+
+	std::string _path;
 	std::string _directory;
 	Shader * _shader;
 

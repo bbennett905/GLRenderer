@@ -8,13 +8,39 @@
 #include "Material.h"
 #include "Texture.h"
 
-Model::Model(const char * path)
+std::vector<Model *> Model::_models_loaded;
+
+Model::Model(std::string path) : 
+	_path(path)
 {
+	for (uint32_t i = 0; i < _models_loaded.size(); i++)
+	{
+		if (path == _models_loaded[i]->_path)
+		{
+			for (auto mesh : _models_loaded[i]->Meshes)
+			{
+				Mesh * new_mesh = new Mesh();
+				*new_mesh = *mesh;
+				Meshes.push_back(new_mesh);
+			}
+			_shader = _models_loaded[i]->_shader;
+			return;
+		}
+	}
 	loadModel(path);
+	_models_loaded.push_back(this);
 }
 
 Model::~Model()
 {
+	for (uint32_t i = 0; i < _models_loaded.size(); i++)
+	{
+		if (this == _models_loaded[i])
+		{
+			_models_loaded.erase(_models_loaded.begin() + i);
+			break;
+		}
+	}
 	for (auto mesh : Meshes)
 		delete mesh;
 }
