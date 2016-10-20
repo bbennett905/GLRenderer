@@ -52,6 +52,8 @@ Shader::Shader(ShaderCreateInfo info) :
 
 	preprocessShader(vertexSource, fragSource, info);
 	createShaders(vertexSource.c_str(), fragSource.c_str());
+
+	_shaders_loaded.push_back(this);
 }
 
 Shader::~Shader()
