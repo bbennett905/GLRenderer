@@ -2,6 +2,7 @@
 
 #include <string>
 #include <glew.h>
+#include <vector>
 
 /*
  * Shader object class which can dynamically create shaders for the specific scene 
@@ -28,6 +29,16 @@ struct ShaderCreateInfo
 	uint32_t NumSpotLights;
 	//Flags to use for this shader
 	uint32_t Flags;
+
+	inline bool operator==(const ShaderCreateInfo& a) const
+	{
+		if (Version == a.Version &&
+			NumPointLights == a.NumPointLights &&
+			NumSpotLights == a.NumSpotLights &&
+			Flags == a.Flags)
+			return true;
+		else return false;
+	}
 };
 
 //Any flags indicating different behaviour needed from the shader, ie translucency
@@ -39,8 +50,6 @@ enum ShaderFlags
 class Shader
 {
 public:
-	//Create a shader from file
-	Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info);
 	//Create a typical shader dynamically, given certain parameters
 	Shader(ShaderCreateInfo info);
 	~Shader();
@@ -62,4 +71,6 @@ public:
 private:
 	void preprocessShader(std::string & vertexSource, std::string & fragSource, ShaderCreateInfo info);
 	void createShaders(const char * vertexSource, const char * fragSource);
+
+	static std::vector<Shader *> _shaders_loaded;
 };

@@ -6,43 +6,19 @@
 #include <sstream>
 #include <iostream>
 
-Shader::Shader(const char * vertexPath, const char * fragPath, ShaderCreateInfo info) :
-	TextureCount(0), CreateInfo(info)
-{
-	std::string vertexSource;
-	std::string fragSource;
-	std::ifstream vertexFile;
-	std::ifstream fragFile;
-
-	vertexFile.exceptions(std::ifstream::badbit);
-	fragFile.exceptions(std::ifstream::badbit);
-	try
-	{
-		vertexFile.open(vertexPath);
-		fragFile.open(fragPath);
-		std::stringstream vertexStream, fragStream;
-
-		vertexStream << vertexFile.rdbuf();
-		fragStream << fragFile.rdbuf();
-
-		vertexFile.close();
-		fragFile.close();
-
-		vertexSource = vertexStream.str();
-		fragSource = fragStream.str();
-	}
-	catch (std::ifstream::failure e)
-	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-	}
-
-	preprocessShader(vertexSource, fragSource, info);
-	createShaders(vertexSource.c_str(), fragSource.c_str());
-}
+std::vector<Shader *> Shader::_shaders_loaded;
 
 Shader::Shader(ShaderCreateInfo info) :
 	TextureCount(0), CreateInfo(info)
 {
+	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)
+	{
+		if (_shaders_loaded[i]->CreateInfo == info)
+		{
+			Program = _shaders_loaded[i]->Program;
+			return;
+		}
+	}
 	//TODO do something with ShaderFlags 
 	char * vertexPath = "../shaders/default.vert";
 	char * fragPath = "../shaders/default.frag";
@@ -80,6 +56,13 @@ Shader::Shader(ShaderCreateInfo info) :
 
 Shader::~Shader()
 {
+	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)
+	{
+		if (this == _shaders_loaded[i])
+		{
+			_shaders_loaded.erase(_shaders_loaded.begin() + i);
+		}
+	}
 	glDeleteProgram(Program);
 }
 

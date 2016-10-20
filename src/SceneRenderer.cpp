@@ -31,6 +31,8 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 
 SceneRenderer::~SceneRenderer()
 {
+	//TODO replace this form of memory management with mm base class everything inherits from
+
 	//We only really need to destroy the shaders, materials, textures, 
 	//as all objects themselves are destroyed in Scene destructor
 	for (auto shader : _shader_list)
@@ -62,7 +64,6 @@ void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 {
 	_draw_list.push_back(drawable);
 
-	//yikes!
 	for (auto new_material : drawable->Materials)
 	{
 		bool in_vector = false;
@@ -139,22 +140,20 @@ bool SceneRenderer::BuildShaders()
 		if (drawable->Flags & Drawable_Translucent)
 			shader_create_info.Flags |= Shader_Translucent;
 
-		//Do we already have a shader matching the requirements? if so, use it!
-		for (auto shader : _shader_list)
-		{
-			if (shader->CreateInfo.Version == shader_create_info.Version &&
-				shader->CreateInfo.NumPointLights == shader_create_info.NumPointLights &&
-				shader->CreateInfo.NumSpotLights == shader_create_info.NumSpotLights &&
-				shader->CreateInfo.Flags == shader_create_info.Flags)
-					drawable->ShaderObj = shader;
-		}
+		Shader * shader = new Shader(shader_create_info);
+		drawable->ShaderObj = shader;
 
-		if (drawable->ShaderObj == nullptr)
+		bool in_shader_list = false;
+		for (auto shad : _shader_list)
 		{
-			Shader * shader = new Shader(shader_create_info);
-			drawable->ShaderObj = shader;
-			_shader_list.push_back(shader);
+			if (shad == shader)
+			{
+				in_shader_list = true;
+				break;
+			}
 		}
+		if (!in_shader_list)
+			_shader_list.push_back(shader);
 	}
 	return true;
 }

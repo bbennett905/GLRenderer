@@ -7,11 +7,11 @@ std::vector<Texture *> Texture::_textures_loaded;
 Texture::Texture(std::string path, uint32_t flags) :
 	_path(path)
 {
-	for (uint32_t j = 0; j < _textures_loaded.size(); j++)
+	for (uint32_t i = 0; i < _textures_loaded.size(); i++)
 	{
-		if (_textures_loaded[j]->_path == path)
+		if (_textures_loaded[i]->_path == path)
 		{
-			_id = _textures_loaded[j]->_id;
+			_id = _textures_loaded[i]->_id;
 			return;
 		}
 	}
