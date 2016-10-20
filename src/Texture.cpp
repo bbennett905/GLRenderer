@@ -2,13 +2,25 @@
 
 #include <SOIL.h>
 
-Texture::Texture(const char * path, uint32_t flags)
+std::vector<Texture *> Texture::_textures_loaded;
+
+Texture::Texture(std::string path, uint32_t flags) :
+	_path(path)
 {
+	for (uint32_t j = 0; j < _textures_loaded.size(); j++)
+	{
+		if (_textures_loaded[j]->_path == path)
+		{
+			_id = _textures_loaded[j]->_id;
+			return;
+		}
+	}
+
 	int texWidth, texHeight;
-	unsigned char * image = SOIL_load_image(path, &texWidth, &texHeight, 0, 
+	unsigned char * image = SOIL_load_image(path.c_str(), &texWidth, &texHeight, 0, 
 		flags & Texture_Translucent ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
 
-	if (image == nullptr) printf("ERROR: Failed loading image %s!\n", path);
+	if (image == nullptr) printf("ERROR: Failed loading image %s!\n", path.c_str());
 
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_2D, _id);
@@ -29,7 +41,7 @@ Texture::Texture(const char * path, uint32_t flags)
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	Path = path;
+	_textures_loaded.push_back(this);
 }
 
 Texture::~Texture()

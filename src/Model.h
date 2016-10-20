@@ -43,7 +43,6 @@ private:
 	std::vector<Material *> loadMaterials(aiMaterial * mat);
 
 	std::string _directory;
-	std::vector<Texture *> _textures_loaded;
 	Shader * _shader;
 
 	glm::vec3 Position;

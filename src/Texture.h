@@ -2,6 +2,7 @@
 
 #include <glew.h>
 #include <string>
+#include <vector>
 
 /*
  * Abstraction over SOIL texture loading and OpenGL texture creation and binding
@@ -17,16 +18,18 @@ class Texture
 {
 public:
 	//Path to the texture
-	Texture(const char * path, uint32_t flags = 0);
+	Texture(std::string path, uint32_t flags = 0);
 	~Texture();
 
 	//Bind this texture object to the active GL texture
 	void Bind();
 
-	//Path of this texture - used to avoid loading textures that have already been loaded
-	std::string Path;
+	
 
 private:
+	static std::vector<Texture *> _textures_loaded;
 	//OpenGL texture object
 	GLuint _id;
+	//Path of this texture - used to avoid loading textures that have already been loaded
+	std::string _path;
 };
