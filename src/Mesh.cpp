@@ -2,6 +2,8 @@
 
 #include <gtc\matrix_transform.hpp>
 
+Mesh::Mesh() { }
+
 Mesh::Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
 	std::vector<Material *> & mats) :
 	BaseDrawable(vert, ind, mats)

@@ -10,6 +10,7 @@ class Mesh :
 	public BaseDrawable, public BaseObject
 {
 public:
+	Mesh();
 	Mesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, 
 		std::vector<Material *> & mats);
 	glm::mat4 GetModelMatrix();
