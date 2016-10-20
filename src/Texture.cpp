@@ -46,6 +46,14 @@ Texture::Texture(std::string path, uint32_t flags) :
 
 Texture::~Texture()
 {
+	for (uint32_t i = 0; i < _textures_loaded.size(); i++)
+	{
+		if (this == _textures_loaded[i])
+		{
+			_textures_loaded.erase(_textures_loaded.begin() + i);
+			break;
+		}
+	}
 	glDeleteTextures(1, &_id);
 }
 

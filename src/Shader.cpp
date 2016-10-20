@@ -61,6 +61,7 @@ Shader::~Shader()
 		if (this == _shaders_loaded[i])
 		{
 			_shaders_loaded.erase(_shaders_loaded.begin() + i);
+			break;
 		}
 	}
 	glDeleteProgram(Program);
