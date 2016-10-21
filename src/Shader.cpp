@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "Logging.h"
+
 std::vector<Shader *> Shader::_shaders_loaded;
 
 Shader::Shader(ShaderCreateInfo info) :
@@ -47,7 +49,7 @@ Shader::Shader(ShaderCreateInfo info) :
 	}
 	catch (std::ifstream::failure e)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		Logging::LogMessage(LogLevel_Error, "Error reading shader file %s", vertexPath);
 	}
 
 	preprocessShader(vertexSource, fragSource, info);
@@ -113,7 +115,7 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 	if (!success)
 	{
 		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		Logging::LogMessage(LogLevel_Error, "Error compiling vertex shader:\n%s", infoLog);
 	};
 
 	frag = glCreateShader(GL_FRAGMENT_SHADER);
@@ -123,7 +125,7 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 	if (!success)
 	{
 		glGetShaderInfoLog(frag, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAG::COMPILATION_FAILED\n" << infoLog << std::endl;
+		Logging::LogMessage(LogLevel_Error, "Error compiling fragment shader:\n%s", infoLog);
 	};
 
 	Program = glCreateProgram();
@@ -134,7 +136,7 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 	if (!success)
 	{
 		glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		Logging::LogMessage(LogLevel_Error, "Error linking shaders:\n%s", infoLog);
 	}
 
 	glDeleteShader(vertex);

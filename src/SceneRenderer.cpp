@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Logging.h"
 
 SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	_camera(camera)
@@ -16,7 +17,8 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	GLenum f = glewInit();
 	if (f != GLEW_OK)
 	{
-		std::cout << "GLEW initialization failed!" << std::endl;
+		Logging::LogMessage(LogLevel_Critical, "GLEW initialization failed!");
+		return;
 	}
 
 	glEnable(GL_DEPTH_TEST);

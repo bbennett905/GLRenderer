@@ -2,6 +2,8 @@
 
 #include <SOIL.h>
 
+#include "Logging.h"
+
 std::vector<Texture *> Texture::_textures_loaded;
 
 Texture::Texture(std::string path, uint32_t flags) :
@@ -20,7 +22,8 @@ Texture::Texture(std::string path, uint32_t flags) :
 	unsigned char * image = SOIL_load_image(path.c_str(), &texWidth, &texHeight, 0, 
 		flags & Texture_Translucent ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
 
-	if (image == nullptr) printf("ERROR: Failed loading image %s!\n", path.c_str());
+	if (image == nullptr) 
+		Logging::LogMessage(LogLevel_Error, "Failed loading image %s!\n", path.c_str());
 
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_2D, _id);

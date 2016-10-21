@@ -14,6 +14,7 @@
 #include "Cube.h"
 #include "Model.h"
 #include "Scene.h"
+#include "Logging.h"
 
 #undef main //Thanks, SDL!
 
@@ -58,6 +59,11 @@ void CursorCallback(int delta_x, int delta_y)
 
 int main()
 {
+	Logging::LogInit("log.txt");
+	Logging::MinLogLevel = LogLevel_Debug;
+
+	Logging::LogMessage(LogLevel_Info, "Application starting");
+
 	Scene * scene = new Scene(&window, &camera);
 
 	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
@@ -167,6 +173,9 @@ int main()
 	}
 
 	delete scene;
+
+	Logging::LogMessage(LogLevel_Info, "Application exiting");
+	Logging::LogTerm();
 
 	return 0;
 }

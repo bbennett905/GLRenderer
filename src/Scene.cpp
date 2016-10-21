@@ -6,12 +6,14 @@
 #include "Model.h"
 #include "Lights.h"
 #include "Mesh.h"
+#include "Logging.h"
 
-#include "Cube.h"
+//#include "Cube.h"
 
 Scene::Scene(Window * window, Camera * camera)
 {
 	_scene_renderer = new SceneRenderer(window, camera);
+	Logging::LogMessage(LogLevel_Debug, "Created Scene object");
 }
 
 Scene::~Scene()
@@ -20,6 +22,7 @@ Scene::~Scene()
 		delete object;
 
 	delete _scene_renderer;
+	Logging::LogMessage(LogLevel_Debug, "Destroyed Scene object");
 }
 
 void Scene::AddObjectToScene(BaseObject * obj)

@@ -2,12 +2,14 @@
 
 #include <iostream>
 
+#include "Logging.h"
+
 Window::Window(int width, int height, const char * title) :
 	ShouldExit(false), _width(width), _height(height)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		printf("SDL Failed to initialize! Error:%s\n", SDL_GetError());
+		Logging::LogMessage(LogLevel_Critical, "SDL Failed to initialize! Error:%s\n", SDL_GetError());
 		return;
 	}
 
@@ -26,14 +28,14 @@ Window::Window(int width, int height, const char * title) :
 		                       SDL_WINDOW_BORDERLESS | SDL_WINDOW_INPUT_GRABBED);
 	if (_window == nullptr)
 	{
-		printf("Failed to create SDL window! Error:%s\n", SDL_GetError());
+		Logging::LogMessage(LogLevel_Critical, "Failed to create SDL window! Error:%s\n", SDL_GetError());
 		return;
 	}
 
 	_context = SDL_GL_CreateContext(_window);
 	if (_context == NULL)
 	{
-		printf("Failed to create GL Context! Error:%s\n", SDL_GetError());
+		Logging::LogMessage(LogLevel_Critical, "Failed to create GL Context! Error:%s\n", SDL_GetError());
 		return;
 	}
 	

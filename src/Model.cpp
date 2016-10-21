@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Logging.h"
 
 std::vector<Model *> Model::_models_loaded;
 
@@ -82,7 +83,7 @@ void Model::loadModel(std::string path)
 	const aiScene * scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		printf("ERROR::ASSIMP::%s\n", importer.GetErrorString());
+		Logging::LogMessage(LogLevel_Error, "Error loading model: %s\n", importer.GetErrorString());
 		return;
 	}
 	_directory = path.substr(0, path.find_last_of('/'));
