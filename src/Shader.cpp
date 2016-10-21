@@ -18,6 +18,8 @@ Shader::Shader(ShaderCreateInfo info) :
 		if (_shaders_loaded[i]->CreateInfo == info)
 		{
 			Program = _shaders_loaded[i]->Program;
+			Logging::LogMessage(LogLevel_Debug,
+				"A suitable shader has already been created, skipping");
 			return;
 		}
 	}
@@ -49,13 +51,14 @@ Shader::Shader(ShaderCreateInfo info) :
 	}
 	catch (std::ifstream::failure e)
 	{
-		Logging::LogMessage(LogLevel_Error, "Error reading shader file %s", vertexPath);
+		Logging::LogMessage(LogLevel_Error, "Failed reading shader file \"%s\"", vertexPath);
 	}
 
 	preprocessShader(vertexSource, fragSource, info);
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 
 	_shaders_loaded.push_back(this);
+	Logging::LogMessage(LogLevel_Debug, "Created shader %d", Program);
 }
 
 Shader::~Shader()
@@ -115,7 +118,7 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 	if (!success)
 	{
 		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-		Logging::LogMessage(LogLevel_Error, "Error compiling vertex shader:\n%s", infoLog);
+		Logging::LogMessage(LogLevel_Error, "Failed compiling vertex shader:\n%s", infoLog);
 	};
 
 	frag = glCreateShader(GL_FRAGMENT_SHADER);
@@ -125,7 +128,7 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 	if (!success)
 	{
 		glGetShaderInfoLog(frag, 512, NULL, infoLog);
-		Logging::LogMessage(LogLevel_Error, "Error compiling fragment shader:\n%s", infoLog);
+		Logging::LogMessage(LogLevel_Error, "Failed compiling fragment shader:\n%s", infoLog);
 	};
 
 	Program = glCreateProgram();
@@ -136,7 +139,7 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 	if (!success)
 	{
 		glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
-		Logging::LogMessage(LogLevel_Error, "Error linking shaders:\n%s", infoLog);
+		Logging::LogMessage(LogLevel_Error, "Failed linking shaders:\n%s", infoLog);
 	}
 
 	glDeleteShader(vertex);

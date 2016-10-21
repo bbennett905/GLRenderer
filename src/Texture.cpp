@@ -14,6 +14,8 @@ Texture::Texture(std::string path, uint32_t flags) :
 		if (_textures_loaded[i]->_path == path)
 		{
 			_id = _textures_loaded[i]->_id;
+			Logging::LogMessage(LogLevel_Debug, 
+				"Texture \"%s\" has already been loaded, skipping", _path.c_str());
 			return;
 		}
 	}
@@ -23,7 +25,7 @@ Texture::Texture(std::string path, uint32_t flags) :
 		flags & Texture_Translucent ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
 
 	if (image == nullptr) 
-		Logging::LogMessage(LogLevel_Error, "Failed loading image %s!\n", path.c_str());
+		Logging::LogMessage(LogLevel_Error, "Failed loading texture \"%s\"\n", path.c_str());
 
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_2D, _id);
@@ -45,6 +47,7 @@ Texture::Texture(std::string path, uint32_t flags) :
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	_textures_loaded.push_back(this);
+	Logging::LogMessage(LogLevel_Debug, "Loaded texture \"%s\"", _path.c_str());
 }
 
 Texture::~Texture()
@@ -60,4 +63,7 @@ Texture::~Texture()
 	glDeleteTextures(1, &_id);
 }
 
-void Texture::Bind() { glBindTexture(GL_TEXTURE_2D, _id); }
+void Texture::Bind() 
+{ 
+	glBindTexture(GL_TEXTURE_2D, _id); 
+}

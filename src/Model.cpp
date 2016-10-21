@@ -25,11 +25,14 @@ Model::Model(std::string path) :
 				Meshes.push_back(new_mesh);
 			}
 			_shader = _models_loaded[i]->_shader;
+			Logging::LogMessage(LogLevel_Debug, 
+				"Model \"%s\" has already been loaded, skipping", _path.c_str());
 			return;
 		}
 	}
 	loadModel(path);
 	_models_loaded.push_back(this);
+	Logging::LogMessage(LogLevel_Debug, "Loaded model \"%s\"", _path.c_str());
 }
 
 Model::~Model()
@@ -83,7 +86,8 @@ void Model::loadModel(std::string path)
 	const aiScene * scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		Logging::LogMessage(LogLevel_Error, "Error loading model: %s\n", importer.GetErrorString());
+		Logging::LogMessage(LogLevel_Error, 
+			"Failed loading model \"%s\": %s\n", importer.GetErrorString());
 		return;
 	}
 	_directory = path.substr(0, path.find_last_of('/'));

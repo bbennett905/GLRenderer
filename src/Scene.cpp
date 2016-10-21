@@ -55,6 +55,7 @@ void Scene::AddObjectToScene(BaseObject * obj)
 
 void Scene::PrepareScene()
 {
+	Logging::LogMessage(LogLevel_Debug, "Preparing scene");
 	_scene_renderer->BuildShaders();
 }
 

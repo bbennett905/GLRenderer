@@ -131,6 +131,7 @@ void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 
 bool SceneRenderer::BuildShaders()
 {
+	Logging::LogMessage(LogLevel_Debug, "Building shaders...");
 	ShaderCreateInfo shader_create_info;
 	shader_create_info.Version =		ShaderVersion330Core;
 	shader_create_info.NumPointLights = _point_light_list.size();
@@ -157,6 +158,7 @@ bool SceneRenderer::BuildShaders()
 		if (!in_shader_list)
 			_shader_list.push_back(shader);
 	}
+	Logging::LogMessage(LogLevel_Debug, "Built %d shaders", _shader_list.size());
 	return true;
 }
 
