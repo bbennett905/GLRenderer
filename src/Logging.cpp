@@ -63,7 +63,7 @@ namespace Logging
 
 		if (bLogToFile)
 		{
-			_file << str << std::endl;
+			_file << buffer << std::endl;
 		}
 
 		if (bLogToScreen)
