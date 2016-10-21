@@ -27,6 +27,40 @@ namespace Logging
 		va_start(args, str);
 		vsnprintf(buffer, 255, str, args);
 
+		switch (level)
+		{
+			case LogLevel_Critical:
+			{
+				if (bLogToFile) _file << "CRITICAL ERROR: ";
+				if (bLogToConsole) std::cout << "CRITICAL ERROR: ";
+				break;
+			}
+			case LogLevel_Error:
+			{
+				if (bLogToFile) _file << "ERROR: ";
+				if (bLogToConsole) std::cout << "ERROR: ";
+				break;
+			}
+			case LogLevel_Warn:
+			{
+				if (bLogToFile) _file << "Warning: ";
+				if (bLogToConsole) std::cout << "Warning: ";
+				break;
+			}
+			case LogLevel_Info:
+			{
+				if (bLogToFile) _file << "Info: ";
+				if (bLogToConsole) std::cout << "Info: ";
+				break;
+			}
+			case LogLevel_Debug:
+			{
+				if (bLogToFile) _file << "Debug: ";
+				if (bLogToConsole) std::cout << "Debug: ";
+				break;
+			}
+		}
+
 		if (bLogToFile)
 		{
 			_file << str << std::endl;
