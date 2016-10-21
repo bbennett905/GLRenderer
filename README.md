@@ -43,15 +43,15 @@ Suffix of *_nomat* on a shader file name means that it does not take materials; 
 
 ### ToDo List ###
 
+* 2D drawing using SDL (for UI)
+
+* Improved memory management system
+
 * Create more primitives (possibly generating vertices & indices)
 
 * Load materials/scenes from file
 
 * More shaders and shader naming changes
-
-* Implement transparency support
-
-* Add logging system
 
 * See in-file TODOs for others...
 
