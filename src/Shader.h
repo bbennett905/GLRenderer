@@ -54,6 +54,9 @@ public:
 	Shader(ShaderCreateInfo info);
 	~Shader();
 
+	//Returns nullptr if no suitable shader exists, else returns pointer to shader
+	static Shader * ShaderExists(ShaderCreateInfo info);
+
 	//Tells OpenGL to use this shader
 	void Use();
 

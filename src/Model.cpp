@@ -162,7 +162,8 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 		mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
 
 		std::string path = _directory + "/" + std::string(str.C_Str());
-		diffuse = new Texture(path.c_str());
+		diffuse = Texture::TextureExists(path);
+		if (!diffuse) diffuse = new Texture(path);
 
 		if (i < mat->GetTextureCount(aiTextureType_SPECULAR))
 		{
@@ -170,7 +171,9 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 			mat->GetTexture(aiTextureType_SPECULAR, i, &str);
 
 			std::string path = _directory + "/" + std::string(str.C_Str());
-			specular = new Texture(path.c_str());
+
+			specular = Texture::TextureExists(path);
+			if (!specular) specular = new Texture(path);
 		}
 		//Create a material
 		material = new Material(diffuse, specular);

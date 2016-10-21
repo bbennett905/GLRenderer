@@ -13,16 +13,6 @@ std::vector<Shader *> Shader::_shaders_loaded;
 Shader::Shader(ShaderCreateInfo info) :
 	TextureCount(0), CreateInfo(info)
 {
-	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)
-	{
-		if (_shaders_loaded[i]->CreateInfo == info)
-		{
-			Program = _shaders_loaded[i]->Program;
-			Logging::LogMessage(LogLevel_Debug,
-				"A suitable shader has already been created, skipping");
-			return;
-		}
-	}
 	//TODO do something with ShaderFlags 
 	char * vertexPath = "../shaders/default.vert";
 	char * fragPath = "../shaders/default.frag";
@@ -58,7 +48,7 @@ Shader::Shader(ShaderCreateInfo info) :
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 
 	_shaders_loaded.push_back(this);
-	Logging::LogMessage(LogLevel_Debug, "Created shader %d", Program);
+	Logging::LogMessage(LogLevel_Debug, "Created shader (%d)", Program);
 }
 
 Shader::~Shader()
@@ -72,6 +62,20 @@ Shader::~Shader()
 		}
 	}
 	glDeleteProgram(Program);
+}
+
+Shader * Shader::ShaderExists(ShaderCreateInfo info)
+{
+	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)
+	{
+		if (_shaders_loaded[i]->CreateInfo == info)
+		{
+			Logging::LogMessage(LogLevel_Debug,
+				"A suitable shader (%d) has already been created", _shaders_loaded[i]->Program);
+			return _shaders_loaded[i];
+		}
+	}
+	return nullptr;
 }
 
 void Shader::Use()

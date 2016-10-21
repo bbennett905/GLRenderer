@@ -21,6 +21,8 @@ public:
 	Texture(std::string path, uint32_t flags = 0);
 	~Texture();
 
+	static Texture * TextureExists(std::string path);
+
 	//Bind this texture object to the active GL texture
 	void Bind();
 

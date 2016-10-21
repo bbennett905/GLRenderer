@@ -9,17 +9,6 @@ std::vector<Texture *> Texture::_textures_loaded;
 Texture::Texture(std::string path, uint32_t flags) :
 	_path(path)
 {
-	for (uint32_t i = 0; i < _textures_loaded.size(); i++)
-	{
-		if (_textures_loaded[i]->_path == path)
-		{
-			_id = _textures_loaded[i]->_id;
-			Logging::LogMessage(LogLevel_Debug, 
-				"Texture \"%s\" has already been loaded, skipping", _path.c_str());
-			return;
-		}
-	}
-
 	int texWidth, texHeight;
 	unsigned char * image = SOIL_load_image(path.c_str(), &texWidth, &texHeight, 0, 
 		flags & Texture_Translucent ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
@@ -61,6 +50,20 @@ Texture::~Texture()
 		}
 	}
 	glDeleteTextures(1, &_id);
+}
+
+Texture * Texture::TextureExists(std::string path)
+{
+	for (uint32_t i = 0; i < _textures_loaded.size(); i++)
+	{
+		if (_textures_loaded[i]->_path == path)
+		{
+			Logging::LogMessage(LogLevel_Debug, 
+				"Texture \"%s\" has already been loaded", path.c_str());
+			return _textures_loaded[i];
+		}
+	}
+	return nullptr;
 }
 
 void Texture::Bind() 

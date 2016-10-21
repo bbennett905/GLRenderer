@@ -139,11 +139,15 @@ bool SceneRenderer::BuildShaders()
 
 	for (auto drawable : _draw_list)
 	{
-		//If we have new ShaderCreateInfo params or flags, go under here
+		//If we have new ShaderCreateInfo params or flags, add them here
 		if (drawable->Flags & Drawable_Translucent)
 			shader_create_info.Flags |= Shader_Translucent;
 
-		Shader * shader = new Shader(shader_create_info);
+		Shader * shader = Shader::ShaderExists(shader_create_info);
+
+		//shader was null, so lets make a new one
+		if (!shader) shader = new Shader(shader_create_info);
+
 		drawable->ShaderObj = shader;
 
 		bool in_shader_list = false;
