@@ -18,13 +18,13 @@
 
 #undef main //Thanks, SDL!
 
-#define SCREEN_WIDTH 900
-#define SCREEN_HEIGHT 900
+#define SCREEN_WIDTH 1760
+#define SCREEN_HEIGHT 990
 
 #define MOVE_SPEED 0.1f
 
 Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 
-	80.0f, float(SCREEN_WIDTH / SCREEN_HEIGHT));
+	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 void KeyCallback(const Uint8 * keys, double delta_time)
