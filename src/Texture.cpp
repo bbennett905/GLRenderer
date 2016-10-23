@@ -59,6 +59,7 @@ Texture::Texture(SDL_Surface * surface, uint32_t flags)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+	_textures_loaded.push_back(this);
 	Logging::LogMessage(LogLevel_Debug, "Loaded texture from SDL surface");
 }
 

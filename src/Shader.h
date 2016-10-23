@@ -44,7 +44,8 @@ struct ShaderCreateInfo
 //Any flags indicating different behaviour needed from the shader, ie translucency
 enum ShaderFlags
 {
-	Shader_Translucent = 1 << 0
+	Shader_Translucent = 1 << 0,
+	Shader_Unlit = 1 << 1
 };
 
 class Shader

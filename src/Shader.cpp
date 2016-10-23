@@ -13,9 +13,18 @@ std::vector<Shader *> Shader::_shaders_loaded;
 Shader::Shader(ShaderCreateInfo info) :
 	TextureCount(0), CreateInfo(info)
 {
-	//TODO do something with ShaderFlags 
-	char * vertexPath = "../shaders/default.vert";
-	char * fragPath = "../shaders/default.frag";
+	char * vertexPath;
+	char * fragPath;
+	if (info.Flags & Shader_Unlit)
+	{
+		vertexPath = "../shaders/default_unlit.vert";
+		fragPath = "../shaders/default_unlit.frag";
+	}
+	else
+	{
+		vertexPath = "../shaders/default.vert";
+		fragPath = "../shaders/default.frag";
+	}
 
 	std::string vertexSource;
 	std::string fragSource;
