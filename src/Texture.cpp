@@ -1,6 +1,7 @@
 #include "Texture.h"
 
 #include <SOIL.h>
+#include <SDL.h>
 
 #include "Logging.h"
 
@@ -37,6 +38,28 @@ Texture::Texture(std::string path, uint32_t flags) :
 
 	_textures_loaded.push_back(this);
 	Logging::LogMessage(LogLevel_Debug, "Loaded texture \"%s\"", _path.c_str());
+}
+
+Texture::Texture(SDL_Surface * surface, uint32_t flags)
+{
+	glGenTextures(1, &_id);
+	glBindTexture(GL_TEXTURE_2D, _id);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0,
+		flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		surface->w, surface->h, 0,
+		flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		GL_UNSIGNED_BYTE, surface->pixels);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	Logging::LogMessage(LogLevel_Debug, "Loaded texture from SDL surface");
 }
 
 Texture::~Texture()
