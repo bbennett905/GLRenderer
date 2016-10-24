@@ -20,6 +20,9 @@ public:
 	glm::vec2 Position;
 
 protected:
+	//Automatically scales and positions an element, given its width, height, 
+	//and the x, y coords of the top left - in pixels, counting from top left
+	void autoPosition(int width, int height, int x, int y);
 	Texture * _texture;
 	Window * _window;
 };

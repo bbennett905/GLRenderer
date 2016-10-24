@@ -75,3 +75,11 @@ glm::mat4 BaseUIElement::GetModelMatrix()
 	transform = glm::scale(transform, glm::vec3(Scale, 1.0f));
 	return transform;
 }
+
+void BaseUIElement::autoPosition(int width, int height, int x, int y)
+{
+	Scale = glm::vec2(float(width) / float(_window->GetWidth()),
+		float(height) / float(_window->GetHeight()));
+	Position = glm::vec2(-1.0f + (float(x) / float(_window->GetWidth())) + Scale.x, 
+		1.0f - (float(y) / float(_window->GetHeight())) - Scale.y);
+}

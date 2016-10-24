@@ -19,9 +19,7 @@ FPS_UIElement::FPS_UIElement(Window * window) :
 	delete _texture;
 	_texture = new Texture(_surface, Texture_Translucent);
 
-	Scale = glm::vec2(float(_surface->w) / float(_window->GetWidth()),
-		float(_surface->h) / float(_window->GetHeight()));
-	Position = glm::vec2(-1.0f + Scale.x, 1.0f - Scale.y);
+	autoPosition(_surface->w, _surface->h, 0, 0);
 }
 
 FPS_UIElement::~FPS_UIElement()
@@ -40,9 +38,7 @@ void FPS_UIElement::Update(double delta_time)
 	_surface = TTF_RenderText_Solid(_font, buffer.c_str(), { 255, 255, 255, 255 });
 	_surface = SDL_ConvertSurfaceFormat(_surface, SDL_PIXELFORMAT_RGBA8888, 0);
 
-	Scale = glm::vec2(float(_surface->w) / float(_window->GetWidth()), 
-		float(_surface->h) / float(_window->GetHeight()));
-	Position = glm::vec2(-1.0f + Scale.x, 1.0f - Scale.y);
+	autoPosition(_surface->w, _surface->h, 0, 0);
 	
 	_texture->Update(_surface);
 }
