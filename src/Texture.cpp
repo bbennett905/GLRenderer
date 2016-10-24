@@ -8,7 +8,7 @@
 std::vector<Texture *> Texture::_textures_loaded;
 
 Texture::Texture(std::string path, uint32_t flags) :
-	_path(path)
+	_path(path), _flags(flags)
 {
 	int texWidth, texHeight;
 	unsigned char * image = SOIL_load_image(path.c_str(), &texWidth, &texHeight, 0, 
@@ -40,7 +40,8 @@ Texture::Texture(std::string path, uint32_t flags) :
 	Logging::LogMessage(LogLevel_Debug, "Loaded texture \"%s\"", _path.c_str());
 }
 
-Texture::Texture(SDL_Surface * surface, uint32_t flags)
+Texture::Texture(SDL_Surface * surface, uint32_t flags) :
+	_flags(flags)
 {
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_2D, _id);

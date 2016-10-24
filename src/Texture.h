@@ -37,4 +37,6 @@ private:
 	GLuint _id;
 	//Path of this texture - used to avoid loading textures that have already been loaded
 	std::string _path;
+
+	uint32_t _flags;
 };
