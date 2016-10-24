@@ -22,7 +22,7 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE); //TODO reenable this once UIElements winding is fixed!
 	glEnable(GL_BLEND);
 	glEnable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

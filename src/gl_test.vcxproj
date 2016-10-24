@@ -83,6 +83,7 @@
     <ClCompile Include="BaseUIElement.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="FPS_UIElement.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="BaseUIElement.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="FPS_UIElement.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="Material.h" />

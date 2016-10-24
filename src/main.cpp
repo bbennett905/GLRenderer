@@ -15,6 +15,7 @@
 #include "Model.h"
 #include "Scene.h"
 #include "Logging.h"
+#include "FPS_UIElement.h"
 
 #undef main //Thanks, SDL!
 
@@ -121,6 +122,9 @@ int main()
 	cone->SetPosition(glm::vec3(-0.01f, 2.02f, 1.0f));
 	scene->AddObjectToScene(cone);
 
+	FPS_UIElement * fps_element = new FPS_UIElement();
+	scene->AddUIElementToScene(fps_element);
+
 	scene->PrepareScene();
 
 	//Set where we handle input
@@ -145,8 +149,7 @@ int main()
 			SDL_GetPerformanceFrequency();
 		if (delta_print_time >= 0.5) 
 		{
-			printf("FPS: %f (%f ms)\n", num_frames / delta_print_time, 
-				delta_print_time / num_frames);
+			fps_element->Update(delta_print_time / (double)num_frames);
 			last_print_time = SDL_GetPerformanceCounter();
 			num_frames = 0;
 		}
