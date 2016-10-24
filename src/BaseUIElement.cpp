@@ -7,21 +7,20 @@
 #include "Material.h"
 #include "Texture.h"
 
-//TODO fix these
 VertexData quad[] = {
 	// Positions				// Normals       // Texture Coords
-	{ {0.5f, 0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} },
+	{ {0.5f, 0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, -1.0f} },
 	{ {0.5f, -0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, 0.0f} },
 	{ {-0.5f, -0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} },
 	{ {-0.5f, -0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, 0.0f} },
-	{ {-0.5f, 0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, 1.0f} },
-	{ {0.5f, 0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, 1.0f} } };
+	{ {-0.5f, 0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, -1.0f} },
+	{ {0.5f, 0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, -1.0f} } };
 
 BaseUIElement::BaseUIElement(glm::vec2 pos, glm::vec2 scale) :
 	BaseDrawable(std::vector<VertexData>(std::begin(quad), std::end(quad))),
-	Position(pos), Scale(scale)
+	Position(pos), Scale(scale), _texture(new Texture())
 {
-
+	Flags = Drawable_Translucent | Drawable_Unlit;
 }
 
 BaseUIElement::~BaseUIElement()
@@ -35,64 +34,20 @@ void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_ligh
 {
 	ShaderObj->Use();
 
-	if (Materials.size())
-		glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 1);
-	else
-		glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 0);
-	for (uint32_t i = 0; i < Materials.size(); i++)
-	{
-		//The reason the shader works even when one of these uniforms isn't set is because
-		//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
-		if (Materials[i]->DiffuseMap != nullptr)
-		{
-			glUniform1i(glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 1);
-			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
-			Materials[i]->DiffuseMap->Bind();
-			glUniform1i(glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].DiffMap").c_str()),
-				ShaderObj->TextureCount);
-			ShaderObj->TextureCount++;
-		}
-		else
-		{
-			glUniform1i(glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 0);
-		}
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 1);
 
-		if (Materials[i]->SpecularMap != nullptr)
-		{
-			glUniform1i(glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].HasSpecMap").c_str()), 1);
-			glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
-			Materials[i]->SpecularMap->Bind();
-			glUniform1i(glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].SpecMap").c_str()),
-				ShaderObj->TextureCount);
-			ShaderObj->TextureCount++;
-		}
-		else
-		{
-			glUniform1i(glGetUniformLocation(ShaderObj->Program,
-				("materials[" + std::to_string(i) + "].HasSpecMap").c_str()), 0);
-		}
-
-		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].AmbientStrength").c_str()),
-			Materials[i]->AmbientStrength);
-		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].DiffuseStrength").c_str()),
-			Materials[i]->DiffuseStrength);
-		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].SpecularStrength").c_str()),
-			Materials[i]->SpecularStrength);
-		glUniform1f(glGetUniformLocation(ShaderObj->Program,
-			("materials[" + std::to_string(i) + "].Shininess").c_str()),
-			Materials[i]->Shininess);
-	}
-
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numMaterials"),
+	//The reason the shader works even when one of these uniforms isn't set is because
+	//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "materials[0].HasDiffMap"), 1);
+	glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
+	_texture->Bind();
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "materials[0].DiffMap"),
 		ShaderObj->TextureCount);
+	ShaderObj->TextureCount++;
+
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "materials[0].HasSpecMap"), 0);
+
+	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numMaterials"), 1);
 
 	//model matrix transforms model space to world space - rotation and translation
 	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "model"), 1, GL_FALSE,
@@ -115,7 +70,7 @@ void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_ligh
 glm::mat4 BaseUIElement::GetModelMatrix()
 {
 	glm::mat4 transform;
-	transform = glm::translate(transform, glm::vec3(Position, 0.0f));
+	transform = glm::translate(transform, glm::vec3(Position, 0.2f));
 	transform = glm::scale(transform, glm::vec3(Scale, 1.0f));
 	return transform;
 }

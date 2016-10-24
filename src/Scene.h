@@ -9,6 +9,7 @@
 class SceneRenderer;
 class BaseDrawable;
 class BaseObject;
+class BaseUIElement;
 class Camera;
 class Window;
 
@@ -19,6 +20,7 @@ public:
 	~Scene();
 
 	void AddObjectToScene(BaseObject * obj);
+	void AddUIElementToScene(BaseUIElement * element);
 
 	void PrepareScene();
 

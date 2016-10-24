@@ -7,8 +7,7 @@
 #include "Lights.h"
 #include "Mesh.h"
 #include "Logging.h"
-
-//#include "Cube.h"
+#include "BaseUIElement.h"
 
 Scene::Scene(Window * window, Camera * camera)
 {
@@ -51,6 +50,11 @@ void Scene::AddObjectToScene(BaseObject * obj)
 	LightDirectional * directional_light = dynamic_cast<LightDirectional *>(obj);
 	if (directional_light)
 		_scene_renderer->SetDirectionalLight(directional_light);
+}
+
+void Scene::AddUIElementToScene(BaseUIElement * element)
+{
+	_scene_renderer->AddDrawable(element);
 }
 
 void Scene::PrepareScene()

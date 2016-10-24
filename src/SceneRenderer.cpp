@@ -142,6 +142,8 @@ bool SceneRenderer::BuildShaders()
 		//If we have new ShaderCreateInfo params or flags, add them here
 		if (drawable->Flags & Drawable_Translucent)
 			shader_create_info.Flags |= Shader_Translucent;
+		if (drawable->Flags & Drawable_Unlit)
+			shader_create_info.Flags |= Shader_Unlit;
 
 		Shader * shader = Shader::ShaderExists(shader_create_info);
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseDrawable.h"
 
+class Texture;
+
 class BaseUIElement :
 	public BaseDrawable
 {
@@ -15,5 +17,8 @@ public:
 
 	glm::vec2 Scale;
 	glm::vec2 Position;
+
+protected:
+	Texture * _texture;
 };
 
