@@ -109,8 +109,13 @@ int main()
 	Cube * glass = new Cube(glass_material);
 	glass->Flags |= Drawable_Translucent;
 	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
-	glass->Position = glm::vec3(0.5f, 0.3f, 0.0f);
+	glass->Position = glm::vec3(1.2f, 0.3f, 0.0f);
 	scene->AddObjectToScene(glass);
+	Cube * glass2 = new Cube(glass_material);
+	glass2->Flags |= Drawable_Translucent;
+	glass2->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
+	glass2->Position = glm::vec3(1.7f, 0.3f, 1.6f);
+	scene->AddObjectToScene(glass2);
 
 	Cube * floor = new Cube(mat1);
 	floor->Position = glm::vec3(0.0f, -1.0f, 0.0f);
