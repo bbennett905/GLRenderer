@@ -8,7 +8,7 @@ class FPS_UIElement :
 	public BaseUIElement
 {
 public:
-	FPS_UIElement();
+	FPS_UIElement(Window * window);
 	~FPS_UIElement();
 
 	void Update(double delta_time);

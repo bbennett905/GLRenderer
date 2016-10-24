@@ -6,19 +6,20 @@
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Window.h"
 
 VertexData quad[] = {
 	// Positions				// Normals       // Texture Coords
-	{ {-0.5f, -0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f,  0.0f} },
-	{ { 0.5f, -0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f,  0.0f} },
-	{ { 0.5f,  0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, -1.0f} },
-	{ { 0.5f,  0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, -1.0f} },
-	{ {-0.5f,  0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, -1.0f} },
-	{ {-0.5f, -0.5f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f,  0.0f} } };
+	{ {-1.0f, -1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f,  0.0f} },
+	{ { 1.0f, -1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f,  0.0f} },
+	{ { 1.0f,  1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, -1.0f} },
+	{ { 1.0f,  1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {1.0f, -1.0f} },
+	{ {-1.0f,  1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, -1.0f} },
+	{ {-1.0f, -1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f,  0.0f} } };
 
-BaseUIElement::BaseUIElement(glm::vec2 pos, glm::vec2 scale) :
+BaseUIElement::BaseUIElement(Window * window, glm::vec2 pos, glm::vec2 scale) :
 	BaseDrawable(std::vector<VertexData>(std::begin(quad), std::end(quad))),
-	Position(pos), Scale(scale), _texture(new Texture())
+	Position(pos), Scale(scale), _texture(new Texture()), _window(window)
 {
 	Flags = Drawable_Translucent | Drawable_Unlit | Drawable_UI;
 }

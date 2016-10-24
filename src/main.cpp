@@ -127,7 +127,7 @@ int main()
 	cone->SetPosition(glm::vec3(-0.01f, 2.02f, 1.0f));
 	scene->AddObjectToScene(cone);
 
-	FPS_UIElement * fps_element = new FPS_UIElement();
+	FPS_UIElement * fps_element = new FPS_UIElement(&window);
 	scene->AddUIElementToScene(fps_element);
 
 	scene->PrepareScene();

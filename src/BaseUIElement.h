@@ -2,12 +2,13 @@
 #include "BaseDrawable.h"
 
 class Texture;
+class Window;
 
 class BaseUIElement :
 	public BaseDrawable
 {
 public:
-	BaseUIElement(glm::vec2 pos = glm::vec2(0.0f, 0.0f), 
+	BaseUIElement(Window * window, glm::vec2 pos = glm::vec2(0.0f, 0.0f),
 		glm::vec2 scale = glm::vec2(1.0f, 1.0f));
 	virtual ~BaseUIElement();
 
@@ -20,5 +21,6 @@ public:
 
 protected:
 	Texture * _texture;
+	Window * _window;
 };
 
