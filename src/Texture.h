@@ -22,6 +22,7 @@ public:
 	//Path to the texture
 	Texture(std::string path, uint32_t flags = 0);
 	Texture(SDL_Surface * surface, uint32_t flags);
+	Texture();
 	~Texture();
 
 	static Texture * TextureExists(std::string path);

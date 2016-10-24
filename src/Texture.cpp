@@ -49,7 +49,7 @@ Texture::Texture(SDL_Surface * surface, uint32_t flags) :
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D(GL_TEXTURE_2D, 0,
@@ -62,6 +62,11 @@ Texture::Texture(SDL_Surface * surface, uint32_t flags) :
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_textures_loaded.push_back(this);
 	Logging::LogMessage(LogLevel_Debug, "Loaded texture from SDL surface");
+}
+
+Texture::Texture()
+{
+	glGenTextures(1, &_id);
 }
 
 Texture::~Texture()
