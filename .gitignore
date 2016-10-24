@@ -219,5 +219,8 @@ build/*
 !build/glew32.dll
 !build/assimp-vc130-mt.dll
 !build/SDL2.dll
+!build/SDL2_ttf.dll
+!build/zlib1.dll
+!build/libfreetype-6.dll
 !nanosuit/nanosuit.obj
 !cone/cone.obj
