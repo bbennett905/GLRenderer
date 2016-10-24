@@ -20,7 +20,7 @@ BaseUIElement::BaseUIElement(glm::vec2 pos, glm::vec2 scale) :
 	BaseDrawable(std::vector<VertexData>(std::begin(quad), std::end(quad))),
 	Position(pos), Scale(scale), _texture(new Texture())
 {
-	Flags = Drawable_Translucent | Drawable_Unlit;
+	Flags = Drawable_Translucent | Drawable_Unlit | Drawable_UI;
 }
 
 BaseUIElement::~BaseUIElement()

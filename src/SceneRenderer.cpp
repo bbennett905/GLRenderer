@@ -181,7 +181,14 @@ void SceneRenderer::Draw()
 	}
 	for (auto drawable : _draw_list)
 	{
-		if (drawable->Flags & Drawable_Translucent)
+		if (drawable->Flags & Drawable_Translucent && !(drawable->Flags & Drawable_UI))
 			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
+	glDisable(GL_DEPTH_TEST);
+	for (auto drawable : _draw_list)
+	{
+		if (drawable->Flags & Drawable_UI)
+			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+	}
+	glEnable(GL_DEPTH_TEST);
 }
