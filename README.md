@@ -16,7 +16,7 @@ All listed files are included in /include/ or /lib/ directory.
 
 * [SOIL](http://www.lonesock.net/soil.html) ([License](http://www.lonesock.net/soil.html)) - Image loader
 
-* [SDL2](https://www.libsdl.org/) ([License](https://www.libsdl.org/license.php)) - Window management and input (replaced GLFW3 in this project)
+* [SDL2](https://www.libsdl.org/) ([License](https://www.libsdl.org/license.php)) - Window management and input, also SDL2_ttf (replaced GLFW3 in this project)
 
 ### Recommended ###
 
@@ -38,10 +38,14 @@ This uses typical GLSL shaders (currently no geometry shader support) with a few
 
 * *MAX_MATERIALS* - Defined in Shader.h, sets the max materials that can be used for a single drawable object
 
+Suffix *_unlit* on shaders means that it doesn't support lighting
+
 
 ### ToDo List ###
 
-* 2D drawing using SDL (for UI)
+* Improve transparency testing/blending/rendering
+
+* Improve 2D drawing using SDL (for UI)
 
 * Improved memory management system
 
