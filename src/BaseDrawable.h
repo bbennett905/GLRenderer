@@ -17,7 +17,8 @@ struct VertexData
 
 enum DrawableFlags
 {
-	Drawable_Translucent = 1 << 0
+	Drawable_Translucent = 1 << 0,
+	Drawable_Unlit = 1 << 1
 };
 
 class SceneRenderer;
