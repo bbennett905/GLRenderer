@@ -70,7 +70,7 @@ void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_ligh
 glm::mat4 BaseUIElement::GetModelMatrix()
 {
 	glm::mat4 transform;
-	transform = glm::translate(transform, glm::vec3(Position, 0.2f));
+	transform = glm::translate(transform, glm::vec3(Position, 0.01f));
 	transform = glm::scale(transform, glm::vec3(Scale, 1.0f));
 	return transform;
 }

@@ -42,5 +42,5 @@ void Camera::SetAngles(glm::vec3 newAngles)
 void Camera::updateMatrices()
 {
 	_viewMatrix = glm::lookAt(Position, Position + GetForward(), GetUp());
-	_projMatrix = glm::perspective(_fov, _aspectRatio, 0.1f, 1000.0f);
+	_projMatrix = glm::perspective(_fov, _aspectRatio, 0.01f, 1000.0f);
 }
