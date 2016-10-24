@@ -94,3 +94,17 @@ void Texture::Bind()
 { 
 	glBindTexture(GL_TEXTURE_2D, _id); 
 }
+
+void Texture::Update(SDL_Surface * surface)
+{
+	glBindTexture(GL_TEXTURE_2D, _id);
+
+	glTexImage2D(GL_TEXTURE_2D, 0,
+		_flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		surface->w, surface->h, 0,
+		_flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		GL_UNSIGNED_BYTE, surface->pixels);
+	//glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}

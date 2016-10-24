@@ -29,7 +29,7 @@ public:
 	//Bind this texture object to the active GL texture
 	void Bind();
 
-	
+	void Update(SDL_Surface * surface);
 
 private:
 	static std::vector<Texture *> _textures_loaded;
