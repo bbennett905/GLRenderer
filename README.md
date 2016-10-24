@@ -45,11 +45,11 @@ Suffix *_unlit* on shaders means that it doesn't support lighting
 
 * Improve transparency testing/blending/rendering
 
-* Improve 2D drawing using SDL (for UI)
-
 * Improved memory management system
 
 * Create more primitives (possibly generating vertices & indices)
+
+* Add cubemap/skybox support
 
 * Load materials/scenes from file
 

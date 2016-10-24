@@ -63,6 +63,7 @@ int main()
 	Logging::LogInit("log.txt");
 	Logging::MinLogLevel = LogLevel_Debug;
 
+	Logging::LogMessage(LogLevel_Info, "-------------------------------------------------------");
 	Logging::LogMessage(LogLevel_Info, "Application starting");
 
 	Scene * scene = new Scene(&window, &camera);
