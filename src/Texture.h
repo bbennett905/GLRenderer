@@ -13,7 +13,8 @@ struct SDL_Surface;
  //Any flags indicating different behaviour needed from the shader, ie translucency
 enum TextureFlags
 {
-	Texture_Translucent = 1 << 0
+	Texture_Translucent = 1 << 0,
+	Texture_Cubemap = 1 << 1
 };
 
 class Texture
@@ -21,7 +22,7 @@ class Texture
 public:
 	//Path to the texture
 	Texture(std::string path, uint32_t flags = 0);
-	Texture(SDL_Surface * surface, uint32_t flags);
+	Texture(SDL_Surface * surface, uint32_t flags = 0);
 	Texture();
 	~Texture();
 
@@ -33,6 +34,9 @@ public:
 	void Update(SDL_Surface * surface);
 
 private:
+	void loadTextureFromPath(std::string path);
+	void loadCubemapFromPath(std::string path);
+
 	static std::vector<Texture *> _textures_loaded;
 	//OpenGL texture object
 	GLuint _id;
