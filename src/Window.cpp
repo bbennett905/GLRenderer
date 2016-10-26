@@ -19,7 +19,7 @@ Window::Window(int width, int height, const char * title) :
 	//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
 	_window = SDL_CreateWindow("OpenGL Testing",
 		                       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
