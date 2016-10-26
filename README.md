@@ -43,8 +43,6 @@ Suffix *_unlit* on shaders means that it doesn't support lighting
 
 ### ToDo List ###
 
-* Improve transparency testing/blending/rendering
-
 * Improved memory management system
 
 * Create more primitives (possibly generating vertices & indices)
