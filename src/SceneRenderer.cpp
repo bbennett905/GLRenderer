@@ -1,14 +1,17 @@
 #include "SceneRenderer.h"
 
+#include <map>
 #include <iostream>
 #include <glew.h>
 
 #include "Window.h"
 #include "BaseDrawable.h"
+#include "BaseObject.h"
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
 #include "Logging.h"
+#include "Camera.h"
 
 SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	_camera(camera)
@@ -173,17 +176,36 @@ void SceneRenderer::Draw()
 	glClearColor(_clear_color.x, _clear_color.y, _clear_color.z, _clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//TODO sort this by transparent textures
+	//Draw normal objects first
 	for (auto drawable : _draw_list)
 	{
-		if (!(drawable->Flags & Drawable_Translucent))
+		if (!(drawable->Flags & Drawable_Translucent) && !(drawable->Flags & Drawable_UI))
 			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
+
+	//Then draw translucent objects, ordered by distance
+	//This being called every frame is probably a bit silly - 
+	//maybe instead find a way to call it only when the camera moves over a certain distance?
+	std::map<float, BaseDrawable *> sorted;
 	for (auto drawable : _draw_list)
 	{
+		//If the object matches what we're trying to draw..
 		if (drawable->Flags & Drawable_Translucent && !(drawable->Flags & Drawable_UI))
-			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+		{
+			//..and is a BaseObject (has a position)..
+			BaseObject * object = dynamic_cast<BaseObject *>(drawable);
+			if (object)
+			{
+				//..add it to the sorted list..
+				sorted[glm::length(_camera->GetPos() - object->Position)] = drawable;
+			}
+		}
 	}
+	//..and finally, draw everything in that list.
+	for (std::map<float, BaseDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
+		it->second->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+
+	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);
 	for (auto drawable : _draw_list)
 	{
