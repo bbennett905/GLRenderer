@@ -47,11 +47,7 @@ Suffix *_unlit* on shaders means that it doesn't support lighting
 
 * Create more primitives (possibly generating vertices & indices)
 
-* Add cubemap/skybox support
-
 * Load materials/scenes from file
-
-* More shaders and shader naming changes
 
 * See in-file TODOs for others...
 
