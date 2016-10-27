@@ -183,6 +183,13 @@ void SceneRenderer::Draw()
 			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
 
+	//Draw the skybox
+	for (auto drawable : _draw_list)
+	{
+		if (drawable->Flags & Drawable_Skybox)
+			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+	}
+
 	//Then draw translucent objects, ordered by distance
 	//This being called every frame is probably a bit silly - 
 	//maybe instead find a way to call it only when the camera moves over a certain distance?
@@ -204,13 +211,6 @@ void SceneRenderer::Draw()
 	//..and finally, draw everything in that list.
 	for (std::map<float, BaseDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
 		it->second->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
-
-	//Draw the skybox
-	for (auto drawable : _draw_list)
-	{
-		if (drawable->Flags & Drawable_Skybox)
-			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
-	}
 
 	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);
