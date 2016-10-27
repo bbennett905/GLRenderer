@@ -29,9 +29,6 @@ SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	glEnable(GL_BLEND);
 	glEnable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//TODO remove this once cubemaps/skybox 
-	_clear_color = glm::vec4(0.0f, 0.0f, 0.5f, 1.0f);
 }
 
 SceneRenderer::~SceneRenderer()
@@ -139,14 +136,17 @@ bool SceneRenderer::BuildShaders()
 	shader_create_info.Version =		ShaderVersion330Core;
 	shader_create_info.NumPointLights = _point_light_list.size();
 	shader_create_info.NumSpotLights =	_spot_light_list.size();
-
+	
 	for (auto drawable : _draw_list)
 	{
+		shader_create_info.Flags = 0;
 		//If we have new ShaderCreateInfo params or flags, add them here
 		if (drawable->Flags & Drawable_Translucent)
 			shader_create_info.Flags |= Shader_Translucent;
 		if (drawable->Flags & Drawable_Unlit)
 			shader_create_info.Flags |= Shader_Unlit;
+		if (drawable->Flags & Drawable_Skybox)
+			shader_create_info.Flags |= Shader_Skybox;
 
 		Shader * shader = Shader::ShaderExists(shader_create_info);
 
@@ -173,13 +173,13 @@ bool SceneRenderer::BuildShaders()
 
 void SceneRenderer::Draw()
 {
-	glClearColor(_clear_color.x, _clear_color.y, _clear_color.z, _clear_color.w);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT); 
 
 	//Draw normal objects first
 	for (auto drawable : _draw_list)
 	{
-		if (!(drawable->Flags & Drawable_Translucent) && !(drawable->Flags & Drawable_UI))
+		if (!(drawable->Flags & Drawable_Translucent) && !(drawable->Flags & Drawable_UI) &&
+			!(drawable->Flags & Drawable_Skybox))
 			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
 
@@ -204,6 +204,13 @@ void SceneRenderer::Draw()
 	//..and finally, draw everything in that list.
 	for (std::map<float, BaseDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
 		it->second->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+
+	//Draw the skybox
+	for (auto drawable : _draw_list)
+	{
+		if (drawable->Flags & Drawable_Skybox)
+			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+	}
 
 	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);

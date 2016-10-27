@@ -45,8 +45,6 @@ private:
 	std::vector<Texture *>		_texture_list;
 	std::vector<Shader *>		_shader_list;
 
-	glm::vec4 _clear_color;
-
 	Camera * _camera;
 };
 
