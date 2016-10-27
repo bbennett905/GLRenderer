@@ -45,7 +45,8 @@ struct ShaderCreateInfo
 enum ShaderFlags
 {
 	Shader_Translucent = 1 << 0,
-	Shader_Unlit = 1 << 1
+	Shader_Unlit = 1 << 1,
+	Shader_Skybox = 1 << 2
 };
 
 class Shader

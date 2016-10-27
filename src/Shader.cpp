@@ -15,15 +15,18 @@ Shader::Shader(ShaderCreateInfo info) :
 {
 	char * vertexPath;
 	char * fragPath;
+	vertexPath = "../shaders/default.vert";
+	fragPath = "../shaders/default.frag";
+
 	if (info.Flags & Shader_Unlit)
 	{
 		vertexPath = "../shaders/default_unlit.vert";
 		fragPath = "../shaders/default_unlit.frag";
 	}
-	else
+	if (info.Flags & Shader_Skybox)
 	{
-		vertexPath = "../shaders/default.vert";
-		fragPath = "../shaders/default.frag";
+		vertexPath = "../shaders/skybox.vert";
+		fragPath = "../shaders/skybox.frag";
 	}
 
 	std::string vertexSource;
