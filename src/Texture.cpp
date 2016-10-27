@@ -139,6 +139,8 @@ void Texture::loadCubemapFromPath(std::string path)
 	{
 		std::string name = path + std::to_string(i) + ".jpg";
 		image = SOIL_load_image(name.c_str(), &tex_width, &tex_height, 0, SOIL_LOAD_RGB);
+		if (image == nullptr)
+			Logging::LogMessage(LogLevel_Error, "Failed loading texture \"%s\"\n", path.c_str());
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
 			tex_width, tex_height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		SOIL_free_image_data(image);
@@ -150,4 +152,7 @@ void Texture::loadCubemapFromPath(std::string path)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	_textures_loaded.push_back(this);
+	Logging::LogMessage(LogLevel_Debug, "Loaded cubemap texture \"%s\"", _path.c_str());
 }
