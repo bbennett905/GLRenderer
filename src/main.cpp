@@ -16,6 +16,7 @@
 #include "Scene.h"
 #include "Logging.h"
 #include "FPS_UIElement.h"
+#include "Skybox.h"
 
 #undef main //Thanks, SDL!
 
@@ -79,6 +80,9 @@ int main()
 	scene->AddObjectToScene(dirLight);
 	scene->AddObjectToScene(pointLight);
 	scene->AddObjectToScene(spotLight);
+
+	Skybox * sky = new Skybox("../images/skybox/a");
+	scene->AddObjectToScene(sky);
 
 	Texture * texture1 = new Texture("../images/container2.png");
 	Texture * specMap = new Texture("../images/container2_specular.png");
