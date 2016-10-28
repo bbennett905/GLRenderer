@@ -4,7 +4,6 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-#include <SDL_keycode.h>
 
 #include "Texture.h"
 #include "Camera.h"
@@ -17,6 +16,7 @@
 #include "Logging.h"
 #include "FPS_UIElement.h"
 #include "Skybox.h"
+#include "Keycodes.h"
 
 #undef main //Thanks, SDL!
 
@@ -29,22 +29,19 @@ Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-void KeyCallback(const Uint8 * keys, double delta_time)
+void InputCallback(const Uint8 * keys, double delta_time, int delta_x, int delta_y)
 {
 	float cameraSpeed = 3.0f * float(delta_time);
-	if (keys[SDL_SCANCODE_W]) 
+	if (keys[KEY_W]) 
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
-	if (keys[SDL_SCANCODE_A]) 
+	if (keys[KEY_A]) 
 		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetRight()));
-	if (keys[SDL_SCANCODE_S]) 
+	if (keys[KEY_S]) 
 		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetForward()));
-	if (keys[SDL_SCANCODE_D]) 
+	if (keys[KEY_D]) 
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
-	if (keys[SDL_SCANCODE_ESCAPE]) window.ShouldExit = true;
-}
+	if (keys[KEY_ESCAPE]) window.ShouldExit = true;
 
-void CursorCallback(int delta_x, int delta_y)
-{
 	float sensitivity = 0.075f;
 
 	glm::vec3 ang = camera.GetAngles();
@@ -138,14 +135,13 @@ int main()
 	scene->PrepareScene();
 
 	//Set where we handle input
-	window.SetKeyCallback(KeyCallback);
-	window.SetCursorCallback(CursorCallback);
+	Input::SetInputHandler(InputCallback);
 
 	Uint64 end_time, start_time = SDL_GetPerformanceCounter();
 	Uint64 last_print_time = SDL_GetPerformanceCounter();
 	int num_frames = 0;
 
-	while (!window.ShouldExit)
+	while (!Window::ShouldExit)
 	{
 		while (SDL_GetPerformanceCounter() <
 			start_time + (double(1.0f / 300.0f) * SDL_GetPerformanceFrequency()));
@@ -178,7 +174,8 @@ int main()
 		spotLight->SetAngles(camera.GetAngles());
 
 		//Go to the event callbacks specified before
-		window.PollEvents(delta_time);
+		//window.PollEvents(delta_time);
+		Input::PollEvents(delta_time);
 
 		scene->Update(delta_time);
 
