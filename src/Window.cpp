@@ -81,13 +81,14 @@ void Window::PollEvents(double delta_time)
 	int x, y;
 	SDL_GetRelativeMouseState(&x, &y);
 	_cursor_callback(x, y);
-
-	if (_has_focus)
-		SDL_WarpMouseInWindow(_window, _width / 2, _height / 2);
 }
 
 void Window::SwapBuffers()
 {
+	//Do this here because its called every frame
+	if (_has_focus)
+		SDL_WarpMouseInWindow(_window, _width / 2, _height / 2);
+
 	SDL_GL_SwapWindow(_window);
 }
 
