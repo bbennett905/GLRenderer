@@ -165,16 +165,16 @@ int main()
 										/ SDL_GetPerformanceFrequency()), 
 						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) 
 										/ SDL_GetPerformanceFrequency()), 0.0f);
-		cube->SetAngles(rotate);
-		cube2->SetAngles(rotate);
-		cube3->SetAngles(rotate);
-		cube4->SetAngles(rotate);
+		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
+		cube->SetAngles(cube->GetAngles() + delta_rotate);
+		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
+		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
+		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
 
 		spotLight->Position = camera.GetPos();
 		spotLight->SetAngles(camera.GetAngles());
 
 		//Go to the event callbacks specified before
-		//window.PollEvents(delta_time);
 		Input::PollEvents(delta_time);
 
 		scene->Update(delta_time);
