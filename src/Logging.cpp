@@ -50,6 +50,7 @@ namespace Logging
 			void AddLogMessage(std::string message, double time = 5.0)
 			{
 				_log_queue.push_back(std::tuple<double, std::string>(time, message));
+				_has_changed = true;
 			}
 
 			void Update(double delta_time)
@@ -57,12 +58,10 @@ namespace Logging
 				//Don't do anything if theres nothing to display
 				if (_log_queue.size() == 0) return;
 
-				bool changed = false;
-
 				while (_log_queue.size() > 5) //Show only 5 entries at a time
 				{
 					_log_queue.pop_front();
-					changed = true;
+					_has_changed = true;
 				}
 
 				std::string buffer;
@@ -73,14 +72,14 @@ namespace Logging
 					if (std::get<0>(_log_queue[i]) <= 0.0)
 					{
 						_log_queue.erase(_log_queue.begin() + i);
-						changed = true;
+						_has_changed = true;
 						continue;
 					}
 
 					buffer += std::get<1>(_log_queue[i]) + "\n";
 				}
 
-				if (!changed) return;
+				if (!_has_changed) return;
 
 				if (_surface) SDL_FreeSurface(_surface);
 
@@ -99,10 +98,11 @@ namespace Logging
 				{
 					_texture->Update(SDL_CreateRGBSurface(0, 1, 1, 8, 0, 0, 0, 0));
 				}
+				_has_changed = false;
 			}
 
 		private:
-			
+			bool _has_changed;
 			std::deque<std::tuple<double, std::string>> _log_queue;
 			TTF_Font * _font;
 			SDL_Surface * _surface;

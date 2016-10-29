@@ -16,7 +16,7 @@ namespace Logging
 {
 	//Log to the file specified in LogFilePath
 	extern bool bLogToFile;
-	//TODO
+	//Prints log messages to the screen
 	extern bool bLogToScreen;
 	//Logs to the console
 	extern bool bLogToConsole;
