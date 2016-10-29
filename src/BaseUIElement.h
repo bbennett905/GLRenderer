@@ -25,5 +25,8 @@ protected:
 	void autoPosition(int width, int height, int x, int y);
 	Texture * _texture;
 	Window * _window;
+
+private:
+	static bool _is_ttf_init;
 };
 

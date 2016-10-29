@@ -2,11 +2,15 @@
 
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
+#include <SDL_ttf.h>
 
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
 #include "Window.h"
+#include "Logging.h"
+
+bool BaseUIElement::_is_ttf_init = false;
 
 VertexData quad[] = {
 	// Positions				// Normals       // Texture Coords
@@ -22,6 +26,16 @@ BaseUIElement::BaseUIElement(Window * window, glm::vec2 pos, glm::vec2 scale) :
 	Position(pos), Scale(scale), _texture(new Texture()), _window(window)
 {
 	Flags = Drawable_Translucent | Drawable_Unlit | Drawable_UI;
+	
+	if (!_is_ttf_init)
+	{
+		if (TTF_Init() < 0)
+		{
+			Logging::LogMessage(LogLevel_Error, "SDL_TTF intialization failed: %s", SDL_GetError());
+			return;
+		}
+		_is_ttf_init = true;
+	}
 }
 
 BaseUIElement::~BaseUIElement()
@@ -33,6 +47,7 @@ BaseUIElement::~BaseUIElement()
 void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_light_list,
 	std::vector<LightSpot *> & spot_light_list, LightDirectional * directional_light)
 {
+	if (!_texture) return;
 	ShaderObj->Use();
 
 	glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 1);
