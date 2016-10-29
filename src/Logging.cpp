@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdarg.h>
+#include <SDL.h>
 
 namespace Logging
 {
@@ -78,7 +79,8 @@ namespace Logging
 
 		if (level == LogLevel_Critical)
 		{
-			//TODO add log to error box for critical errors - SDL error box thing
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Critical Error", buffer, NULL);
+			exit(0);
 		}
 
 	}

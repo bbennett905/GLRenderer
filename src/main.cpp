@@ -160,7 +160,6 @@ int main()
 			num_frames = 0;
 		}
 
-		//TODO this rotation is really jittery
 		glm::vec3 rotate(GLfloat(40.0f * float(SDL_GetPerformanceCounter()) 
 										/ SDL_GetPerformanceFrequency()), 
 						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) 
