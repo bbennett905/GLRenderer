@@ -4,6 +4,7 @@
 #include <SDL_keycode.h>
 
 #include "Window.h"
+#include "Logging.h"
 
 namespace Input
 {
@@ -33,9 +34,11 @@ namespace Input
 				{
 				case SDL_WINDOWEVENT_FOCUS_GAINED:
 					Window::_has_focus = true;
+					Logging::LogMessage(LogLevel_Debug, "Window gained focus");
 					break;
 				case SDL_WINDOWEVENT_FOCUS_LOST:
 					Window::_has_focus = false;
+					Logging::LogMessage(LogLevel_Debug, "Window lost focus");
 					break;
 				}
 			}
