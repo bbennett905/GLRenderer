@@ -50,17 +50,20 @@ namespace Logging
 			void AddLogMessage(std::string message, double time = 5.0)
 			{
 				_log_queue.push_back(std::tuple<double, std::string>(time, message));
-
-				while (_log_queue.size() > 5) //Show only 5 entries at a time
-					_log_queue.pop_front();
 			}
 
 			void Update(double delta_time)
 			{
+				//Don't do anything if theres nothing to display
 				if (_log_queue.size() == 0) return;
 
-				if (_surface)
-					SDL_FreeSurface(_surface);
+				bool changed = false;
+
+				while (_log_queue.size() > 5) //Show only 5 entries at a time
+				{
+					_log_queue.pop_front();
+					changed = true;
+				}
 
 				std::string buffer;
 				for (uint32_t i = 0; i < _log_queue.size(); i++)
@@ -70,11 +73,17 @@ namespace Logging
 					if (std::get<0>(_log_queue[i]) <= 0.0)
 					{
 						_log_queue.erase(_log_queue.begin() + i);
+						changed = true;
 						continue;
 					}
 
 					buffer += std::get<1>(_log_queue[i]) + "\n";
 				}
+
+				if (!changed) return;
+
+				if (_surface) SDL_FreeSurface(_surface);
+
 				if (buffer.length() > 0)
 				{
 					_surface = TTF_RenderText_Blended_Wrapped(_font, buffer.c_str(),
