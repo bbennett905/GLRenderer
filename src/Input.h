@@ -1,9 +1,12 @@
 #pragma once
 
-//TODO enums for SDL event/ keystate wrapper
+class Window;
 
 namespace Input
 {
+	//Initializes input
+	void InputInit(Window * window);
+
 	//Sets the callback used to handle input
 	void SetInputHandler(void (* input_callback)(const unsigned char *, double, int, int));
 

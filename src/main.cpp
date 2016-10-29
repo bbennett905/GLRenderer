@@ -61,6 +61,8 @@ int main()
 	//TODO render system namespace for initialization and such
 	Scene * scene = new Scene(&window, &camera);
 
+	Input::InputInit(&window);
+
 	Logging::LogInit(&window, scene, "log.txt");
 	Logging::MinLogLevel = LogLevel_Debug;
 
@@ -142,7 +144,7 @@ int main()
 	Uint64 last_print_time = SDL_GetPerformanceCounter();
 	int num_frames = 0;
 
-	while (!Window::ShouldExit)
+	while (!window.ShouldExit)
 	{
 		while (SDL_GetPerformanceCounter() <
 			start_time + (double(1.0f / 300.0f) * SDL_GetPerformanceFrequency()));

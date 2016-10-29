@@ -23,12 +23,12 @@ public:
 	//Returns window height
 	int GetHeight();
 
-	static bool ShouldExit;
+	bool ShouldExit;
 
 	friend void Input::PollEvents(double delta_time);
 
 private:
-	static bool _has_focus;
+	bool _has_focus;
 	SDL_Window * _window;
 	SDL_GLContext _context;
 	int _width;

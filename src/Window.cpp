@@ -4,10 +4,6 @@
 
 #include "Logging.h"
 
-//TODO find a better way to do this..
-bool Window::_has_focus = true;
-bool Window::ShouldExit = false;
-
 Window::Window(int width, int height, const char * title) :
 	_width(width), _height(height)
 {
