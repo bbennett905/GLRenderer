@@ -58,13 +58,14 @@ void InputCallback(const Uint8 * keys, double delta_time, int delta_x, int delta
 
 int main()
 {
-	Logging::LogInit("log.txt");
+	//TODO render system namespace for initialization and such
+	Scene * scene = new Scene(&window, &camera);
+
+	Logging::LogInit(&window, scene, "log.txt");
 	Logging::MinLogLevel = LogLevel_Debug;
 
 	Logging::LogMessage(LogLevel_Info, "-------------------------------------------------------");
 	Logging::LogMessage(LogLevel_Info, "Application starting");
-
-	Scene * scene = new Scene(&window, &camera);
 
 	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 3.0f,
@@ -177,6 +178,7 @@ int main()
 		Input::PollEvents(delta_time);
 
 		scene->Update(delta_time);
+		Logging::LogUpdate(delta_time);
 
 		window.SwapBuffers();
 	}

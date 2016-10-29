@@ -4,7 +4,15 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdarg.h>
-#include <SDL.h>
+#include <deque>
+#include <tuple>
+#include <SDL_video.h>
+#include <SDL_ttf.h>
+
+#include "Window.h"
+#include "Texture.h"
+#include "BaseUIElement.h"
+#include "Scene.h"
 
 namespace Logging
 {
@@ -17,6 +25,81 @@ namespace Logging
 	{
 		//File stream object
 		std::ofstream _file;
+
+		class Log_UIElement :
+			public BaseUIElement
+		{
+		public:
+			Log_UIElement(Window * window) :
+				BaseUIElement(window)
+			{
+				_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 14);
+				_surface = TTF_RenderText_Blended_Wrapped(_font, "N/A", { 200, 200, 200 }, 500);
+				
+				delete _texture;
+				_texture = new Texture(_surface, Texture_Translucent);
+				autoPosition(_surface->w, _surface->h, 0, 40);
+			}
+
+			~Log_UIElement() 
+			{ 
+				SDL_FreeSurface(_surface);
+				delete _texture;
+			}
+
+			void AddLogMessage(std::string message, double time = 5.0)
+			{
+				_log_queue.push_back(std::tuple<double, std::string>(time, message));
+
+				while (_log_queue.size() > 5) //Show only 5 entries at a time
+					_log_queue.pop_front();
+			}
+
+			void Update(double delta_time)
+			{
+				if (_log_queue.size() == 0) return;
+
+				if (_surface)
+					SDL_FreeSurface(_surface);
+
+				std::string buffer;
+				for (uint32_t i = 0; i < _log_queue.size(); i++)
+				{
+					//Update the time and remove old elements
+					std::get<0>(_log_queue[i]) -= delta_time;
+					if (std::get<0>(_log_queue[i]) <= 0.0)
+					{
+						_log_queue.erase(_log_queue.begin() + i);
+						continue;
+					}
+
+					buffer += std::get<1>(_log_queue[i]) + "\n";
+				}
+				if (buffer.length() > 0)
+				{
+					_surface = TTF_RenderText_Blended_Wrapped(_font, buffer.c_str(),
+						{ 200, 200, 200 }, 500);
+
+					if (_surface)
+					{
+						autoPosition(_surface->w, _surface->h, 0, 40);
+						_texture->Update(_surface);
+					}
+				}
+				else
+				{
+					_texture->Update(SDL_CreateRGBSurface(0, 1, 1, 8, 0, 0, 0, 0));
+				}
+			}
+
+		private:
+			
+			std::deque<std::tuple<double, std::string>> _log_queue;
+			TTF_Font * _font;
+			SDL_Surface * _surface;
+		};
+
+		Log_UIElement * _log_ui_element;
 	}
 
 	void LogMessage(LogLevel level, const char * str, ...)
@@ -69,7 +152,7 @@ namespace Logging
 
 		if (bLogToScreen)
 		{
-			//TODO do this, after some kind of 2d thing added
+			_log_ui_element->AddLogMessage(buffer);
 		}
 
 		if (bLogToConsole)
@@ -85,15 +168,25 @@ namespace Logging
 
 	}
 
-	void LogInit(const char * path)
+	void LogInit(Window * window, Scene * scene, const char * path)
 	{
+		_log_ui_element = new Log_UIElement(window);
+
+		scene->AddUIElementToScene(_log_ui_element);
+
 		_file.open(path, std::fstream::out | std::fstream::ate | std::fstream::app);
 
 		bLogToFile = true;
-		bLogToScreen = false;
+		bLogToScreen = true;
 		bLogToConsole = true;
 		MinLogLevel = LogLevel_Warn;
 		LogMessage(LogLevel_Info, "Logging Initialized");
+	}
+
+	void LogUpdate(double delta_time)
+	{
+		if (bLogToScreen)
+			_log_ui_element->Update(delta_time);
 	}
 
 	void LogTerm()
