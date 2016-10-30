@@ -29,7 +29,7 @@ Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-void InputCallback(const Uint8 * keys, double delta_time, int delta_x, int delta_y)
+void InputCallback(const Uint8 * keys, double delta_time, int delta_x, int delta_y, int mouse_buttons)
 {
 	float cameraSpeed = 3.0f * float(delta_time);
 	if (keys[KEY_W]) 
@@ -41,6 +41,9 @@ void InputCallback(const Uint8 * keys, double delta_time, int delta_x, int delta
 	if (keys[KEY_D]) 
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
 	if (keys[KEY_ESCAPE]) window.ShouldExit = true;
+
+	//Example
+	if (mouse_buttons & MOUSE_BUTTON(MOUSE_BUTTON_LEFT)) { }
 
 	float sensitivity = 0.075f;
 

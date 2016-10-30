@@ -1,7 +1,8 @@
 #pragma once
 
 /*
- * A slightly modified version of SDL_keycode.h, shorter names and a few codes removed
+ * A slightly modified version of SDL_keycode.h, shorter names and a few codes removed, and added
+ * snippets from SDL mouse input
  */
 
 /*
@@ -25,6 +26,18 @@ misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
 
+/**
+*  Used as a mask when testing buttons in buttonstate.
+*   - Button 1:  Left mouse button
+*   - Button 2:  Middle mouse button
+*   - Button 3:  Right mouse button
+*/
+#define MOUSE_BUTTON(X)       (1 << ((X)-1))
+#define MOUSE_BUTTON_LEFT     1
+#define MOUSE_BUTTON_MIDDLE   2
+#define MOUSE_BUTTON_RIGHT    3
+#define MOUSE_BUTTON_X1       4
+#define MOUSE_BUTTON_X2       5
 
 /**
 *  \brief The SDL keyboard scancode representation.

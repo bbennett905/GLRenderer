@@ -10,7 +10,7 @@ namespace Input
 {
 	namespace
 	{
-		void (* _input_callback)(const unsigned char *, double, int, int);
+		void (* _input_callback)(const unsigned char *, double, int, int, int);
 		Window * _window;
 	}
 
@@ -19,7 +19,7 @@ namespace Input
 		_window = window;
 	}
 
-	void SetInputHandler(void (* input_callback)(const unsigned char *, double, int, int))
+	void SetInputHandler(void (* input_callback)(const unsigned char *, double, int, int, int))
 	{
 		_input_callback = input_callback;
 	}
@@ -52,9 +52,8 @@ namespace Input
 
 		const Uint8 * keys = SDL_GetKeyboardState(NULL);
 
-		//TODO get buttons, and handle somewhere
-		int x, y;
-		SDL_GetRelativeMouseState(&x, &y);
-		_input_callback(keys, delta_time, x, y);
+		int x, y, buttons;
+		buttons = SDL_GetRelativeMouseState(&x, &y);
+		_input_callback(keys, delta_time, x, y, buttons);
 	}
 }
