@@ -60,7 +60,7 @@ Shader::Shader(ShaderCreateInfo info) :
 	createShaders(vertexSource.c_str(), fragSource.c_str());
 
 	_shaders_loaded.push_back(this);
-	Logging::LogMessage(LogLevel_Debug, "Created shader (%d)", Program);
+	Logging::LogMessage(LogLevel_Debug, "Created shader (%d)", _program);
 }
 
 Shader::~Shader()
@@ -73,7 +73,7 @@ Shader::~Shader()
 			break;
 		}
 	}
-	glDeleteProgram(Program);
+	glDeleteProgram(_program);
 }
 
 Shader * Shader::ShaderExists(ShaderCreateInfo info)
@@ -83,7 +83,7 @@ Shader * Shader::ShaderExists(ShaderCreateInfo info)
 		if (_shaders_loaded[i]->CreateInfo == info)
 		{
 			Logging::LogMessage(LogLevel_Debug,
-				"A suitable shader (%d) has already been created", _shaders_loaded[i]->Program);
+				"A suitable shader (%d) has already been created", _shaders_loaded[i]->_program);
 			return _shaders_loaded[i];
 		}
 	}
@@ -92,8 +92,13 @@ Shader * Shader::ShaderExists(ShaderCreateInfo info)
 
 void Shader::Use()
 {
-	glUseProgram(Program);
+	glUseProgram(_program);
 	TextureCount = 0;
+}
+
+GLuint Shader::GetProgram()
+{
+	return _program;
 }
 
 void Shader::preprocessShader(std::string & vertexSource, std::string & fragSource,
@@ -147,14 +152,14 @@ void Shader::createShaders(const char * vertexSource, const char * fragSource)
 		Logging::LogMessage(LogLevel_Error, "Failed compiling fragment shader:\n%s", infoLog);
 	};
 
-	Program = glCreateProgram();
-	glAttachShader(Program, vertex);
-	glAttachShader(Program, frag);
-	glLinkProgram(Program);
-	glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
+	_program = glCreateProgram();
+	glAttachShader(_program, vertex);
+	glAttachShader(_program, frag);
+	glLinkProgram(_program);
+	glGetProgramiv(_program, GL_LINK_STATUS, &success);
 	if (!success)
 	{
-		glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
+		glGetProgramInfoLog(_program, 512, NULL, infoLog);
 		Logging::LogMessage(LogLevel_Error, "Failed linking shaders:\n%s", infoLog);
 	}
 

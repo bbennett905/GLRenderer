@@ -62,9 +62,8 @@ public:
 	//Tells OpenGL to use this shader
 	void Use();
 
-	//TODO this should probably be read-only (or friend renderer)
 	//OpenGL shader program object of this Shader
-	GLuint Program;
+	GLuint GetProgram();
 
 	//TODO could make IncrementTextureCount and GetTextureCount (or use friend Renderer and make private)
 	//USED BY RENDERER, DO NOT MODIFY
@@ -77,5 +76,6 @@ private:
 	void preprocessShader(std::string & vertexSource, std::string & fragSource, ShaderCreateInfo info);
 	void createShaders(const char * vertexSource, const char * fragSource);
 
+	GLuint _program;
 	static std::vector<Shader *> _shaders_loaded;
 };

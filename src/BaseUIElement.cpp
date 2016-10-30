@@ -50,29 +50,29 @@ void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_ligh
 	if (!_texture) return;
 	ShaderObj->Use();
 
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "hasMaterials"), 1);
+	glUniform1i(glGetUniformLocation(ShaderObj->GetProgram(), "hasMaterials"), 1);
 
 	//The reason the shader works even when one of these uniforms isn't set is because
 	//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "materials[0].HasDiffMap"), 1);
+	glUniform1i(glGetUniformLocation(ShaderObj->GetProgram(), "materials[0].HasDiffMap"), 1);
 	glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
 	_texture->Bind();
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "materials[0].DiffMap"),
+	glUniform1i(glGetUniformLocation(ShaderObj->GetProgram(), "materials[0].DiffMap"),
 		ShaderObj->TextureCount);
 	ShaderObj->TextureCount++;
 
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "materials[0].HasSpecMap"), 0);
+	glUniform1i(glGetUniformLocation(ShaderObj->GetProgram(), "materials[0].HasSpecMap"), 0);
 
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "numMaterials"), 1);
+	glUniform1i(glGetUniformLocation(ShaderObj->GetProgram(), "numMaterials"), 1);
 
 	//model matrix transforms model space to world space - rotation and translation
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "model"), 1, GL_FALSE,
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->GetProgram(), "model"), 1, GL_FALSE,
 		glm::value_ptr(GetModelMatrix()));
 
 	//both are given identity matrix
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "view"), 1, GL_FALSE,
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->GetProgram(), "view"), 1, GL_FALSE,
 		glm::value_ptr(glm::mat4()));
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "projection"), 1, GL_FALSE,
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->GetProgram(), "projection"), 1, GL_FALSE,
 		glm::value_ptr(glm::mat4()));
 
 	glBindVertexArray(VertexArrayObj);

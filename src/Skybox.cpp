@@ -75,15 +75,15 @@ void Skybox::Draw(Camera * camera, std::vector<LightPoint*> & point_light_list,
 	ShaderObj->Use();
 
 	//view matrix moves the world relative to the camera - rotation + translation
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "view"), 1, GL_FALSE,
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->GetProgram(), "view"), 1, GL_FALSE,
 		glm::value_ptr(glm::mat4(glm::mat3(camera->GetViewMatrix()))));
 	//projection matrix is the projection of the camera, perspective or orthogonal
-	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->Program, "projection"), 1, GL_FALSE,
+	glUniformMatrix4fv(glGetUniformLocation(ShaderObj->GetProgram(), "projection"), 1, GL_FALSE,
 		glm::value_ptr(camera->GetProjMatrix()));
 
 	glBindVertexArray(VertexArrayObj);
 	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(glGetUniformLocation(ShaderObj->Program, "skybox"), 0);
+	glUniform1i(glGetUniformLocation(ShaderObj->GetProgram(), "skybox"), 0);
 	_texture->Bind();
 	glDrawArrays(GL_TRIANGLES, 0, Vertices.size());
 	glBindVertexArray(0);

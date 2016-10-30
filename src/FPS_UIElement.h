@@ -14,7 +14,6 @@ public:
 	void Update(double delta_time);
 
 private:
-	//TODO TTF wrapper class
 	TTF_Font * _font;
 	SDL_Surface * _surface;
 };
