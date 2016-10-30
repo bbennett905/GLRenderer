@@ -65,8 +65,7 @@ public:
 	//OpenGL shader program object of this Shader
 	GLuint GetProgram();
 
-	//TODO could make IncrementTextureCount and GetTextureCount (or use friend Renderer and make private)
-	//USED BY RENDERER, DO NOT MODIFY
+	//USED BY DRAW METHODS, DO NOT MODIFY
 	int TextureCount;
 
 	//Holds the info used to create this shader
