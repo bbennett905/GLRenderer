@@ -1,8 +1,8 @@
 #pragma once
 #include "BaseUIElement.h"
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+struct SDL_Surface;
+typedef struct _TTF_Font TTF_Font;
 
 class FPS_UIElement :
 	public BaseUIElement

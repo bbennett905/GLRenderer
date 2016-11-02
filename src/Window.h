@@ -1,12 +1,13 @@
 #pragma once
 
-#include <SDL.h>
-
 #include "Input.h"
 
 /*
  * Wrapper class for SDL2 window management
  */
+
+struct SDL_Window;
+typedef void * SDL_GLContext;
 
 class Window
 {

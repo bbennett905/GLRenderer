@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include <iostream>
+#include <SDL.h>
 
 #include "Logging.h"
 

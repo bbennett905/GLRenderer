@@ -1,6 +1,8 @@
 #include "FPS_UIElement.h"
 
 #include <string>
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "Material.h"
 #include "Texture.h"
