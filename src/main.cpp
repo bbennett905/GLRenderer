@@ -18,6 +18,7 @@
 #include "Skybox.h"
 #include "Keycodes.h"
 #include "Timing.h"
+#include "Profiling.h"
 
 //only needed if sdl is included in this file
 //#undef main //some sdl weird cross-platform shit, figure it out later
@@ -73,6 +74,8 @@ int main()
 
 	Logging::LogMessage(LogLevel_Info, "-------------------------------------------------------");
 	Logging::LogMessage(LogLevel_Info, "Application starting");
+	
+	Profiling::ProfInit();
 
 	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 3.0f,
@@ -185,6 +188,8 @@ int main()
 	}
 
 	delete scene;
+
+	Profiling::LogProfileData();
 
 	Logging::LogMessage(LogLevel_Info, "Application exiting");
 	Logging::LogTerm();
