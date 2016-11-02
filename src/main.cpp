@@ -17,8 +17,10 @@
 #include "FPS_UIElement.h"
 #include "Skybox.h"
 #include "Keycodes.h"
+#include "Timing.h"
 
-#undef main //Thanks, SDL!
+//only needed if sdl is included in this file
+//#undef main //some sdl weird cross-platform shit, figure it out later
 
 #define SCREEN_WIDTH 1760
 #define SCREEN_HEIGHT 990
@@ -29,7 +31,7 @@ Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-void InputCallback(const Uint8 * keys, double delta_time, int delta_x, int delta_y, int mouse_buttons)
+void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int delta_y, int mouse_buttons)
 {
 	float cameraSpeed = 3.0f * float(delta_time);
 	if (keys[KEY_W]) 
@@ -143,33 +145,27 @@ int main()
 	//Set where we handle input
 	Input::SetInputHandler(InputCallback);
 
-	Uint64 end_time, start_time = SDL_GetPerformanceCounter();
-	Uint64 last_print_time = SDL_GetPerformanceCounter();
+	uint64_t start_time = Timing::GetTime();
+	uint64_t last_print_time = Timing::GetTime();
 	int num_frames = 0;
 
 	while (!window.ShouldExit)
 	{
-		while (SDL_GetPerformanceCounter() <
-			start_time + (double(1.0f / 300.0f) * SDL_GetPerformanceFrequency()));
+		//Cap fps to 300
+		while (Timing::GetSecondsSince(start_time) < double(1.0f / 300.0f));
 
-		end_time = SDL_GetPerformanceCounter();
-		double delta_time = double(end_time - start_time) / SDL_GetPerformanceFrequency();
-		start_time = SDL_GetPerformanceCounter();
+		double delta_time = Timing::GetSecondsSince(start_time);
+		start_time = Timing::GetTime();
 
 		num_frames++;
-		double delta_print_time = double(start_time - last_print_time) /
-			SDL_GetPerformanceFrequency();
+		double delta_print_time = Timing::GetSecondsSince(last_print_time);
 		if (delta_print_time >= 0.5) 
 		{
 			fps_element->Update(delta_print_time / (double)num_frames);
-			last_print_time = SDL_GetPerformanceCounter();
+			last_print_time = Timing::GetTime();
 			num_frames = 0;
 		}
 
-		glm::vec3 rotate(GLfloat(40.0f * float(SDL_GetPerformanceCounter()) 
-										/ SDL_GetPerformanceFrequency()), 
-						 GLfloat(-25.0f * float(SDL_GetPerformanceCounter()) 
-										/ SDL_GetPerformanceFrequency()), 0.0f);
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
 		cube->SetAngles(cube->GetAngles() + delta_rotate);
 		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
