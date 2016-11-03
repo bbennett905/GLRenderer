@@ -101,6 +101,16 @@ GLuint Shader::GetProgram()
 	return _program;
 }
 
+GLuint Shader::GetUniformLocation(std::string name)
+{
+	//If it doesn't exist in the map yet, load it in
+	if (_uniform_locations.find(name) == _uniform_locations.end())
+	{
+		_uniform_locations[name] = glGetUniformLocation(_program, name.c_str());
+	}
+	return _uniform_locations[name];
+}
+
 void Shader::preprocessShader(std::string & vertexSource, std::string & fragSource,
 	ShaderCreateInfo info)
 {

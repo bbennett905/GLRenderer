@@ -3,6 +3,7 @@
 #include <string>
 #include <glew.h>
 #include <vector>
+#include <map>
 
 /*
  * Shader object class which can dynamically create shaders for the specific scene 
@@ -65,6 +66,11 @@ public:
 	//OpenGL shader program object of this Shader
 	GLuint GetProgram();
 
+	//TODO should we scan the shader at creation for all uniforms, then store them?
+	//or just cache as we need them
+	//Gets uniform location
+	GLuint GetUniformLocation(std::string name);
+
 	//USED BY DRAW METHODS, DO NOT MODIFY
 	int TextureCount;
 
@@ -75,6 +81,7 @@ private:
 	void preprocessShader(std::string & vertexSource, std::string & fragSource, ShaderCreateInfo info);
 	void createShaders(const char * vertexSource, const char * fragSource);
 
+	std::map<std::string, GLuint> _uniform_locations;
 	GLuint _program;
 	static std::vector<Shader *> _shaders_loaded;
 };
