@@ -2,6 +2,8 @@
 
 A work-in-progress OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/). Currently can take any model format supported by ASSIMP.
 
+## Features ##
+
 
 # What you need #
 
@@ -42,6 +44,10 @@ Suffix *_unlit* on shaders means that it doesn't support lighting
 
 
 ### ToDo List ###
+
+* Optimizations - using UBOs for Draw methods, load time optimizations, etc.
+
+* Add shadows support
 
 * Improved memory management system
 
