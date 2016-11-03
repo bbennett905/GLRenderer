@@ -4,6 +4,16 @@ A work-in-progress OpenGL renderer/engine, partially based on code in and using 
 
 ## Features ##
 
+* Lighting using Phong model
+* 3 types of light objects - point, spot, directional
+* Texture loading using SOIL, including cubemap texture support
+* Skyboxes
+* Dynamic shader creation to create shaders tailored to a specific object in a scene
+* Window and input abstraction layers over SDL
+* Model loading using ASSIMP
+* Simple profiling tool
+* Logging tools, supporting logging to file, to console, and to screen as a UI element
+* (Fairly) straightforward base classes for any entity/object, drawable object, UI elements to inherit from
 
 # What you need #
 
@@ -11,19 +21,14 @@ All listed files are included in /include/ or /lib/ directory.
 ### Requires ###
 
 * [Assimp](http://www.assimp.org/) ([License](http://www.assimp.org/main_license.html)) - Model loader
-
 * [GLM](http://glm.g-truc.net/) ([License](http://glm.g-truc.net/copying.txt)) - Matrix header-only library, intended for OpenGL use
-
 * [GLEW](http://glew.sourceforge.net/) ([License](https://github.com/nigels-com/glew#copyright-and-licensing)) - OpenGL Extension library
-
 * [SOIL](http://www.lonesock.net/soil.html) ([License](http://www.lonesock.net/soil.html)) - Image loader
-
 * [SDL2](https://www.libsdl.org/) ([License](https://www.libsdl.org/license.php)) - Window management and input, also SDL2_ttf (replaced GLFW3 in this project)
 
 ### Recommended ###
 
 * [GLIntercept](https://github.com/dtrebilco/glintercept) ([License](https://github.com/dtrebilco/glintercept/blob/master/Docs/license.txt)) - Extremely useful for debugging OpenGL errors and memory leaks (can be found in /glintercept/ directory)
-
 * [VLD](https://vld.codeplex.com/) ([License](https://vld.codeplex.com/SourceControl/latest#COPYING.txt)) - Automatically identifies memory leaks on application shutdown (not included)
 
 
@@ -43,19 +48,17 @@ This uses typical GLSL shaders (currently no geometry shader support) with a few
 Suffix *_unlit* on shaders means that it doesn't support lighting
 
 
-### ToDo List ###
+### Planned Features / ToDo List ###
 
+* Blinn-phong lighting
+* Normal map support
 * Optimizations - using UBOs for Draw methods, load time optimizations, etc.
-
 * Add shadows support
-
 * Improved memory management system
-
 * Create more primitives (possibly generating vertices & indices)
-
 * Load materials/scenes from file
-
 * See in-file TODOs for others...
+* And hopefully lots more, later on
 
 # License #
 
