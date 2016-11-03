@@ -76,9 +76,13 @@ void BaseDrawable::Draw(Camera * camera,
 	{
 		Profiling::ProfileSample drawUniforms("BaseDraw::Draw::Uniforms");
 		if (Materials.size())
+		{
 			glUniform1i(ShaderObj->GetUniformLocation("hasMaterials"), 1);
+		}
 		else
+		{
 			glUniform1i(ShaderObj->GetUniformLocation("hasMaterials"), 0);
+		}
 		for (uint32_t i = 0; i < Materials.size(); i++)
 		{
 			//The reason the shader works even when one of these uniforms isn't set is because
