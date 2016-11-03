@@ -9,7 +9,6 @@
 #include "Texture.h"
 #include "Window.h"
 #include "Logging.h"
-#include "Profiling.h"
 
 bool BaseUIElement::_is_ttf_init = false;
 
@@ -48,48 +47,40 @@ BaseUIElement::~BaseUIElement()
 void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_light_list,
 	std::vector<LightSpot *> & spot_light_list, LightDirectional * directional_light)
 {
-	Profiling::ProfileSample drawRoot("BaseUI::Draw");
-	{
-		Profiling::ProfileSample drawRoot("BaseUI::Draw::UseShader");
-		if (!_texture) return;
-		ShaderObj->Use();
-	}
-	{
-		Profiling::ProfileSample drawRoot("BaseUI::Draw::Uniforms");
-		glUniform1i(ShaderObj->GetUniformLocation("hasMaterials"), 1);
+	if (!_texture) return;
+	ShaderObj->Use();
 
-		//The reason the shader works even when one of these uniforms isn't set is because
-		//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
-		glUniform1i(ShaderObj->GetUniformLocation("materials[0].HasDiffMap"), 1);
-		glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
-		_texture->Bind();
-		glUniform1i(ShaderObj->GetUniformLocation("materials[0].DiffMap"),
-			ShaderObj->TextureCount);
-		ShaderObj->TextureCount++;
+	glUniform1i(ShaderObj->GetUniformLocation("hasMaterials"), 1);
 
-		glUniform1i(ShaderObj->GetUniformLocation("materials[0].HasSpecMap"), 0);
+	//The reason the shader works even when one of these uniforms isn't set is because
+	//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
+	glUniform1i(ShaderObj->GetUniformLocation("materials[0].HasDiffMap"), 1);
+	glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
+	_texture->Bind();
+	glUniform1i(ShaderObj->GetUniformLocation("materials[0].DiffMap"),
+		ShaderObj->TextureCount);
+	ShaderObj->TextureCount++;
 
-		glUniform1i(ShaderObj->GetUniformLocation("numMaterials"), 1);
+	glUniform1i(ShaderObj->GetUniformLocation("materials[0].HasSpecMap"), 0);
 
-		//model matrix transforms model space to world space - rotation and translation
-		glUniformMatrix4fv(ShaderObj->GetUniformLocation("model"), 1, GL_FALSE,
-			glm::value_ptr(GetModelMatrix()));
+	glUniform1i(ShaderObj->GetUniformLocation("numMaterials"), 1);
 
-		//both are given identity matrix
-		glUniformMatrix4fv(ShaderObj->GetUniformLocation("view"), 1, GL_FALSE,
-			glm::value_ptr(glm::mat4()));
-		glUniformMatrix4fv(ShaderObj->GetUniformLocation("projection"), 1, GL_FALSE,
-			glm::value_ptr(glm::mat4()));
-	}
-	{
-		Profiling::ProfileSample drawRoot("BaseUI::Draw::DrawArrays");
-		glBindVertexArray(VertexArrayObj);
-		//Draw! - type of primitive, starting index of vertex array, number of vertices
-		glDrawArrays(GL_TRIANGLES, 0, Vertices.size());
-		glBindVertexArray(0);
+	//model matrix transforms model space to world space - rotation and translation
+	glUniformMatrix4fv(ShaderObj->GetUniformLocation("model"), 1, GL_FALSE,
+		glm::value_ptr(GetModelMatrix()));
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+	//both are given identity matrix
+	glUniformMatrix4fv(ShaderObj->GetUniformLocation("view"), 1, GL_FALSE,
+		glm::value_ptr(glm::mat4()));
+	glUniformMatrix4fv(ShaderObj->GetUniformLocation("projection"), 1, GL_FALSE,
+		glm::value_ptr(glm::mat4()));
+
+	glBindVertexArray(VertexArrayObj);
+	//Draw! - type of primitive, starting index of vertex array, number of vertices
+	glDrawArrays(GL_TRIANGLES, 0, Vertices.size());
+	glBindVertexArray(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 glm::mat4 BaseUIElement::GetModelMatrix()
