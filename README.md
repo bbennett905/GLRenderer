@@ -1,6 +1,6 @@
 # Summary #
 
-A work-in-progress OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/). Currently can take any model format supported by ASSIMP.
+My pet project over the last few months, a work-in-progress OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/).
 
 ## Features ##
 
@@ -17,8 +17,8 @@ A work-in-progress OpenGL renderer/engine, partially based on code in and using 
 
 # What you need #
 
-All listed files are included in /include/ or /lib/ directory.
 ### Requires ###
+All listed files are included in /include/ or /lib/ directory.
 
 * [Assimp](http://www.assimp.org/) ([License](http://www.assimp.org/main_license.html)) - Model loader
 * [GLM](http://glm.g-truc.net/) ([License](http://glm.g-truc.net/copying.txt)) - Matrix header-only library, intended for OpenGL use
