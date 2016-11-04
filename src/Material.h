@@ -29,7 +29,7 @@ struct Material
 
 	Material(Texture * tex1,
 		Texture * specMap = nullptr,
-		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 32.0f) : 
+		float ambStr = 0.5f, float difStr = 1.0f, float specStr = 1.0f, float shiny = 64.0f) : 
 		DiffuseMap(tex1),
 		SpecularMap(specMap),
 		AmbientStrength(ambStr), DiffuseStrength(difStr), SpecularStrength(specStr),
