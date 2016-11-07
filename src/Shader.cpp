@@ -96,6 +96,11 @@ void Shader::Use()
 	TextureCount = 0;
 }
 
+void Shader::UseNull()
+{
+	glUseProgram(0);
+}
+
 GLuint Shader::GetProgram()
 {
 	return _program;

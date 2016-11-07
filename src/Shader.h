@@ -63,6 +63,8 @@ public:
 	//Tells OpenGL to use this shader
 	void Use();
 
+	static void UseNull();
+
 	//OpenGL shader program object of this Shader
 	GLuint GetProgram();
 
