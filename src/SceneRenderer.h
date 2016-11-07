@@ -36,6 +36,7 @@ public:
 
 private:
 	void setLightUniforms(Shader * shader);
+	void setMatrixUniforms(Shader * shader);
 
 	std::vector<LightPoint *>	_point_light_list;
 	std::vector<LightSpot *>	_spot_light_list;

@@ -40,7 +40,7 @@ BaseUIElement::BaseUIElement(Window * window, glm::vec2 pos, glm::vec2 scale) :
 
 BaseUIElement::~BaseUIElement()
 {
-
+	delete _texture;
 }
 
 void BaseUIElement::Draw(Camera * camera)
@@ -66,12 +66,6 @@ void BaseUIElement::Draw(Camera * camera)
 	//model matrix transforms model space to world space - rotation and translation
 	glUniformMatrix4fv(ShaderObj->GetUniformLocation("model"), 1, GL_FALSE,
 		glm::value_ptr(GetModelMatrix()));
-
-	//both are given identity matrix
-	glUniformMatrix4fv(ShaderObj->GetUniformLocation("view"), 1, GL_FALSE,
-		glm::value_ptr(glm::mat4()));
-	glUniformMatrix4fv(ShaderObj->GetUniformLocation("projection"), 1, GL_FALSE,
-		glm::value_ptr(glm::mat4()));
 
 	glBindVertexArray(VertexArrayObj);
 	//Draw! - type of primitive, starting index of vertex array, number of vertices

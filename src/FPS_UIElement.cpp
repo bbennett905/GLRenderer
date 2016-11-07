@@ -26,7 +26,6 @@ FPS_UIElement::~FPS_UIElement()
 {
 	SDL_FreeSurface(_surface);
 	_surface = NULL;
-	delete _texture;
 }
 
 void FPS_UIElement::Update(double delta_time)

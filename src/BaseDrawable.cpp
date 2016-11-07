@@ -132,16 +132,6 @@ void BaseDrawable::Draw(Camera * camera)
 	glUniformMatrix4fv(ShaderObj->GetUniformLocation("model"), 1, GL_FALSE,
 		glm::value_ptr(GetModelMatrix()));
 
-	//view matrix moves the world relative to the camera - rotation + translation
-	glUniformMatrix4fv(ShaderObj->GetUniformLocation("view"), 1, GL_FALSE,
-		glm::value_ptr(camera->GetViewMatrix()));
-	//projection matrix is the projection of the camera, perspective or orthogonal
-	glUniformMatrix4fv(ShaderObj->GetUniformLocation("projection"), 1, GL_FALSE,
-		glm::value_ptr(camera->GetProjMatrix()));
-
-	glUniform3f(ShaderObj->GetUniformLocation("viewPos"),
-		camera->GetPos().x, camera->GetPos().y, camera->GetPos().z);
-
 	//Bind our VAO so we have the correct vertex attribute configuration
 	glBindVertexArray(VertexArrayObj);
 	//Draw! - type of primitive, starting index of vertex array, number of vertices

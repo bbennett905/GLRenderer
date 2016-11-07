@@ -44,7 +44,6 @@ namespace Logging
 			~Log_UIElement() 
 			{ 
 				SDL_FreeSurface(_surface);
-				delete _texture;
 			}
 
 			void AddLogMessage(std::string message, double time = 5.0)
@@ -200,7 +199,8 @@ namespace Logging
 
 	void LogTerm()
 	{
-		_file.close();
 		LogMessage(LogLevel_Info, "Logging Terminated");
+		_file.close();
+		delete _log_ui_element;
 	}
 }

@@ -47,7 +47,8 @@ enum ShaderFlags
 {
 	Shader_Translucent = 1 << 0,
 	Shader_Unlit = 1 << 1,
-	Shader_Skybox = 1 << 2
+	Shader_Skybox = 1 << 2,
+	Shader_UI = 1 << 3
 };
 
 class Shader

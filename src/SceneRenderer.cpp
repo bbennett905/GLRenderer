@@ -3,6 +3,7 @@
 #include <map>
 #include <iostream>
 #include <glew.h>
+#include <gtc\type_ptr.hpp>
 
 #include "Window.h"
 #include "BaseDrawable.h"
@@ -149,6 +150,8 @@ bool SceneRenderer::BuildShaders()
 			shader_create_info.Flags |= Shader_Unlit;
 		if (drawable->Flags & Drawable_Skybox)
 			shader_create_info.Flags |= Shader_Skybox;
+		if (drawable->Flags & Drawable_UI)
+			shader_create_info.Flags |= Shader_UI;
 
 		Shader * shader = Shader::ShaderExists(shader_create_info);
 
@@ -177,14 +180,16 @@ void SceneRenderer::Draw()
 {
 	glClear(GL_DEPTH_BUFFER_BIT); 
 
-	//For each shader, set the light uniforms - these don't change per object so set once/frame
-	//We could also set view + proj matrices here TODO
+	//For each shader, set the light/camera uniforms - don't change per object so set once/frame
 	for (auto shader : _shader_list)
 	{
-		if (shader->CreateInfo.Flags & Shader_Skybox || shader->CreateInfo.Flags & Shader_Unlit)
-			continue;
-
 		shader->Use();
+		setMatrixUniforms(shader);
+
+		if (shader->CreateInfo.Flags & Shader_Skybox || shader->CreateInfo.Flags & Shader_Unlit ||
+			shader->CreateInfo.Flags & Shader_UI)
+			continue;
+		
 		setLightUniforms(shader);
 	}
 
@@ -309,4 +314,31 @@ void SceneRenderer::setLightUniforms(Shader * shader)
 		_directional_light->AmbientColor.z);
 	glUniform1f(shader->GetUniformLocation("directionalLight.AmbientIntensity"),
 		_directional_light->AmbientIntensity);
+}
+
+void SceneRenderer::setMatrixUniforms(Shader * shader)
+{
+	if (shader->CreateInfo.Flags & Shader_Skybox)
+	{
+		glUniformMatrix4fv(shader->GetUniformLocation("view"), 1, GL_FALSE,
+			glm::value_ptr(glm::mat4(glm::mat3(_camera->GetViewMatrix()))));
+		glUniformMatrix4fv(shader->GetUniformLocation("projection"), 1, GL_FALSE,
+			glm::value_ptr(_camera->GetProjMatrix()));
+		return;
+	}
+	if (shader->CreateInfo.Flags & Shader_UI)
+	{
+		glUniformMatrix4fv(shader->GetUniformLocation("view"), 1, GL_FALSE,
+			glm::value_ptr(glm::mat4()));
+		glUniformMatrix4fv(shader->GetUniformLocation("projection"), 1, GL_FALSE,
+			glm::value_ptr(glm::mat4()));
+		return;
+	}
+
+	glUniform3f(shader->GetUniformLocation("viewPos"),
+		_camera->GetPos().x, _camera->GetPos().y, _camera->GetPos().z);
+	glUniformMatrix4fv(shader->GetUniformLocation("view"), 1, GL_FALSE,
+		glm::value_ptr(_camera->GetViewMatrix()));
+	glUniformMatrix4fv(shader->GetUniformLocation("projection"), 1, GL_FALSE,
+		glm::value_ptr(_camera->GetProjMatrix()));
 }
