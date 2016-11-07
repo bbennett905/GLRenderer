@@ -35,6 +35,8 @@ public:
 	void Draw();
 
 private:
+	void setLightUniforms(Shader * shader);
+
 	std::vector<LightPoint *>	_point_light_list;
 	std::vector<LightSpot *>	_spot_light_list;
 	LightDirectional *			_directional_light;

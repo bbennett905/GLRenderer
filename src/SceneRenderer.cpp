@@ -220,4 +220,77 @@ void SceneRenderer::Draw()
 			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
 	}
 	glEnable(GL_DEPTH_TEST);
+
+void SceneRenderer::setLightUniforms(Shader * shader)
+{
+	for (uint32_t i = 0; i < _point_light_list.size(); i++)
+	{
+		glUniform3f(shader->GetUniformLocation(
+			("pointLights[" + std::to_string(i) + "].Position").c_str()),
+			_point_light_list[i]->Position.x, _point_light_list[i]->Position.y,
+			_point_light_list[i]->Position.z);
+		glUniform3f(shader->GetUniformLocation(
+			("pointLights[" + std::to_string(i) + "].Color").c_str()),
+			_point_light_list[i]->Color.x, _point_light_list[i]->Color.y,
+			_point_light_list[i]->Color.z);
+		glUniform1f(shader->GetUniformLocation(
+			("pointLights[" + std::to_string(i) + "].Intensity").c_str()),
+			_point_light_list[i]->Intensity);
+		glUniform1f(shader->GetUniformLocation(
+			("pointLights[" + std::to_string(i) + "].Constant").c_str()),
+			_point_light_list[i]->Constant);
+		glUniform1f(shader->GetUniformLocation(
+			("pointLights[" + std::to_string(i) + "].Linear").c_str()),
+			_point_light_list[i]->Linear);
+		glUniform1f(shader->GetUniformLocation(
+			("pointLights[" + std::to_string(i) + "].Quadratic").c_str()),
+			_point_light_list[i]->Quadratic);
+	}
+
+	for (uint32_t i = 0; i < _spot_light_list.size(); i++)
+	{
+		glUniform3f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Position").c_str()),
+			_spot_light_list[i]->Position.x, _spot_light_list[i]->Position.y,
+			_spot_light_list[i]->Position.z);
+		glUniform3f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Direction").c_str()),
+			_spot_light_list[i]->GetForward().x, _spot_light_list[i]->GetForward().y,
+			_spot_light_list[i]->GetForward().z);
+		glUniform3f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Color").c_str()),
+			_spot_light_list[i]->Color.x, _spot_light_list[i]->Color.y,
+			_spot_light_list[i]->Color.z);
+		glUniform1f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].InnerCutOff").c_str()),
+			glm::cos(glm::radians(_spot_light_list[i]->InnerCutOff)));
+		glUniform1f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].OuterCutOff").c_str()),
+			glm::cos(glm::radians(_spot_light_list[i]->OuterCutOff)));
+		glUniform1f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Intensity").c_str()),
+			_spot_light_list[i]->Intensity);
+		glUniform1f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Constant").c_str()),
+			_spot_light_list[i]->Constant);
+		glUniform1f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Linear").c_str()),
+			_spot_light_list[i]->Linear);
+		glUniform1f(shader->GetUniformLocation(
+			("spotLights[" + std::to_string(i) + "].Quadratic").c_str()),
+			_spot_light_list[i]->Quadratic);
+	}
+	glUniform3f(shader->GetUniformLocation("directionalLight.Direction"),
+		_directional_light->GetForward().x, _directional_light->GetForward().y,
+		_directional_light->GetForward().z);
+	glUniform3f(shader->GetUniformLocation("directionalLight.Color"),
+		_directional_light->Color.x, _directional_light->Color.y,
+		_directional_light->Color.z);
+	glUniform1f(shader->GetUniformLocation("directionalLight.Intensity"),
+		_directional_light->Intensity);
+	glUniform3f(shader->GetUniformLocation("directionalLight.AmbientColor"),
+		_directional_light->AmbientColor.x, _directional_light->AmbientColor.y,
+		_directional_light->AmbientColor.z);
+	glUniform1f(shader->GetUniformLocation("directionalLight.AmbientIntensity"),
+		_directional_light->AmbientIntensity);
 }
