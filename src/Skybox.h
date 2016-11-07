@@ -13,10 +13,7 @@ public:
 	Skybox(std::string path);
 	~Skybox();
 
-	void Draw(Camera * camera,
-		std::vector<LightPoint *> & point_light_list,
-		std::vector<LightSpot *> & spot_light_list,
-		LightDirectional * directional_light);
+	void Draw(Camera * camera);
 
 protected:
 	Texture * _texture;

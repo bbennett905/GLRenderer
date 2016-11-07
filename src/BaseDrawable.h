@@ -44,8 +44,7 @@ public:
 	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();
 
-	virtual void Draw(Camera * camera, std::vector<LightPoint *> & point_light_list,
-		std::vector<LightSpot *> & spot_light_list, LightDirectional * directional_light);
+	virtual void Draw(Camera * camera);
 
 	//List of Vertices of the object
 	std::vector<VertexData> Vertices;

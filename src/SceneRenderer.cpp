@@ -12,6 +12,8 @@
 #include "Texture.h"
 #include "Logging.h"
 #include "Camera.h"
+#include "Lights.h"
+
 
 SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	_camera(camera)
@@ -175,19 +177,30 @@ void SceneRenderer::Draw()
 {
 	glClear(GL_DEPTH_BUFFER_BIT); 
 
+	//For each shader, set the light uniforms - these don't change per object so set once/frame
+	//We could also set view + proj matrices here TODO
+	for (auto shader : _shader_list)
+	{
+		if (shader->CreateInfo.Flags & Shader_Skybox || shader->CreateInfo.Flags & Shader_Unlit)
+			continue;
+
+		shader->Use();
+		setLightUniforms(shader);
+	}
+
 	//Draw normal objects first
 	for (auto drawable : _draw_list)
 	{
 		if (!(drawable->Flags & Drawable_Translucent) && !(drawable->Flags & Drawable_UI) &&
 			!(drawable->Flags & Drawable_Skybox))
-			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+			drawable->Draw(_camera);
 	}
 
 	//Draw the skybox
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->Flags & Drawable_Skybox)
-			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+			drawable->Draw(_camera);
 	}
 
 	//Then draw translucent objects, ordered by distance
@@ -210,16 +223,19 @@ void SceneRenderer::Draw()
 	}
 	//..and finally, draw everything in that list.
 	for (std::map<float, BaseDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
-		it->second->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+		it->second->Draw(_camera);
 
 	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->Flags & Drawable_UI)
-			drawable->Draw(_camera, _point_light_list, _spot_light_list, _directional_light);
+			drawable->Draw(_camera);
 	}
 	glEnable(GL_DEPTH_TEST);
+
+	Shader::UseNull();
+}
 
 void SceneRenderer::setLightUniforms(Shader * shader)
 {

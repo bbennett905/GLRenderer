@@ -43,9 +43,7 @@ BaseUIElement::~BaseUIElement()
 
 }
 
-//Doesn't really need the args, just have them because basedraw does
-void BaseUIElement::Draw(Camera * camera, std::vector<LightPoint *> & point_light_list,
-	std::vector<LightSpot *> & spot_light_list, LightDirectional * directional_light)
+void BaseUIElement::Draw(Camera * camera)
 {
 	if (!_texture) return;
 	ShaderObj->Use();

@@ -68,8 +68,7 @@ Skybox::~Skybox()
 {
 }
 
-void Skybox::Draw(Camera * camera, std::vector<LightPoint*> & point_light_list, 
-	std::vector<LightSpot*> & spot_light_list, LightDirectional * directional_light)
+void Skybox::Draw(Camera * camera)
 {
 	glDepthFunc(GL_LEQUAL);
 	ShaderObj->Use();
