@@ -4,7 +4,7 @@ My pet project over the last few months, a work-in-progress OpenGL renderer/engi
 
 ## Features ##
 
-* Lighting using Phong model
+* Lighting using Blinn-Phong model
 * 3 types of light objects - point, spot, directional
 * Texture loading using SOIL, including cubemap texture support
 * Skyboxes
@@ -50,7 +50,6 @@ Suffix *_unlit* on shaders means that it doesn't support lighting
 
 ### Planned Features / ToDo List ###
 
-* Blinn-phong lighting
 * Normal map support
 * Optimizations - using UBOs for Draw methods, load time optimizations, etc.
 * Add shadows support

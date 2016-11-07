@@ -86,11 +86,14 @@ void main(void) {
 vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
     vec3 lightDir = normalize(-light.Direction);
     vec3 ambient  = light.AmbientColor * light.AmbientIntensity * AvgAmbientStrength();
+
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse  = light.Color * light.Intensity  * diff;
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), AvgShininess());
+
+	vec3 halfwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(norm, halfwayDir), 0.0), AvgShininess());
     vec3 specular = light.Color * light.Intensity * spec;
+
     return (vec4((ambient + diffuse), 1.0f) * SumDiffMaps()) + 
         (vec4(specular, 1.0f) * SumSpecMaps());
 }
@@ -99,9 +102,11 @@ vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     vec3 lightDir = normalize(light.Position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.Color * light.Intensity * diff;
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), AvgShininess());
+
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(norm, halfwayDir), 0.0), AvgShininess());
     vec3 specular = light.Color * light.Intensity * spec;
+
     float distance = length(light.Position - fragPos);
     float attenuation = 1.0f / (light.Constant + light.Linear * distance + 
         light.Quadratic * (distance * distance));
@@ -113,9 +118,11 @@ vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     vec3 lightDir = normalize(light.Position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.Color * light.Intensity * diff;
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), AvgShininess());
+
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(norm, halfwayDir), 0.0), AvgShininess());
     vec3 specular = light.Color * light.Intensity * spec;
+
     float distance = length(light.Position - fragPos);
     float attenuation = 1.0f / (light.Constant + light.Linear * distance + 
 	                            light.Quadratic * (distance * distance));

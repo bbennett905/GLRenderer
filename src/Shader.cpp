@@ -106,14 +106,20 @@ GLuint Shader::GetProgram()
 	return _program;
 }
 
+//This little optimization has a much greater effect on nvidia rather than intel - but regardless, 
+//it slows it down drastically on Debug builds so it's disabled - important to remember for profiling
 GLuint Shader::GetUniformLocation(std::string name)
 {
+#ifdef _DEBUG
+	return glGetUniformLocation(_program, name.c_str());
+#else
 	//If it doesn't exist in the map yet, load it in
 	if (_uniform_locations.find(name) == _uniform_locations.end())
 	{
 		_uniform_locations[name] = glGetUniformLocation(_program, name.c_str());
 	}
 	return _uniform_locations[name];
+#endif //_DEBUG
 }
 
 void Shader::preprocessShader(std::string & vertexSource, std::string & fragSource,
