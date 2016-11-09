@@ -125,6 +125,8 @@
   <ItemGroup>
     <None Include="..\shaders\default.frag" />
     <None Include="..\shaders\default.vert" />
+    <None Include="..\shaders\experimental.frag" />
+    <None Include="..\shaders\experimental.vert" />
     <None Include="..\shaders\default_unlit.frag" />
     <None Include="..\shaders\default_unlit.vert" />
     <None Include="..\shaders\skybox.frag" />

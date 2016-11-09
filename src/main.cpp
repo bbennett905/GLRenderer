@@ -104,6 +104,7 @@ int main()
 	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
 	Cube * cube = new Cube(mat1);
+	cube->Flags |= Drawable_Experimental;
 	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
 	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
 	scene->AddObjectToScene(cube);
@@ -170,7 +171,7 @@ int main()
 		}
 
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
-		cube->SetAngles(cube->GetAngles() + delta_rotate);
+		//cube->SetAngles(cube->GetAngles() + delta_rotate);
 		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
 		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
 		cube4->SetAngles(cube4->GetAngles() + delta_rotate);

@@ -28,6 +28,11 @@ Shader::Shader(ShaderCreateInfo info) :
 		vertexPath = "../shaders/skybox.vert";
 		fragPath = "../shaders/skybox.frag";
 	}
+	if (info.Flags & Shader_Experimental)
+	{
+		vertexPath = "../shaders/experimental.vert";
+		fragPath = "../shaders/experimental.frag";
+	}
 
 	std::string vertexSource;
 	std::string fragSource;

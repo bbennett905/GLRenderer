@@ -20,7 +20,8 @@ enum DrawableFlags
 	Drawable_Translucent = 1 << 0,
 	Drawable_Unlit = 1 << 1,
 	Drawable_UI = 1 << 2,
-	Drawable_Skybox = 1 << 3
+	Drawable_Skybox = 1 << 3,
+	Drawable_Experimental = 1 << 4
 };
 
 class SceneRenderer;
