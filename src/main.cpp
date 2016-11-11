@@ -32,6 +32,9 @@ Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
+float rough = 0.2f;
+float metal = 0.8f;
+
 void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int delta_y, int mouse_buttons)
 {
 	float cameraSpeed = 3.0f * float(delta_time);
@@ -44,6 +47,26 @@ void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int del
 	if (keys[KEY_D]) 
 		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
 	if (keys[KEY_ESCAPE]) window.ShouldExit = true;
+	if (keys[KEY_UP])
+	{
+		metal += .001f;
+		if (metal > 0.99f) metal = 0.99f;
+	}
+	if (keys[KEY_DOWN])
+	{
+		metal -= .001f;
+		if (metal < 0.02f) metal = 0.02f;
+	}
+	if (keys[KEY_LEFT])
+	{
+		rough += .001f;
+		if (rough > 0.99f) rough = 0.99f;
+	}
+	if (keys[KEY_RIGHT])
+	{
+		rough -= .001f;
+		if (rough < 0.02f) rough = 0.02f;
+	}
 
 	//Example
 	if (mouse_buttons & MOUSE_BUTTON(MOUSE_BUTTON_LEFT)) { }
@@ -79,9 +102,9 @@ int main()
 
 	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f), 3.0f,
-		glm::vec3(0.1f, 0.1f, 0.5f), 0.5f);
+		glm::vec3(0.1f, 0.1f, 0.5f), 0.1f);
 	LightPoint * pointLight = new LightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
-		glm::vec3(0.0f, 1.0f, 0.0f), 5.0f);
+		glm::vec3(0.0f, 1.0f, 0.3f), 5.0f);
 	LightSpot * spotLight = new LightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
 		glm::vec3(0.0f, 90.0f, 0.0f),
 		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
@@ -117,6 +140,10 @@ int main()
 	Cube * cube4 = new Cube(mat1);
 	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
+
+	cube->CTMaterial->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	cube->CTMaterial->Roughness = rough;
+	cube->CTMaterial->Metallicity = metal;
 
 	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
 	Material * glass_material = new Material(glass_diffuse);
@@ -171,16 +198,18 @@ int main()
 		}
 
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
-		//cube->SetAngles(cube->GetAngles() + delta_rotate);
+		cube->CTMaterial->Roughness = rough;
+		cube->CTMaterial->Metallicity = metal;
+		cube->SetAngles(cube->GetAngles() + delta_rotate);
 		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
 		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
 		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
 
-		spotLight->Position = camera.GetPos();
-		spotLight->SetAngles(camera.GetAngles());
-
 		//Go to the event callbacks specified before
 		Input::PollEvents(delta_time);
+
+		spotLight->Position = camera.GetPos();
+		spotLight->SetAngles(camera.GetAngles());
 
 		scene->Update(delta_time);
 		Logging::LogUpdate(delta_time);

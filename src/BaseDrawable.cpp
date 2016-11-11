@@ -38,7 +38,8 @@ BaseDrawable::BaseDrawable(const GLfloat vertices[], int verticesSize,
 
 BaseDrawable::BaseDrawable(std::vector<VertexData> vert) :
 	Vertices(vert)
-{ }
+{
+}
 
 BaseDrawable::BaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
 	std::vector<Material *> & mat) :
@@ -67,7 +68,10 @@ void BaseDrawable::Draw(Camera * camera)
 
 	if (Flags & Drawable_Experimental)
 	{
-		glUniform3f(ShaderObj->GetUniformLocation("material.Color"), 1.0f, 0.2f, 0.0f);
+		glUniform3f(ShaderObj->GetUniformLocation("material.Color"), 
+			CTMaterial->BaseColor.x, CTMaterial->BaseColor.y, CTMaterial->BaseColor.z);
+		glUniform1f(ShaderObj->GetUniformLocation("material.Roughness"), CTMaterial->Roughness);
+		glUniform1f(ShaderObj->GetUniformLocation("material.Metallicity"), CTMaterial->Metallicity);
 	}
 	else
 	{

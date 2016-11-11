@@ -39,3 +39,10 @@ struct Material
 	~Material() { }	//We cant destroy textures here, as there is no guarantee they are not shared
 	Material& operator=(const Material&) = default;
 };
+
+struct MaterialCT //cook torrance
+{
+	glm::vec3 BaseColor;
+	float Roughness;
+	float Metallicity;
+};

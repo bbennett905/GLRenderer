@@ -28,6 +28,7 @@ class SceneRenderer;
 class Camera;
 class Shader;
 struct Material;
+struct MaterialCT;
 class LightPoint;
 class LightSpot;
 class LightDirectional;
@@ -53,6 +54,8 @@ public:
 	std::vector<GLuint> Indices;
 	//List of Materials this obj uses
 	std::vector<Material *> Materials;
+
+	MaterialCT * CTMaterial;
 
 	//The shader that this object uses
 	Shader * ShaderObj;
