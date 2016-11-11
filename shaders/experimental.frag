@@ -103,10 +103,9 @@ vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
 
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)
 {
-    // set important material values
-    float roughnessValue = material.Roughness; // 0 : smooth, 1: rough
+    float roughnessValue = clamp(material.Roughness, 0.01, 1.0); // 0 : smooth, 1: rough
     float F0 = material.Metallicity; // fresnel reflectance at normal incidence
-    float k = 0.2; // fraction of diffuse reflection (specular reflection = 1 - k)
+    float kS = 0.2; // fraction of specular reflection
     
     // do the lighting calculation for each fragment.
     float NdotL = max(dot(norm, lightDir), 0.0);
@@ -140,8 +139,10 @@ vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)
         fresnel += F0;
         
         specular = (fresnel * geoAtt * roughness) / (NdotV * NdotL * 3.14);
+
+		if (gl_FragCoord.x > 880) kS = fresnel;
     }
     
-    vec3 finalValue = lightColor * ((NdotL * k) + (specular * (1.0 - k)));
+    vec3 finalValue = lightColor * ((NdotL * (1.0 - kS)) + (specular * kS));
     return vec4(finalValue, 1.0);
 }

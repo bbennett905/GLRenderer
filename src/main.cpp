@@ -50,22 +50,22 @@ void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int del
 	if (keys[KEY_UP])
 	{
 		metal += .001f;
-		if (metal > 0.99f) metal = 0.99f;
+		if (metal > 1.00f) metal = 1.00f;
 	}
 	if (keys[KEY_DOWN])
 	{
 		metal -= .001f;
-		if (metal < 0.02f) metal = 0.02f;
+		if (metal < 0.00f) metal = 0.00f;
 	}
 	if (keys[KEY_LEFT])
 	{
 		rough += .001f;
-		if (rough > 0.99f) rough = 0.99f;
+		if (rough > 1.00f) rough = 1.00f;
 	}
 	if (keys[KEY_RIGHT])
 	{
 		rough -= .001f;
-		if (rough < 0.02f) rough = 0.02f;
+		if (rough < 0.00f) rough = 0.00f;
 	}
 
 	//Example
@@ -200,7 +200,7 @@ int main()
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
 		cube->CTMaterial->Roughness = rough;
 		cube->CTMaterial->Metallicity = metal;
-		cube->SetAngles(cube->GetAngles() + delta_rotate);
+		//cube->SetAngles(cube->GetAngles() + delta_rotate);
 		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
 		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
 		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
