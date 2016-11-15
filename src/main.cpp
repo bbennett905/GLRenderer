@@ -118,8 +118,8 @@ int main()
 	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
 
-	Texture * expDiff = new Texture("../images/marble_diffuse.png");
-	Texture * expMR = new Texture("../images/marble_mr.png");
+	Texture * expDiff = new Texture("../images/crate_diffuse.png");
+	Texture * expMR = new Texture("../images/crate_mr.png");
 	MaterialCT * cooktorr = new MaterialCT();
 	cooktorr->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	cooktorr->Roughness = 1.0f;
