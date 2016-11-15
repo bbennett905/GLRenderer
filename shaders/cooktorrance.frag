@@ -175,15 +175,15 @@ vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float
 	distDenominator *= distDenominator;
 	float distribution = (alpha * alpha) / (3.14 * distDenominator);
 
-	//Geometric - using smith-schlick-beckmann
+	//Geometric - using smith-schlick-beckmann - PREFERRED
 	float geometric;
 	float k = ((roughnessValue + 1) * (roughnessValue + 1)) / 8;
 	float g1 = NdotV / ( (NdotV * (1 - k)) + k );
 	float g2 = NdotL / ( (NdotL * (1 - k)) + k );
-	//geometric = g1 * g2;
+	geometric = g1 * g2;
 
 	//Geometric - using cook-torrance
-	geometric = min(1, min(2 * (NdotV * NdotH) / max(VdotH, 0.001), 2 * (NdotL * NdotH) / max(VdotH, 0.001)));
+	//geometric = min(1, min(2 * (NdotV * NdotH) / max(VdotH, 0.001), 2 * (NdotL * NdotH) / max(VdotH, 0.001)));
 
 	//Fresnel - using spherical gaussian approx
 	float exponent;
