@@ -41,7 +41,7 @@ public:
 	float Quadratic;
 
 	LightPoint(glm::vec3 pos, glm::vec3 col, float intens, 
-		float constant = 1.0f, float linear = 0.14f, float quad = 0.07f) :
+		float constant = 1.0f, float linear = 0.5f, float quad = 0.25f) :
 		BaseLight(col, intens), Constant(constant), Linear(linear), Quadratic(quad)
 	{ 
 		Position = pos;
@@ -62,7 +62,7 @@ public:
 	float OuterCutOff;
 
 	LightSpot(glm::vec3 pos, glm::vec3 ang, glm::vec3 col, float intens, float cutoffIn, float cutoffOut,
-		float constant = 1.0f, float linear = 0.14f, float quad = 0.07f) :
+		float constant = 1.0f, float linear = 0.5f, float quad = 0.25f) :
 		BaseLight(col, intens), InnerCutOff(cutoffIn), OuterCutOff(cutoffOut),
 		Constant(constant), Linear(linear), Quadratic(quad)
 	{ 
@@ -70,3 +70,5 @@ public:
 		SetAngles(ang);
 	}
 };
+
+//Other possible light types - spherical: point light with radius; linear: evenly along a line
