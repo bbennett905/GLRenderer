@@ -1,6 +1,9 @@
 #insert version
 
+//Use default.vert with this shader
+
 in vec3 Normal;
+in vec2 TexCoord;
 in vec3 FragPos;
 
 out vec4 color;
@@ -19,7 +22,6 @@ struct LightDirectional {
     float Intensity;
     vec3 AmbientColor;
     float AmbientIntensity;
-	float Width;
 };
 struct LightSpot {
     vec3 Position;
@@ -32,12 +34,17 @@ struct LightSpot {
     float Linear;
     float Quadratic;
 };
-
-uniform struct Material {
-    vec3 Color;
-	float Roughness;
+struct Material {
+	bool HasDiffMap;
+	sampler2D DiffMap;
+	vec3 Color;	//used if no diff map
+	bool HasMetalAndRoughMap; //metal R, rough G
+    sampler2D MetalAndRoughMap;
+	//bool HasRoughMap;
+    //sampler2D RoughMap;
+    float Roughness;
 	float Metallicity;
-} material;
+};
 
 uniform LightDirectional directionalLight;
 
@@ -49,15 +56,28 @@ uniform LightSpot spotLights[
 #insert num_spot_lights
     ];
 
+uniform Material materials[MAX_MATERIALS];
+uniform int numMaterials;
+uniform bool hasMaterials;
+
 uniform vec3 viewPos;
 
 vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir);
 vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir);
 vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir);
+vec4 SumDiffMaps();
+vec4 AvgMetalAndRoughMaps();
+
 
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float width = 0);
 
 void main(void) {
+	if (!hasMaterials)
+	{
+		color = vec4(Normal, 1.0f);
+		return;
+	}
+
 	vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
 
@@ -67,14 +87,17 @@ void main(void) {
     for (int i = 0; i < spotLights.length(); i++)
         result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
 
-    color = result * vec4(material.Color, 1.0f);
+	result *= SumDiffMaps();
+	
+    color = result;
 }
 
 vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
     vec3 lightDir = normalize(-light.Direction);
     vec3 ambient = light.AmbientColor * light.AmbientIntensity;
 
-    return CookTorrance(norm, lightDir, light.Color, viewDir) * light.Intensity + vec4(ambient, 1.0f);
+    return CookTorrance(norm, lightDir, light.Color, viewDir) * light.Intensity + 
+		vec4(ambient, 1.0f);
 }
 
 vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
@@ -102,17 +125,50 @@ vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
 		CookTorrance(norm, normalize(-light.Direction), light.Color, viewDir) * light.Intensity;
 }
 
+vec4 SumDiffMaps() {
+    vec4 sum = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    for (int i = 0; i < numMaterials; i++)
+	{
+	    if (materials[i].HasDiffMap)
+		{
+            sum += texture(materials[i].DiffMap, TexCoord);// * materials[i].DiffuseStrength;
+		}
+		else
+		{
+			sum += vec4(materials[i].Color, 1.0f);
+		}
+	}
+    return sum;
+}
+
+vec4 AvgMetalAndRoughMaps() {
+    vec4 sum = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	int numMaps = 0;
+    for (int i = 0; i < numMaterials; i++)
+	{
+	    if (materials[i].HasMetalAndRoughMap)
+		{
+            sum += vec4(texture(materials[i].MetalAndRoughMap, TexCoord).x * materials[i].Metallicity,
+						texture(materials[i].MetalAndRoughMap, TexCoord).y * materials[i].Roughness,
+						0.0, 0.0);
+			numMaps++;
+		}
+	}
+    return sum / numMaps;
+}
+
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float width)
 {
 	//this time we're trying the unreal implementation - or something close to it
+	vec4 materialProps = AvgMetalAndRoughMaps();
 	vec3 halfVector = normalize(lightDir + viewDir);
     float NdotH = max(dot(norm, halfVector), 0); 
-	float roughnessValue = clamp(material.Roughness, 0.1, 1.0);
+	float roughnessValue = clamp(materialProps.y, 0.1, 1.0);
 	float alpha = roughnessValue * roughnessValue;
 	float NdotV = max(dot(norm, viewDir), 0);	
 	float VdotH = max(dot(viewDir, halfVector), 0);
 	float NdotL = max(dot(norm, lightDir), 0);
-	float F0 = clamp(material.Metallicity, 0.05, 0.95);
+	float F0 = clamp(materialProps.x, 0.05, 0.95);
 
 	//Distribution
 	float distDenominator = ( (NdotH * NdotH) * ( (alpha * alpha) - 1) + 1);
@@ -124,10 +180,10 @@ vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float
 	float k = ((roughnessValue + 1) * (roughnessValue + 1)) / 8;
 	float g1 = NdotV / ( (NdotV * (1 - k)) + k );
 	float g2 = NdotL / ( (NdotL * (1 - k)) + k );
-	geometric = g1 * g2;
+	//geometric = g1 * g2;
 
 	//Geometric - using cook-torrance
-	//geometric = min(1, min(2 * (NdotV * NdotH) / max(VdotH, 0.001), 2 * (NdotL * NdotH) / max(VdotH, 0.001)));
+	geometric = min(1, min(2 * (NdotV * NdotH) / max(VdotH, 0.001), 2 * (NdotL * NdotH) / max(VdotH, 0.001)));
 
 	//Fresnel - using spherical gaussian approx
 	float exponent;
@@ -138,5 +194,5 @@ vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float
 
 	float kS = fresnel;
 
-	return vec4(lightColor * ( (specular * kS) + NdotL * (1.0 - kS) ), 1.0);
+	return vec4(lightColor, 1.0) * ( (specular * kS) + NdotL * SumDiffMaps() * (1.0 - kS) );
 }
