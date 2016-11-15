@@ -84,7 +84,7 @@ int main()
 		glm::vec3(0.0f, 1.0f, 0.3f), 2.0f);
 	LightSpot * spotLight = new LightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
 		glm::vec3(0.0f, 90.0f, 0.0f),
-		glm::vec3(0.5f, 0.5f, 1.0f), 2.0f, 12.5f, 20.0f);
+		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
 	scene->AddObjectToScene(dirLight);
 	scene->AddObjectToScene(pointLight);
 	scene->AddObjectToScene(spotLight);
@@ -105,7 +105,7 @@ int main()
 
 	Cube * cube = new Cube(mat1);
 	cube->Flags |= Drawable_Experimental;
-	cube->Scale = glm::vec3(2.0f, 1.0f, 1.0f);
+	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
 	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
 	scene->AddObjectToScene(cube);
 	Cube * cube2 = new Cube(mat1);
@@ -118,13 +118,14 @@ int main()
 	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
 
-	Texture * mrMap = new Texture("../images/container2_metalrough.png");
+	Texture * expDiff = new Texture("../images/marble_diffuse.png");
+	Texture * expMR = new Texture("../images/marble_mr.png");
 	MaterialCT * cooktorr = new MaterialCT();
 	cooktorr->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	cooktorr->Roughness = 1.0f;
-	cooktorr->Metallicity = 0.8f;
-	cooktorr->DiffuseMap = texture1;
-	cooktorr->MetalAndRoughMap = mrMap; //not exactly but good enough
+	cooktorr->Metallicity = 1.0f;
+	cooktorr->DiffuseMap = expDiff;
+	cooktorr->MetalAndRoughMap = expMR;
 	cube->CTMaterials.push_back(cooktorr);
 
 	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
@@ -180,7 +181,7 @@ int main()
 		}
 
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
-		cube->SetAngles(cube->GetAngles() + delta_rotate);
+		//cube->SetAngles(cube->GetAngles() + delta_rotate);
 		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
 		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
 		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
