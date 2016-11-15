@@ -55,7 +55,7 @@ public:
 	//List of Materials this obj uses
 	std::vector<Material *> Materials;
 
-	MaterialCT * CTMaterial;
+	std::vector<MaterialCT *> CTMaterials;
 
 	//The shader that this object uses
 	Shader * ShaderObj;

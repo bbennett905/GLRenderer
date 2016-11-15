@@ -53,7 +53,6 @@ Cube::Cube(Material * mat) :
 	BaseObject(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f)), 
 	BaseDrawable(vertices, (sizeof(vertices) / sizeof(vertices[0])), mat)
 { 
-	CTMaterial = new MaterialCT();
 	Scale = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 

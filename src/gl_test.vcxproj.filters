@@ -169,5 +169,8 @@
     <None Include="..\shaders\experimental.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\shaders\cooktorrance.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

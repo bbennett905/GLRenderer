@@ -30,8 +30,10 @@ Shader::Shader(ShaderCreateInfo info) :
 	}
 	if (info.Flags & Shader_Experimental)
 	{
-		vertexPath = "../shaders/experimental.vert";
-		fragPath = "../shaders/experimental.frag";
+		//vertexPath = "../shaders/experimental.vert";
+		//fragPath = "../shaders/experimental.frag";
+		vertexPath = "../shaders/default.vert";
+		fragPath = "../shaders/cooktorrance.frag";
 	}
 
 	std::string vertexSource;

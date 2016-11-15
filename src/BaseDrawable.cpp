@@ -68,10 +68,77 @@ void BaseDrawable::Draw(Camera * camera)
 
 	if (Flags & Drawable_Experimental)
 	{
-		glUniform3f(ShaderObj->GetUniformLocation("material.Color"), 
-			CTMaterial->BaseColor.x, CTMaterial->BaseColor.y, CTMaterial->BaseColor.z);
-		glUniform1f(ShaderObj->GetUniformLocation("material.Roughness"), CTMaterial->Roughness);
-		glUniform1f(ShaderObj->GetUniformLocation("material.Metallicity"), CTMaterial->Metallicity);
+		if (CTMaterials.size())
+		{
+			glUniform1i(ShaderObj->GetUniformLocation("hasMaterials"), 1);
+		}
+		else
+		{
+			glUniform1i(ShaderObj->GetUniformLocation("hasMaterials"), 0);
+		}
+		for (uint32_t i = 0; i < CTMaterials.size(); i++)
+		{
+			glUniform3f(ShaderObj->GetUniformLocation("materials[" + std::to_string(i) + "].Color"),
+				CTMaterials[i]->BaseColor.x, CTMaterials[i]->BaseColor.y, CTMaterials[i]->BaseColor.z);
+			glUniform1f(ShaderObj->GetUniformLocation("materials[" + std::to_string(i) + "].Roughness"),
+				CTMaterials[i]->Roughness);
+			glUniform1f(ShaderObj->GetUniformLocation("materials[" + std::to_string(i) + "].Metallicity"),
+				CTMaterials[i]->Metallicity);
+
+			if (CTMaterials[i]->DiffuseMap != nullptr)
+			{
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 1);
+				glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
+				CTMaterials[i]->DiffuseMap->Bind();
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].DiffMap").c_str()),
+					ShaderObj->TextureCount);
+				ShaderObj->TextureCount++;
+			}
+			else
+			{
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 0);
+			}
+
+			if (CTMaterials[i]->MetalAndRoughMap != nullptr)
+			{
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 1);
+				glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
+				CTMaterials[i]->MetalAndRoughMap->Bind();
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].MetalAndRoughMap").c_str()),
+					ShaderObj->TextureCount);
+				ShaderObj->TextureCount++;
+			}
+			else
+			{
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 0);
+			}
+
+			/*if (CTMaterials[i]->RoughnessMap != nullptr)
+			{
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].HasRoughMap").c_str()), 1);
+				glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
+				CTMaterials[i]->RoughnessMap->Bind();
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].RoughMap").c_str()),
+					ShaderObj->TextureCount);
+				ShaderObj->TextureCount++;
+			}
+			else
+			{
+				glUniform1i(ShaderObj->GetUniformLocation(
+					("materials[" + std::to_string(i) + "].HasRoughMap").c_str()), 0);
+			}*/
+		}
+
+		glUniform1i(ShaderObj->GetUniformLocation("numMaterials"),
+			ShaderObj->TextureCount);
 	}
 	else
 	{
@@ -135,6 +202,7 @@ void BaseDrawable::Draw(Camera * camera)
 				Materials[i]->Shininess);
 		}
 
+		//TODO wtf? thats not right at all
 		glUniform1i(ShaderObj->GetUniformLocation("numMaterials"),
 			ShaderObj->TextureCount);
 	}
