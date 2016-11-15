@@ -42,6 +42,8 @@ struct Material
 
 struct MaterialCT //cook torrance
 {
+	Texture * DiffuseMap;
+	Texture * MetalAndRoughMap; //metal is R, rough is G
 	glm::vec3 BaseColor;
 	float Roughness;
 	float Metallicity;
