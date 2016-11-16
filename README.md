@@ -4,7 +4,7 @@ My pet project over the last few months, a work-in-progress OpenGL renderer/engi
 
 ## Features ##
 
-* Lighting using Blinn-Phong model
+* Lighting using Cook-Torrance or Blinn-Phong model
 * 3 types of light objects - point, spot, directional
 * Texture loading using SOIL, including cubemap texture support
 * Skyboxes
@@ -35,17 +35,21 @@ All listed files are included in /include/ or /lib/ directory.
 # More Information #
 ### Shaders ###
 
-This uses typical GLSL shaders (currently no geometry shader support) with a few extras used for dynamically creating the shaders as needed by the renderer:
+* default.vert: A basic vertex shader
+* default.frag: A basic fragment shader, uses Blinn-Phong lighting
+* cooktorrance.frag: Another fragment shader, instead using Cook-Torrance lighting
+* default_unlit.vert: Similar to default.vert, but intended to be used with default_unlit.frag
+* detault_unlit.frag: Similar to default.frag, except does not take lights (used for UI)
+* skybox.vert/frag: Intended for a skybox
+
+These uses typical GLSL shaders (currently no geometry shader support) with a few extras used for dynamically creating the shaders as needed by the renderer:
 
 * *#insert version* - Inserts the GLSL macro *#version TYPE* which is specified by the application. Use this on the first line of any shader file.
-
 * *#insert num_point_lights* - Inserts the number of point lights in the scene.
-
 * *#insert num_spot_lights* - Inserts the number of spot lights in the scene.
-
 * *MAX_MATERIALS* - Defined in Shader.h, sets the max materials that can be used for a single drawable object
 
-Suffix *_unlit* on shaders means that it doesn't support lighting
+Suffix *_unlit* on shaders means that it doesn't accept lighting
 
 
 ### Planned Features / ToDo List ###
