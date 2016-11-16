@@ -104,29 +104,62 @@ int main()
 	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
 	Cube * cube = new Cube(mat1);
-	cube->Flags |= Drawable_Experimental;
+	cube->Flags |= Drawable_CookTorrance;
 	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
 	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
 	scene->AddObjectToScene(cube);
 	Cube * cube2 = new Cube(mat1);
+	cube2->Flags |= Drawable_CookTorrance;
 	cube2->Position = glm::vec3(0.0f, 3.0f, 5.0f);
 	scene->AddObjectToScene(cube2);
 	Cube * cube3 = new Cube(mat1);
+	cube3->Flags |= Drawable_CookTorrance;
 	cube3->Position = glm::vec3(3.0f, 2.0f, 1.0f);
 	scene->AddObjectToScene(cube3);
 	Cube * cube4 = new Cube(mat1);
+	cube4->Flags |= Drawable_CookTorrance;
 	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
 
-	Texture * expDiff = new Texture("../images/crate_diffuse.png");
-	Texture * expMR = new Texture("../images/crate_mr.png");
-	MaterialCT * cooktorr = new MaterialCT();
-	cooktorr->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	cooktorr->Roughness = 1.0f;
-	cooktorr->Metallicity = 1.0f;
-	cooktorr->DiffuseMap = expDiff;
-	cooktorr->MetalAndRoughMap = expMR;
-	cube->CTMaterials.push_back(cooktorr);
+	Texture * crateDiff = new Texture("../images/crate_diffuse.png");
+	Texture * crateMR = new Texture("../images/crate_mr.png");
+	MaterialCT * crate = new MaterialCT();
+	crate->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	crate->Roughness = 1.0f;
+	crate->Metallicity = 1.0f;
+	crate->DiffuseMap = crateDiff;
+	crate->MetalAndRoughMap = crateMR;
+	cube->CTMaterials.push_back(crate);
+
+	Texture * marbleDiff = new Texture("../images/marble_diffuse.png");
+	Texture * marbleMR = new Texture("../images/marble_mr.png");
+	MaterialCT * marble = new MaterialCT();
+	marble->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	marble->Roughness = 1.0f;
+	marble->Metallicity = 1.0f;
+	marble->DiffuseMap = marbleDiff;
+	marble->MetalAndRoughMap = marbleMR;
+	cube2->CTMaterials.push_back(marble);
+
+	Texture * woodDiff = new Texture("../images/woodrough_diffuse.png");
+	Texture * woodMR = new Texture("../images/woodrough_mr.png");
+	MaterialCT * wood = new MaterialCT();
+	wood->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	wood->Roughness = 1.0f;
+	wood->Metallicity = 1.0f;
+	wood->DiffuseMap = woodDiff;
+	wood->MetalAndRoughMap = woodMR;
+	cube3->CTMaterials.push_back(wood);
+
+	Texture * metalDiff = new Texture("../images/metal_diffuse.png");
+	Texture * metalMR = new Texture("../images/metal_mr.png");
+	MaterialCT * metal = new MaterialCT();
+	metal->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	metal->Roughness = 1.0f;
+	metal->Metallicity = 1.0f;
+	metal->DiffuseMap = metalDiff;
+	metal->MetalAndRoughMap = metalMR;
+	cube4->CTMaterials.push_back(metal);
 
 	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
 	Material * glass_material = new Material(glass_diffuse);
@@ -142,9 +175,11 @@ int main()
 	scene->AddObjectToScene(glass2);
 
 	Cube * floor = new Cube(mat1);
+	floor->Flags |= Drawable_CookTorrance;
 	floor->Position = glm::vec3(0.0f, -1.0f, 0.0f);
 	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
 	scene->AddObjectToScene(floor);
+	floor->CTMaterials.push_back(wood);
 
 	Model * cone = new Model("../cone/cone.obj");
 	cone->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
@@ -182,9 +217,9 @@ int main()
 
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
 		//cube->SetAngles(cube->GetAngles() + delta_rotate);
-		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
-		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
-		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
+		//cube2->SetAngles(cube2->GetAngles() + delta_rotate);
+		//cube3->SetAngles(cube3->GetAngles() + delta_rotate);
+		//cube4->SetAngles(cube4->GetAngles() + delta_rotate);
 
 		//Go to the event callbacks specified before
 		Input::PollEvents(delta_time);

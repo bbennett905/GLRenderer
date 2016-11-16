@@ -28,7 +28,7 @@ Shader::Shader(ShaderCreateInfo info) :
 		vertexPath = "../shaders/skybox.vert";
 		fragPath = "../shaders/skybox.frag";
 	}
-	if (info.Flags & Shader_Experimental)
+	if (info.Flags & Shader_CookTorrance)
 	{
 		//vertexPath = "../shaders/experimental.vert";
 		//fragPath = "../shaders/experimental.frag";

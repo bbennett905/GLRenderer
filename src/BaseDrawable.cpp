@@ -66,7 +66,7 @@ void BaseDrawable::Draw(Camera * camera)
 {
 	ShaderObj->Use();
 
-	if (Flags & Drawable_Experimental)
+	if (Flags & Drawable_CookTorrance)
 	{
 		if (CTMaterials.size())
 		{
@@ -118,23 +118,6 @@ void BaseDrawable::Draw(Camera * camera)
 				glUniform1i(ShaderObj->GetUniformLocation(
 					("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 0);
 			}
-
-			/*if (CTMaterials[i]->RoughnessMap != nullptr)
-			{
-				glUniform1i(ShaderObj->GetUniformLocation(
-					("materials[" + std::to_string(i) + "].HasRoughMap").c_str()), 1);
-				glActiveTexture(GL_TEXTURE0 + ShaderObj->TextureCount);
-				CTMaterials[i]->RoughnessMap->Bind();
-				glUniform1i(ShaderObj->GetUniformLocation(
-					("materials[" + std::to_string(i) + "].RoughMap").c_str()),
-					ShaderObj->TextureCount);
-				ShaderObj->TextureCount++;
-			}
-			else
-			{
-				glUniform1i(ShaderObj->GetUniformLocation(
-					("materials[" + std::to_string(i) + "].HasRoughMap").c_str()), 0);
-			}*/
 		}
 
 		glUniform1i(ShaderObj->GetUniformLocation("numMaterials"),

@@ -49,7 +49,7 @@ enum ShaderFlags
 	Shader_Unlit = 1 << 1,
 	Shader_Skybox = 1 << 2,
 	Shader_UI = 1 << 3,
-	Shader_Experimental = 1 << 4
+	Shader_CookTorrance = 1 << 4
 };
 
 class Shader

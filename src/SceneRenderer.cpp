@@ -152,8 +152,8 @@ bool SceneRenderer::BuildShaders()
 			shader_create_info.Flags |= Shader_Skybox;
 		if (drawable->Flags & Drawable_UI)
 			shader_create_info.Flags |= Shader_UI;
-		if (drawable->Flags & Drawable_Experimental)
-			shader_create_info.Flags |= Shader_Experimental;
+		if (drawable->Flags & Drawable_CookTorrance)
+			shader_create_info.Flags |= Shader_CookTorrance;
 
 		Shader * shader = Shader::ShaderExists(shader_create_info);
 
