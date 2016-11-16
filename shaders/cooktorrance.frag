@@ -69,7 +69,7 @@ vec4 SumDiffMaps();
 vec4 AvgMetalAndRoughMaps();
 
 
-vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float width = 0);
+vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir);
 
 void main(void) {
 	if (!hasMaterials)
@@ -157,7 +157,7 @@ vec4 AvgMetalAndRoughMaps() {
     return sum / numMaps;
 }
 
-vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir, float width)
+vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)
 {
 	//this time we're trying the unreal implementation - or something close to it
 	vec4 materialProps = AvgMetalAndRoughMaps();
