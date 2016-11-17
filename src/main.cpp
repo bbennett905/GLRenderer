@@ -79,14 +79,14 @@ int main()
 
 	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
 		glm::vec3(1.0f, 0.95f, 0.75f), 1.0f,
-		glm::vec3(0.8f, 0.7f, 0.9f), 0.2f);
+		glm::vec3(0.8f, 0.7f, 0.9f), 0.05f);
 	LightPoint * pointLight = new LightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
-		glm::vec3(0.0f, 1.0f, 0.3f), 2.0f);
+		glm::vec3(0.0f, 1.0f, 0.3f), 1.0f);
 	LightPoint * pointLight2 = new LightPoint(glm::vec3(-1.0f, 0.5f, 0.8f),
-		glm::vec3(0.6f, 0.0f, 1.0f), 4.0f);
+		glm::vec3(0.6f, 0.0f, 1.0f), 1.0f);
 	LightSpot * spotLight = new LightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
 		glm::vec3(0.0f, 90.0f, 0.0f),
-		glm::vec3(0.5f, 0.5f, 1.0f), 6.0f, 12.5f, 20.0f);
+		glm::vec3(0.5f, 0.5f, 1.0f), 3.0f, 12.5f, 20.0f);
 	scene->AddObjectToScene(dirLight);
 	scene->AddObjectToScene(pointLight);
 	scene->AddObjectToScene(pointLight2);
