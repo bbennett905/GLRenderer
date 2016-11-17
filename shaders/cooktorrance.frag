@@ -131,7 +131,7 @@ vec4 SumDiffMaps() {
 	{
 	    if (materials[i].HasDiffMap)
 		{
-            sum += texture(materials[i].DiffMap, TexCoord);// * materials[i].DiffuseStrength;
+            sum += texture(materials[i].DiffMap, TexCoord);
 		}
 		else
 		{
@@ -152,6 +152,10 @@ vec4 AvgMetalAndRoughMaps() {
 						texture(materials[i].MetalAndRoughMap, TexCoord).y * materials[i].Roughness,
 						0.0, 0.0);
 			numMaps++;
+		}
+		else
+		{
+			sum += vec4(materials[i].Metallicity, materials[i].Roughness, 0.0f, 0.0f);
 		}
 	}
     return sum / numMaps;
