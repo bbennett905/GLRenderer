@@ -88,6 +88,7 @@ void main(void) {
     for (int i = 0; i < spotLights.length(); i++)
         result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
 
+	result.w = 1.0;
 	result *= SumDiffMaps();
 	
 	result.rgb = pow(result.rgb, vec3(1.0/gamma));
@@ -99,7 +100,7 @@ vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
     vec3 ambient = light.AmbientColor * light.AmbientIntensity;
 
     return CookTorrance(norm, lightDir, light.Color, viewDir) * light.Intensity + 
-		vec4(ambient, 1.0f);
+		vec4(ambient, 0.0f);
 }
 
 vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
@@ -202,5 +203,5 @@ vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)
 
 	float kS = fresnel;
 
-	return vec4(lightColor, 1.0) * ( (specular * kS) + NdotL * SumDiffMaps() * (1.0 - kS) );
+	return vec4(lightColor * (specular * kS + NdotL * (1.0 - kS)), 0.0);
 }
