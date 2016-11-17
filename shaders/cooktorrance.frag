@@ -70,7 +70,7 @@ vec4 AvgMetalAndRoughMaps();
 
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir);
 
-float gamma = 1.6;
+float gamma = 1.5;
 
 void main(void) {
 	if (!hasMaterials)
@@ -125,7 +125,7 @@ vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
     float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
 
     return intensity * attenuation * 
-		CookTorrance(norm, normalize(-light.Direction), light.Color, viewDir) * light.Intensity;
+		CookTorrance(norm, lightDir, light.Color, viewDir) * light.Intensity;
 }
 
 vec4 SumDiffMaps() {
@@ -135,7 +135,7 @@ vec4 SumDiffMaps() {
 	    if (materials[i].HasDiffMap)
 		{
 			vec4 diffuseColor = texture(materials[i].DiffMap, TexCoord);
-			diffuseColor.xyz = pow(diffuseColor.rgb, vec3(gamma));
+			diffuseColor.xyz = pow(diffuseColor.xyz, vec3(gamma));
             sum += diffuseColor;
 		}
 		else
