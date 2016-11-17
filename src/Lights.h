@@ -41,7 +41,7 @@ public:
 	float Quadratic;
 
 	LightPoint(glm::vec3 pos, glm::vec3 col, float intens, 
-		float constant = 1.0f, float linear = 0.5f, float quad = 0.25f) :
+		float constant = 0.3f, float linear = 0.2f, float quad = 1.0f) :
 		BaseLight(col, intens), Constant(constant), Linear(linear), Quadratic(quad)
 	{ 
 		Position = pos;
@@ -62,7 +62,7 @@ public:
 	float OuterCutOff;
 
 	LightSpot(glm::vec3 pos, glm::vec3 ang, glm::vec3 col, float intens, float cutoffIn, float cutoffOut,
-		float constant = 1.0f, float linear = 0.5f, float quad = 0.25f) :
+		float constant = 0.3f, float linear = 0.2f, float quad = 1.0f) :
 		BaseLight(col, intens), InnerCutOff(cutoffIn), OuterCutOff(cutoffOut),
 		Constant(constant), Linear(linear), Quadratic(quad)
 	{ 
