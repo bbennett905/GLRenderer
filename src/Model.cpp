@@ -154,10 +154,10 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 	for (uint32_t i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); i++)
 	{
 		Texture * diffuse = nullptr;
-		Texture * specular = nullptr;
+		Texture * mrmap = nullptr;
 		Material * material;
 
-		//Check if the texture has already been loaded for this model
+		//Check if the texture has already been loaded
 		aiString str;
 		mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
 
@@ -165,6 +165,7 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 		diffuse = Texture::TextureExists(path);
 		if (!diffuse) diffuse = new Texture(path);
 
+		//Specular is actually MR map
 		if (i < mat->GetTextureCount(aiTextureType_SPECULAR))
 		{
 			//Check if the specular map has already been loaded
@@ -172,11 +173,11 @@ std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
 
 			std::string path = _directory + "/" + std::string(str.C_Str());
 
-			specular = Texture::TextureExists(path);
-			if (!specular) specular = new Texture(path);
+			mrmap = Texture::TextureExists(path);
+			if (!mrmap) mrmap = new Texture(path);
 		}
 		//Create a material
-		material = new Material(diffuse, specular);
+		material = new Material(diffuse, mrmap);
 		mats.push_back(material);
 	}
 

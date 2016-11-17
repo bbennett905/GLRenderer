@@ -48,8 +48,7 @@ enum ShaderFlags
 	Shader_Translucent = 1 << 0,
 	Shader_Unlit = 1 << 1,
 	Shader_Skybox = 1 << 2,
-	Shader_UI = 1 << 3,
-	Shader_CookTorrance = 1 << 4
+	Shader_UI = 1 << 3
 };
 
 class Shader
@@ -70,8 +69,6 @@ public:
 	//OpenGL shader program object of this Shader
 	GLuint GetProgram();
 
-	//TODO should we scan the shader at creation for all uniforms, then store them?
-	//or just cache as we need them
 	//Gets uniform location
 	GLuint GetUniformLocation(std::string name);
 

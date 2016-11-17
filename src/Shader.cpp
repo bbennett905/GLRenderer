@@ -16,7 +16,7 @@ Shader::Shader(ShaderCreateInfo info) :
 	char * vertexPath;
 	char * fragPath;
 	vertexPath = "../shaders/default.vert";
-	fragPath = "../shaders/default.frag";
+	fragPath = "../shaders/cooktorrance.frag";
 
 	if (info.Flags & Shader_Unlit)
 	{
@@ -27,13 +27,6 @@ Shader::Shader(ShaderCreateInfo info) :
 	{
 		vertexPath = "../shaders/skybox.vert";
 		fragPath = "../shaders/skybox.frag";
-	}
-	if (info.Flags & Shader_CookTorrance)
-	{
-		//vertexPath = "../shaders/experimental.vert";
-		//fragPath = "../shaders/experimental.frag";
-		vertexPath = "../shaders/default.vert";
-		fragPath = "../shaders/cooktorrance.frag";
 	}
 
 	std::string vertexSource;

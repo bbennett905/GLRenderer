@@ -87,12 +87,12 @@ void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 			for (auto texture : _texture_list)
 			{
 				if (texture == new_material->DiffuseMap) diff_in_vector = true;
-				if (texture == new_material->SpecularMap) spec_in_vector = true;
+				if (texture == new_material->MetalAndRoughMap) spec_in_vector = true;
 			}
 			if (!diff_in_vector) 
 				_texture_list.push_back(new_material->DiffuseMap);
 			if (!spec_in_vector) 
-				_texture_list.push_back(new_material->SpecularMap);
+				_texture_list.push_back(new_material->MetalAndRoughMap);
 		}
 	}
 
@@ -152,8 +152,6 @@ bool SceneRenderer::BuildShaders()
 			shader_create_info.Flags |= Shader_Skybox;
 		if (drawable->Flags & Drawable_UI)
 			shader_create_info.Flags |= Shader_UI;
-		if (drawable->Flags & Drawable_CookTorrance)
-			shader_create_info.Flags |= Shader_CookTorrance;
 
 		Shader * shader = Shader::ShaderExists(shader_create_info);
 

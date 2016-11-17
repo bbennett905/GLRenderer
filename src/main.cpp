@@ -78,24 +78,22 @@ int main()
 	Profiling::ProfInit();
 
 	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f), 2.0f,
-		glm::vec3(0.1f, 0.1f, 0.5f), 0.1f);
+		glm::vec3(1.0f, 0.95f, 0.75f), 1.0f,
+		glm::vec3(0.8f, 0.7f, 0.9f), 0.2f);
 	LightPoint * pointLight = new LightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
 		glm::vec3(0.0f, 1.0f, 0.3f), 2.0f);
+	LightPoint * pointLight2 = new LightPoint(glm::vec3(-1.0f, 0.5f, 0.8f),
+		glm::vec3(0.6f, 0.0f, 1.0f), 4.0f);
 	LightSpot * spotLight = new LightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
 		glm::vec3(0.0f, 90.0f, 0.0f),
-		glm::vec3(0.5f, 0.5f, 1.0f), 4.0f, 12.5f, 20.0f);
+		glm::vec3(0.5f, 0.5f, 1.0f), 6.0f, 12.5f, 20.0f);
 	scene->AddObjectToScene(dirLight);
 	scene->AddObjectToScene(pointLight);
+	scene->AddObjectToScene(pointLight2);
 	scene->AddObjectToScene(spotLight);
 
 	Skybox * sky = new Skybox("../images/skybox/a");
 	scene->AddObjectToScene(sky);
-
-	Texture * texture1 = new Texture("../images/container2.png");
-	Texture * specMap = new Texture("../images/container2_specular.png");
-	Material * mat1 = new Material(texture1, specMap,
-		0.5f, 1.0f, 1.0f, 32.0f);
 
 	Model * suit = new Model("../nanosuit/nanosuit.obj");
 	scene->AddObjectToScene(suit);
@@ -103,63 +101,35 @@ int main()
 	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
 	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
-	Cube * cube = new Cube(mat1);
-	cube->Flags |= Drawable_CookTorrance;
-	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
-	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
-	scene->AddObjectToScene(cube);
-	Cube * cube2 = new Cube(mat1);
-	cube2->Flags |= Drawable_CookTorrance;
-	cube2->Position = glm::vec3(0.0f, 3.0f, 5.0f);
-	scene->AddObjectToScene(cube2);
-	Cube * cube3 = new Cube(mat1);
-	cube3->Flags |= Drawable_CookTorrance;
-	cube3->Position = glm::vec3(3.0f, 2.0f, 1.0f);
-	scene->AddObjectToScene(cube3);
-	Cube * cube4 = new Cube(mat1);
-	cube4->Flags |= Drawable_CookTorrance;
-	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
-	scene->AddObjectToScene(cube4);
-
 	Texture * crateDiff = new Texture("../images/crate_diffuse.png");
 	Texture * crateMR = new Texture("../images/crate_mr.png");
-	MaterialCT * crate = new MaterialCT();
-	crate->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	crate->Roughness = 1.0f;
-	crate->Metallicity = 1.0f;
-	crate->DiffuseMap = crateDiff;
-	crate->MetalAndRoughMap = crateMR;
-	cube->CTMaterials.push_back(crate);
+	Material * crate = new Material(crateDiff, crateMR);
 
 	Texture * marbleDiff = new Texture("../images/marble_diffuse.png");
 	Texture * marbleMR = new Texture("../images/marble_mr.png");
-	MaterialCT * marble = new MaterialCT();
-	marble->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	marble->Roughness = 1.0f;
-	marble->Metallicity = 1.0f;
-	marble->DiffuseMap = marbleDiff;
-	marble->MetalAndRoughMap = marbleMR;
-	cube2->CTMaterials.push_back(marble);
+	Material * marble = new Material(marbleDiff, marbleMR);
 
 	Texture * woodDiff = new Texture("../images/woodrough_diffuse.png");
 	Texture * woodMR = new Texture("../images/woodrough_mr.png");
-	MaterialCT * wood = new MaterialCT();
-	wood->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	wood->Roughness = 1.0f;
-	wood->Metallicity = 1.0f;
-	wood->DiffuseMap = woodDiff;
-	wood->MetalAndRoughMap = woodMR;
-	cube3->CTMaterials.push_back(wood);
+	Material * wood = new Material(woodDiff, woodMR);
 
 	Texture * metalDiff = new Texture("../images/metal_diffuse.png");
 	Texture * metalMR = new Texture("../images/metal_mr.png");
-	MaterialCT * metal = new MaterialCT();
-	metal->BaseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-	metal->Roughness = 1.0f;
-	metal->Metallicity = 1.0f;
-	metal->DiffuseMap = metalDiff;
-	metal->MetalAndRoughMap = metalMR;
-	cube4->CTMaterials.push_back(metal);
+	Material * metal = new Material(metalDiff, metalMR);
+
+	Cube * cube = new Cube(crate);
+	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
+	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
+	scene->AddObjectToScene(cube);
+	Cube * cube2 = new Cube(marble);
+	cube2->Position = glm::vec3(0.0f, 3.0f, 5.0f);
+	scene->AddObjectToScene(cube2);
+	Cube * cube3 = new Cube(wood);
+	cube3->Position = glm::vec3(3.0f, 2.0f, 1.0f);
+	scene->AddObjectToScene(cube3);
+	Cube * cube4 = new Cube(metal);
+	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
+	scene->AddObjectToScene(cube4);
 
 	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
 	Material * glass_material = new Material(glass_diffuse);
@@ -174,12 +144,10 @@ int main()
 	glass2->Position = glm::vec3(1.7f, 0.3f, 1.6f);
 	scene->AddObjectToScene(glass2);
 
-	Cube * floor = new Cube(mat1);
-	floor->Flags |= Drawable_CookTorrance;
+	Cube * floor = new Cube(wood);
 	floor->Position = glm::vec3(0.0f, -1.0f, 0.0f);
 	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
 	scene->AddObjectToScene(floor);
-	floor->CTMaterials.push_back(wood);
 
 	Model * cone = new Model("../cone/cone.obj");
 	cone->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));

@@ -20,8 +20,7 @@ enum DrawableFlags
 	Drawable_Translucent = 1 << 0,
 	Drawable_Unlit = 1 << 1,
 	Drawable_UI = 1 << 2,
-	Drawable_Skybox = 1 << 3,
-	Drawable_CookTorrance = 1 << 4
+	Drawable_Skybox = 1 << 3
 };
 
 class SceneRenderer;
@@ -54,8 +53,6 @@ public:
 	std::vector<GLuint> Indices;
 	//List of Materials this obj uses
 	std::vector<Material *> Materials;
-
-	std::vector<MaterialCT *> CTMaterials;
 
 	//The shader that this object uses
 	Shader * ShaderObj;
