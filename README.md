@@ -4,11 +4,11 @@ My pet project over the last few months, a work-in-progress OpenGL renderer/engi
 
 ## Features ##
 
-* Lighting using Cook-Torrance or Blinn-Phong model
+* Lighting using Cook-Torrance model
 * 3 types of light objects - point, spot, directional
 * Texture loading using SOIL, including cubemap texture support
 * Skyboxes
-* Dynamic shader creation to create shaders tailored to a specific object in a scene
+* Dynamic shader creation to create shaders tailored to a specific scene
 * Window and input abstraction layers over SDL
 * Model loading using ASSIMP
 * Simple profiling tool
@@ -55,8 +55,8 @@ Suffix *_unlit* on shaders means that it doesn't accept lighting
 ### Planned Features / ToDo List ###
 
 * Normal map support
-* Optimizations - using UBOs for Draw methods, load time optimizations, etc.
-* Add shadows support
+* Add shadow map support
+* Add tonemapping support
 * Improved memory management system
 * Create more primitives (possibly generating vertices & indices)
 * Load materials/scenes from file
