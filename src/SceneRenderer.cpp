@@ -198,14 +198,14 @@ void SceneRenderer::Draw()
 	{
 		if (!(drawable->Flags & Drawable_Translucent) && !(drawable->Flags & Drawable_UI) &&
 			!(drawable->Flags & Drawable_Skybox))
-			drawable->Draw(_camera);
+			drawable->Draw();
 	}
 
 	//Draw the skybox
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->Flags & Drawable_Skybox)
-			drawable->Draw(_camera);
+			drawable->Draw();
 	}
 
 	//Then draw translucent objects, ordered by distance
@@ -228,14 +228,14 @@ void SceneRenderer::Draw()
 	}
 	//..and finally, draw everything in that list.
 	for (std::map<float, BaseDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
-		it->second->Draw(_camera);
+		it->second->Draw();
 
 	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->Flags & Drawable_UI)
-			drawable->Draw(_camera);
+			drawable->Draw();
 	}
 	glEnable(GL_DEPTH_TEST);
 

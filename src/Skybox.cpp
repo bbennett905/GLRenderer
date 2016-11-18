@@ -68,7 +68,7 @@ Skybox::~Skybox()
 {
 }
 
-void Skybox::Draw(Camera * camera)
+void Skybox::Draw()
 {
 	glDepthFunc(GL_LEQUAL);
 	ShaderObj->Use();

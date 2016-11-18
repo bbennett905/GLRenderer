@@ -43,7 +43,7 @@ BaseUIElement::~BaseUIElement()
 	delete _texture;
 }
 
-void BaseUIElement::Draw(Camera * camera)
+void BaseUIElement::Draw()
 {
 	if (!_texture) return;
 	ShaderObj->Use();

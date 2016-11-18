@@ -13,7 +13,7 @@ public:
 	Skybox(std::string path);
 	~Skybox();
 
-	void Draw(Camera * camera);
+	void Draw();
 
 protected:
 	Texture * _texture;

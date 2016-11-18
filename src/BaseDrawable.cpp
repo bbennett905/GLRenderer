@@ -62,7 +62,7 @@ glm::mat4 BaseDrawable::GetModelMatrix()
 	return glm::mat4(); //Return an identity matrix, no transform
 }
 
-void BaseDrawable::Draw(Camera * camera)
+void BaseDrawable::Draw()
 {
 	ShaderObj->Use();
 
@@ -117,9 +117,8 @@ void BaseDrawable::Draw(Camera * camera)
 				("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 0);
 		}
 	}
-	//TODO wtf? thats not right at all
 	glUniform1i(ShaderObj->GetUniformLocation("numMaterials"),
-		ShaderObj->TextureCount);
+		Materials.size());
 
 	//model matrix transforms model space to world space - rotation and translation
 	glUniformMatrix4fv(ShaderObj->GetUniformLocation("model"), 1, GL_FALSE,
