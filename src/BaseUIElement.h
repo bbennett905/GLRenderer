@@ -5,15 +5,15 @@ class Texture;
 class Window;
 
 class BaseUIElement :
-	public IDrawable
+	public BaseDrawable
 {
 public:
 	BaseUIElement(Window * window, glm::vec2 pos = glm::vec2(0.0f, 0.0f),
 		glm::vec2 scale = glm::vec2(1.0f, 1.0f));
 	virtual ~BaseUIElement();
 
-	void Draw();
-	glm::mat4 GetModelMatrix();
+	virtual void Draw();
+	virtual glm::mat4 GetModelMatrix();
 
 	glm::vec2 Scale;
 	glm::vec2 Position;
