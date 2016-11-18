@@ -4,12 +4,10 @@
 #include <vector>
 
 /*
- * Struct with Textures and material properties
+ * Class with Textures and material properties
  */
 
 class Texture;
-
-//TODO we could load these from a file (like vmt)
 
 class Material //cook torrance
 {

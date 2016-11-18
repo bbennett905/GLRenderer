@@ -19,8 +19,12 @@ Material::Material(std::string path)
 
 void Material::loadMaterial(std::string path)
 {
-	//TODO add logging/errors
 	std::ifstream materialFile(path.c_str(), std::fstream::in);
+	if (materialFile.fail())
+	{
+		Logging::LogMessage(LogLevel_Error, "Failed loading material file %s", path);
+		return;
+	}
 	char buffer[512];
 
 	std::string diffusePath = "";
@@ -92,4 +96,6 @@ void Material::loadMaterial(std::string path)
 	BaseColor = baseColor;
 	Roughness = rough;
 	Metallicity = metal;
+
+	Logging::LogMessage(LogLevel_Debug, "Loaded material file %s", path);
 }
