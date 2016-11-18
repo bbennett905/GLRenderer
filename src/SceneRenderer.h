@@ -10,7 +10,7 @@
 class Window;
 class BaseDrawable;
 class Shader;
-struct Material;
+class Material;
 class Texture;
 class Camera;
 class LightPoint;

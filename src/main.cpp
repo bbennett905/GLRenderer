@@ -101,21 +101,10 @@ int main()
 	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
 	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
-	Texture * crateDiff = new Texture("../images/crate_diffuse.png");
-	Texture * crateMR = new Texture("../images/crate_mr.png");
-	Material * crate = new Material(crateDiff, crateMR);
-
-	Texture * marbleDiff = new Texture("../images/marble_diffuse.png");
-	Texture * marbleMR = new Texture("../images/marble_mr.png");
-	Material * marble = new Material(marbleDiff, marbleMR);
-
-	Texture * woodDiff = new Texture("../images/woodrough_diffuse.png");
-	Texture * woodMR = new Texture("../images/woodrough_mr.png");
-	Material * wood = new Material(woodDiff, woodMR);
-
-	Texture * metalDiff = new Texture("../images/metal_diffuse.png");
-	Texture * metalMR = new Texture("../images/metal_mr.png");
-	Material * metal = new Material(metalDiff, metalMR);
+	Material * crate = new Material("../images/crate.txt");
+	Material * marble = new Material("../images/marble.txt");
+	Material * wood = new Material("../images/wood.txt");
+	Material * metal = new Material("../images/metal.txt");
 
 	Cube * cube = new Cube(crate);
 	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
@@ -132,7 +121,7 @@ int main()
 	scene->AddObjectToScene(cube4);
 
 	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
-	Material * glass_material = new Material(glass_diffuse);
+	Material * glass_material = new Material("../images/window.txt");
 	Cube * glass = new Cube(glass_material);
 	glass->Flags |= Drawable_Translucent;
 	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);

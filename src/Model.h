@@ -12,7 +12,7 @@
  */
 
 class Texture;
-struct Material;
+class Material;
 class Shader;
 class Mesh;
 

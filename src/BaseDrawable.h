@@ -26,8 +26,7 @@ enum DrawableFlags
 class SceneRenderer;
 class Camera;
 class Shader;
-struct Material;
-struct MaterialCT;
+class Material;
 class LightPoint;
 class LightSpot;
 class LightDirectional;

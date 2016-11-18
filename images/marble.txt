@@ -1,0 +1,2 @@
+[DiffuseMap]../images/marble_diffuse.png
+[MRMap]../images/marble_mr.png

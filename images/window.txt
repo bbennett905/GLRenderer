@@ -1,0 +1,4 @@
+[DiffuseMap]../images/window.png
+[Translucent]
+[Metallicity]0.2
+[Roughness]0.2

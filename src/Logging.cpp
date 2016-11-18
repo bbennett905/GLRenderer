@@ -95,7 +95,8 @@ namespace Logging
 				}
 				else
 				{
-					_texture->Update(SDL_CreateRGBSurface(0, 1, 1, 8, 0, 0, 0, 0));
+					_surface = SDL_CreateRGBSurface(0, 1, 1, 8, 0, 0, 0, 0);
+					_texture->Update(_surface);
 				}
 				_has_changed = false;
 			}
