@@ -105,6 +105,7 @@ int main()
 	Material * marble = new Material("../images/marble.txt");
 	Material * wood = new Material("../images/wood.txt");
 	Material * metal = new Material("../images/metal.txt");
+	Material * glass_material = new Material("../images/window.txt");
 
 	Cube * cube = new Cube(crate);
 	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
@@ -120,8 +121,6 @@ int main()
 	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
 	scene->AddObjectToScene(cube4);
 
-	Texture * glass_diffuse = new Texture("../images/window.png", Texture_Translucent);
-	Material * glass_material = new Material("../images/window.txt");
 	Cube * glass = new Cube(glass_material);
 	glass->Flags |= Drawable_Translucent;
 	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
