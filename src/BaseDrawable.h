@@ -4,6 +4,8 @@
 #include <glew.h>
 #include <glm.hpp>
 
+#include "IDrawable.h"
+
 /*
  * Class that any 3D drawable object inherits from
  */
@@ -31,7 +33,8 @@ class LightPoint;
 class LightSpot;
 class LightDirectional;
 
-class BaseDrawable
+class BaseDrawable : 
+	public IDrawable
 {
 public:
 	BaseDrawable();

@@ -5,7 +5,7 @@ class Texture;
 class Window;
 
 class BaseUIElement :
-	public BaseDrawable
+	public IDrawable
 {
 public:
 	BaseUIElement(Window * window, glm::vec2 pos = glm::vec2(0.0f, 0.0f),

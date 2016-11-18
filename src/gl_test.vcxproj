@@ -107,6 +107,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="FPS_UIElement.h" />
+    <ClInclude Include="IDrawable.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Keycodes.h" />
     <ClInclude Include="Lights.h" />

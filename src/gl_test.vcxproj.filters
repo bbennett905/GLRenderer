@@ -149,6 +149,9 @@
     <ClInclude Include="Profiling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\default.frag">
