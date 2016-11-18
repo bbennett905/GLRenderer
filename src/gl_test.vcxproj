@@ -96,6 +96,7 @@
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timing.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
