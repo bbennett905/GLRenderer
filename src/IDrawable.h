@@ -1,11 +1,54 @@
 #pragma once
 
+#include <vector>
 #include <glm.hpp>
+#include <glew.h>
+
+class Material;
+class Shader;
+
+struct VertexData
+{
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 TexCoords;
+};
+
+enum DrawableFlags
+{
+	Drawable_Translucent = 1 << 0,
+	Drawable_Unlit = 1 << 1,
+	Drawable_UI = 1 << 2,
+	Drawable_Skybox = 1 << 3
+};
 
 class IDrawable
 {
 public:
 	virtual ~IDrawable() {}
+
+	//Draws the object using the current
 	virtual void Draw() = 0;
+	//The model transform matrix
 	virtual glm::mat4 GetModelMatrix() = 0;
+
+	//Vertex data (pos, normal, texture coords)
+	virtual std::vector<VertexData>& GetVertices() = 0;
+	//Vertex indices
+	virtual std::vector<GLuint>& GetIndices() = 0;
+	//Materials used to draw this
+	virtual std::vector<Material *>& GetMaterials() = 0;
+
+	//Returns a pointer to the shader object to be used
+	virtual Shader*& GetShader() = 0;
+
+	//Vertex array object
+	virtual GLuint& VAO() = 0;
+	//Vertex buffer object
+	virtual GLuint& VBO() = 0;
+	//Element buffer object
+	virtual GLuint& EBO() = 0;
+
+	//Bit flags indicating special draw considerations
+	virtual uint32_t& DrawFlags() = 0;
 };

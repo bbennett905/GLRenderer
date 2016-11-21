@@ -3,10 +3,10 @@
 #include <glm.hpp>
 #include <glew.h>
 
-#include "BaseObject.h"
+#include "CBaseObject.h"
 
 class Camera :
-	public BaseObject
+	public CBaseObject
 {
 public:
 	//FOV in degrees, ratio is aspect ratio
@@ -19,10 +19,8 @@ public:
 	//Returns the projection transformation matrix for this camera
 	glm::mat4 GetProjMatrix();
 
-	//Returns position vector
-	glm::vec3 GetPos();
 	//Sets position
-	void SetPos(glm::vec3 pos);
+	void SetPosition(glm::vec3 pos);
 	//Sets angles
 	void SetAngles(glm::vec3 newAngles);
 
@@ -32,7 +30,6 @@ private:
 	glm::mat4 _viewMatrix;
 	glm::mat4 _projMatrix;
 
-	glm::vec3 Position;
 	//radians here
 	float _fov;
 	float _aspectRatio;

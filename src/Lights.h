@@ -1,38 +1,38 @@
 #pragma once
-#include "BaseObject.h"
+#include "CBaseObject.h"
 
 /*
  * Classes for various types of light entities
  */
 
-class BaseLight :
-	public BaseObject
+class CBaseLight :
+	public CBaseObject
 {
 public:
 	glm::vec3 Color;
 	float Intensity;
 
-	BaseLight(glm::vec3 col, float intens) :
+	CBaseLight(glm::vec3 col, float intens) :
 		Color(col), Intensity(intens)
 	{ }
 };
 
-class LightDirectional :
-	public BaseLight
+class CLightDirectional :
+	public CBaseLight
 {
 public:
 	glm::vec3 AmbientColor;
 	float AmbientIntensity;
 
-	LightDirectional(glm::vec3 ang, glm::vec3 col, float intens, glm::vec3 ambCol, float ambIntens) :
-		BaseLight(col, intens), AmbientColor(ambCol), AmbientIntensity(ambIntens)
+	CLightDirectional(glm::vec3 ang, glm::vec3 col, float intens, glm::vec3 ambCol, float ambIntens) :
+		CBaseLight(col, intens), AmbientColor(ambCol), AmbientIntensity(ambIntens)
 	{ 
 		SetAngles(ang);
 	}
 };
 
-class LightPoint :
-	public BaseLight
+class CLightPoint :
+	public CBaseLight
 {
 public:
 	//Attenuation values
@@ -40,16 +40,16 @@ public:
 	float Linear;
 	float Quadratic;
 
-	LightPoint(glm::vec3 pos, glm::vec3 col, float intens, 
+	CLightPoint(glm::vec3 pos, glm::vec3 col, float intens, 
 		float constant = 0.3f, float linear = 0.2f, float quad = 1.0f) :
-		BaseLight(col, intens), Constant(constant), Linear(linear), Quadratic(quad)
+		CBaseLight(col, intens), Constant(constant), Linear(linear), Quadratic(quad)
 	{ 
-		Position = pos;
+		_position = pos;
 	}
 };
 
-class LightSpot :
-	public BaseLight
+class CLightSpot :
+	public CBaseLight
 {
 public:
 	//Attenuation values
@@ -61,12 +61,12 @@ public:
 	float InnerCutOff;
 	float OuterCutOff;
 
-	LightSpot(glm::vec3 pos, glm::vec3 ang, glm::vec3 col, float intens, float cutoffIn, float cutoffOut,
+	CLightSpot(glm::vec3 pos, glm::vec3 ang, glm::vec3 col, float intens, float cutoffIn, float cutoffOut,
 		float constant = 0.3f, float linear = 0.2f, float quad = 1.0f) :
-		BaseLight(col, intens), InnerCutOff(cutoffIn), OuterCutOff(cutoffOut),
+		CBaseLight(col, intens), InnerCutOff(cutoffIn), OuterCutOff(cutoffOut),
 		Constant(constant), Linear(linear), Quadratic(quad)
 	{ 
-		Position = pos;
+		_position = pos;
 		SetAngles(ang);
 	}
 };

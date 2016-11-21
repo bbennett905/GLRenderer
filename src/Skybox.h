@@ -1,13 +1,13 @@
 #pragma once
-#include "BaseDrawable.h"
-#include "BaseObject.h"
+#include "CBaseDrawable.h"
+#include "CBaseObject.h"
 
 #include <string>
 
 class Texture;
 
 class Skybox :
-	public BaseObject, public BaseDrawable
+	public CBaseObject, public CBaseDrawable
 {
 public:
 	Skybox(std::string path);

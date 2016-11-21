@@ -4,7 +4,7 @@
 #include <vector>
 #include <scene.h>
 
-#include "BaseObject.h"
+#include "CBaseObject.h"
 
 /*
  * Class representing a 3D model, imported using Assimp
@@ -14,14 +14,14 @@
 class Texture;
 class Material;
 class Shader;
-class Mesh;
+class CMesh;
 
-class Model :
-	public BaseObject
+class CModel :
+	public CBaseObject
 {
 public:
-	Model(std::string path);
-	~Model();
+	CModel(std::string path);
+	~CModel();
 
 	//Sets world position
 	void SetPosition(glm::vec3 pos);
@@ -34,15 +34,15 @@ public:
 	//Sets object scale vector
 	void SetScale(glm::vec3 scale);
 
-	std::vector<Mesh *> Meshes;
+	std::vector<CMesh *> Meshes;
 
 private:
 	void loadModel(std::string path);
 	void processNode(aiNode * node, const aiScene * scene);
-	Mesh * processMesh(aiMesh * mesh, const aiScene * scene);
+	CMesh * processMesh(aiMesh * mesh, const aiScene * scene);
 	std::vector<Material *> loadMaterials(aiMaterial * mat);
 
-	static std::vector<Model *> _models_loaded;
+	static std::vector<CModel *> _models_loaded;
 
 	std::string _path;
 	std::string _directory;

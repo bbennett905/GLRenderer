@@ -10,11 +10,11 @@
 #include "Lights.h"
 #include "Material.h"
 #include "Window.h"
-#include "Cube.h"
-#include "Model.h"
+#include "CCube.h"
+#include "CModel.h"
 #include "Scene.h"
 #include "Logging.h"
-#include "FPS_UIElement.h"
+#include "CFPSCounter.h"
 #include "Skybox.h"
 #include "Keycodes.h"
 #include "Timing.h"
@@ -36,13 +36,13 @@ void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int del
 {
 	float cameraSpeed = 3.0f * float(delta_time);
 	if (keys[KEY_W]) 
-		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetForward()));
+		camera.SetPosition(camera.GetPosition() + (cameraSpeed * camera.GetForward()));
 	if (keys[KEY_A]) 
-		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetRight()));
+		camera.SetPosition(camera.GetPosition() - (cameraSpeed * camera.GetRight()));
 	if (keys[KEY_S]) 
-		camera.SetPos(camera.GetPos() - (cameraSpeed * camera.GetForward()));
+		camera.SetPosition(camera.GetPosition() - (cameraSpeed * camera.GetForward()));
 	if (keys[KEY_D]) 
-		camera.SetPos(camera.GetPos() + (cameraSpeed * camera.GetRight()));
+		camera.SetPosition(camera.GetPosition() + (cameraSpeed * camera.GetRight()));
 	if (keys[KEY_ESCAPE]) window.ShouldExit = true;
 
 	//Example
@@ -77,14 +77,14 @@ int main()
 	
 	Profiling::ProfInit();
 
-	LightDirectional * dirLight = new LightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
-		glm::vec3(1.0f, 0.95f, 0.75f), 1.0f,
+	CLightDirectional * dirLight = new CLightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
+		glm::vec3(1.0f, 0.95f, 0.75f), 0.5f,
 		glm::vec3(0.8f, 0.7f, 0.9f), 0.05f);
-	LightPoint * pointLight = new LightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
+	CLightPoint * pointLight = new CLightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
 		glm::vec3(0.0f, 1.0f, 0.3f), 1.0f);
-	LightPoint * pointLight2 = new LightPoint(glm::vec3(-1.0f, 0.5f, 0.8f),
+	CLightPoint * pointLight2 = new CLightPoint(glm::vec3(-1.0f, 0.5f, 0.8f),
 		glm::vec3(0.6f, 0.0f, 1.0f), 1.0f);
-	LightSpot * spotLight = new LightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
+	CLightSpot * spotLight = new CLightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
 		glm::vec3(0.0f, 90.0f, 0.0f),
 		glm::vec3(0.5f, 0.5f, 1.0f), 3.0f, 12.5f, 20.0f);
 	scene->AddObjectToScene(dirLight);
@@ -95,7 +95,7 @@ int main()
 	Skybox * sky = new Skybox("../images/skybox/a");
 	scene->AddObjectToScene(sky);
 
-	Model * suit = new Model("../nanosuit/nanosuit.obj");
+	CModel * suit = new CModel("../nanosuit/nanosuit.obj");
 	scene->AddObjectToScene(suit);
 	suit->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
 	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
@@ -107,42 +107,42 @@ int main()
 	Material * metal = new Material("../images/metal.txt");
 	Material * glass_material = new Material("../images/window.txt");
 
-	Cube * cube = new Cube(crate);
-	cube->Scale = glm::vec3(1.50f, 1.2f, 1.2f);
-	cube->Position = glm::vec3(0.0f, 2.0f, 3.0f);
+	CCube * cube = new CCube(crate);
+	cube->SetScale(glm::vec3(1.50f, 1.2f, 1.2f));
+	cube->SetPosition(glm::vec3(0.0f, 2.0f, 3.0f));
 	scene->AddObjectToScene(cube);
-	Cube * cube2 = new Cube(marble);
-	cube2->Position = glm::vec3(0.0f, 3.0f, 5.0f);
+	CCube * cube2 = new CCube(marble);
+	cube2->SetPosition(glm::vec3(0.0f, 3.0f, 5.0f));
 	scene->AddObjectToScene(cube2);
-	Cube * cube3 = new Cube(wood);
-	cube3->Position = glm::vec3(3.0f, 2.0f, 1.0f);
+	CCube * cube3 = new CCube(wood);
+	cube3->SetPosition(glm::vec3(3.0f, 2.0f, 1.0f));
 	scene->AddObjectToScene(cube3);
-	Cube * cube4 = new Cube(metal);
-	cube4->Position = glm::vec3(-1.5f, 1.5f, 0.0f);
+	CCube * cube4 = new CCube(metal);
+	cube4->SetPosition(glm::vec3(-1.5f, 1.5f, 0.0f));
 	scene->AddObjectToScene(cube4);
 
-	Cube * glass = new Cube(glass_material);
-	glass->Flags |= Drawable_Translucent;
-	glass->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
-	glass->Position = glm::vec3(1.2f, 0.3f, 0.0f);
+	CCube * glass = new CCube(glass_material);
+	glass->DrawFlags() |= Drawable_Translucent;
+	glass->SetScale(glm::vec3(2.0f, 2.0f, 0.1f));
+	glass->SetPosition(glm::vec3(1.2f, 0.3f, 0.0f));
 	scene->AddObjectToScene(glass);
-	Cube * glass2 = new Cube(glass_material);
-	glass2->Flags |= Drawable_Translucent;
-	glass2->Scale = glm::vec3(2.0f, 2.0f, 0.1f);
-	glass2->Position = glm::vec3(1.7f, 0.3f, 1.6f);
+	CCube * glass2 = new CCube(glass_material);
+	glass2->DrawFlags() |= Drawable_Translucent;
+	glass2->SetScale(glm::vec3(2.0f, 2.0f, 0.1f));
+	glass2->SetPosition(glm::vec3(1.7f, 0.3f, 1.6f));
 	scene->AddObjectToScene(glass2);
 
-	Cube * floor = new Cube(wood);
-	floor->Position = glm::vec3(0.0f, -1.0f, 0.0f);
-	floor->Scale = glm::vec3(10.0f, 0.01f, 10.0f);
+	CCube * floor = new CCube(wood);
+	floor->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
+	floor->SetScale(glm::vec3(10.0f, 0.01f, 10.0f));
 	scene->AddObjectToScene(floor);
 
-	Model * cone = new Model("../cone/cone.obj");
+	CModel * cone = new CModel("../cone/cone.obj");
 	cone->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	cone->SetPosition(glm::vec3(-0.01f, 2.02f, 1.0f));
 	scene->AddObjectToScene(cone);
 
-	FPS_UIElement * fps_element = new FPS_UIElement(&window);
+	CFPSCounter * fps_element = new CFPSCounter(&window);
 	scene->AddUIElementToScene(fps_element);
 
 	scene->PrepareScene();
@@ -180,7 +180,7 @@ int main()
 		//Go to the event callbacks specified before
 		Input::PollEvents(delta_time);
 
-		spotLight->Position = camera.GetPos();
+		spotLight->SetPosition(camera.GetPosition());
 		spotLight->SetAngles(camera.GetAngles());
 
 		scene->Update(delta_time);

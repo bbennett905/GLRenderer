@@ -11,7 +11,7 @@
 
 #include "Window.h"
 #include "Texture.h"
-#include "BaseUIElement.h"
+#include "CBaseUIElement.h"
 #include "Scene.h"
 
 namespace Logging
@@ -27,11 +27,11 @@ namespace Logging
 		std::ofstream _file;
 
 		class Log_UIElement :
-			public BaseUIElement
+			public CBaseUIElement
 		{
 		public:
 			Log_UIElement(Window * window) :
-				BaseUIElement(window)
+				CBaseUIElement(window)
 			{
 				_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 14);
 				_surface = TTF_RenderText_Blended_Wrapped(_font, "N/A", { 200, 200, 200 }, 500);

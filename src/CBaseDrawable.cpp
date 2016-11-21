@@ -1,0 +1,175 @@
+#include "CBaseDrawable.h"
+
+#include <gtc\matrix_transform.hpp>
+#include <gtc\type_ptr.hpp>
+
+#include "Camera.h"
+#include "Material.h"
+#include "Shader.h"
+#include "Lights.h"
+#include "Texture.h"
+
+CBaseDrawable::CBaseDrawable() { }
+
+CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, Material* mat)
+{
+	_materials.push_back(mat);
+	for (int i = 0; i < verticesSize; i += 8)// ? ok
+	{
+		VertexData data = { glm::vec3(vertices[i], vertices[i+1], vertices[i+2]),	//Pos
+							glm::vec3(vertices[i+3], vertices[i+4], vertices[i+5]),	//Norm
+							glm::vec2(vertices[i+6], vertices[i+7]) };				//TexCoord
+		_vertices.push_back(data);
+	}
+}
+
+CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, 
+	std::vector<Material *> & mat) :
+	_materials(mat)
+{
+	for (int i = 0; i < verticesSize; i += 8)// ? ok
+	{
+		VertexData data = { glm::vec3(vertices[i], vertices[i + 1], vertices[i + 2]),	//Pos
+			glm::vec3(vertices[i + 3], vertices[i + 4], vertices[i + 5]),	//Norm
+			glm::vec2(vertices[i + 6], vertices[i + 7]) };				//TexCoord
+		_vertices.push_back(data);
+	}
+}
+
+CBaseDrawable::CBaseDrawable(std::vector<VertexData> vert) :
+	_vertices(vert)
+{
+}
+
+CBaseDrawable::CBaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
+	std::vector<Material *> & mat) :
+	_vertices(vert), _indices(ind), _materials(mat)
+{ 
+	assert(mat.size() < MAX_MATERIALS && "An object exceeded MAX_MATERIALS!");
+}
+
+CBaseDrawable::~CBaseDrawable()
+{
+	//We DON'T destroy the shader, because they may be shared with other objects
+	//Same with materials/textures
+	glDeleteVertexArrays(1, &_vao);
+	glDeleteBuffers(1, &_vbo);
+	glDeleteBuffers(1, &_ebo);
+}
+
+glm::mat4 CBaseDrawable::GetModelMatrix()
+{
+	return glm::mat4(); //Return an identity matrix, no transform
+}
+
+void CBaseDrawable::Draw()
+{
+	_shader->Use();
+
+	if (_materials.size())
+	{
+		glUniform1i(_shader->GetUniformLocation("hasMaterials"), 1);
+	}
+	else
+	{
+		glUniform1i(_shader->GetUniformLocation("hasMaterials"), 0);
+	}
+	for (uint32_t i = 0; i < _materials.size(); i++)
+	{
+		glUniform3f(_shader->GetUniformLocation("materials[" + std::to_string(i) + "].Color"),
+			_materials[i]->BaseColor.x, _materials[i]->BaseColor.y, _materials[i]->BaseColor.z);
+		glUniform1f(_shader->GetUniformLocation("materials[" + std::to_string(i) + "].Roughness"),
+			_materials[i]->Roughness);
+		glUniform1f(_shader->GetUniformLocation("materials[" + std::to_string(i) + "].Metallicity"),
+			_materials[i]->Metallicity);
+
+		if (_materials[i]->DiffuseMap != nullptr)
+		{
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 1);
+			glActiveTexture(GL_TEXTURE0 + _shader->TextureCount);
+			_materials[i]->DiffuseMap->Bind();
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].DiffMap").c_str()),
+				_shader->TextureCount);
+			_shader->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 0);
+		}
+
+		if (_materials[i]->MetalAndRoughMap != nullptr)
+		{
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 1);
+			glActiveTexture(GL_TEXTURE0 + _shader->TextureCount);
+			_materials[i]->MetalAndRoughMap->Bind();
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].MetalAndRoughMap").c_str()),
+				_shader->TextureCount);
+			_shader->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 0);
+		}
+	}
+	glUniform1i(_shader->GetUniformLocation("numMaterials"),
+		_materials.size());
+
+	//model matrix transforms model space to world space - rotation and translation
+	glUniformMatrix4fv(_shader->GetUniformLocation("model"), 1, GL_FALSE,
+		glm::value_ptr(GetModelMatrix()));
+
+	//Bind our VAO so we have the correct vertex attribute configuration
+	glBindVertexArray(_vao);
+	//Draw! - type of primitive, starting index of vertex array, number of vertices
+	if (_indices.size() > 0) glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, _vertices.size());
+	glBindVertexArray(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+std::vector<VertexData>& CBaseDrawable::GetVertices()
+{
+	return _vertices;
+}
+
+std::vector<GLuint>& CBaseDrawable::GetIndices()
+{
+	return _indices;
+}
+
+std::vector<Material*>& CBaseDrawable::GetMaterials()
+{
+	return _materials;
+}
+
+Shader*& CBaseDrawable::GetShader()
+{
+	return _shader;
+}
+
+GLuint& CBaseDrawable::VAO()
+{
+	return _vao;
+}
+
+GLuint& CBaseDrawable::VBO()
+{
+	return _vbo;
+}
+
+GLuint& CBaseDrawable::EBO()
+{
+	return _ebo;
+}
+
+uint32_t& CBaseDrawable::DrawFlags()
+{
+	return _flags;
+}

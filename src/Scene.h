@@ -7,9 +7,9 @@
  */
 
 class SceneRenderer;
-class BaseDrawable;
-class BaseObject;
-class BaseUIElement;
+class IDrawable;
+class IObject;
+class CBaseUIElement;
 class Camera;
 class Window;
 
@@ -19,8 +19,8 @@ public:
 	Scene(Window * window, Camera * camera);
 	~Scene();
 
-	void AddObjectToScene(BaseObject * obj);
-	void AddUIElementToScene(BaseUIElement * element);
+	void AddObjectToScene(IObject * obj);
+	void AddUIElementToScene(CBaseUIElement * element);
 
 	void PrepareScene();
 
@@ -28,6 +28,6 @@ public:
 
 private:
 	SceneRenderer * _scene_renderer;
-	std::vector<BaseObject *> _object_list;
+	std::vector<IObject *> _object_list;
 };
 

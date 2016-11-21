@@ -1,22 +1,20 @@
 #pragma once
-#include "BaseDrawable.h"
+#include "CBaseDrawable.h"
+#include "CBaseObject.h"
 
 class Texture;
 class Window;
 
-class BaseUIElement :
-	public BaseDrawable
+class CBaseUIElement :
+	public CBaseDrawable, public CBaseObject
 {
 public:
-	BaseUIElement(Window * window, glm::vec2 pos = glm::vec2(0.0f, 0.0f),
+	CBaseUIElement(Window * window, glm::vec2 pos = glm::vec2(0.0f, 0.0f),
 		glm::vec2 scale = glm::vec2(1.0f, 1.0f));
-	virtual ~BaseUIElement();
+	virtual ~CBaseUIElement();
 
 	virtual void Draw();
 	virtual glm::mat4 GetModelMatrix();
-
-	glm::vec2 Scale;
-	glm::vec2 Position;
 
 protected:
 	//Automatically scales and positions an element, given its width, height, 

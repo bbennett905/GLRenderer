@@ -6,15 +6,14 @@
 #include <gtc\type_ptr.hpp>
 
 #include "Window.h"
-#include "BaseDrawable.h"
-#include "BaseObject.h"
+#include "IDrawable.h"
+#include "IObject.h"
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
 #include "Logging.h"
 #include "Camera.h"
 #include "Lights.h"
-
 
 SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
 	_camera(camera)
@@ -50,26 +49,26 @@ SceneRenderer::~SceneRenderer()
 		delete material;
 }
 
-void SceneRenderer::AddPointLight(LightPoint * light)
+void SceneRenderer::AddPointLight(CLightPoint * light)
 {
 	_point_light_list.push_back(light);
 }
 
-void SceneRenderer::AddSpotLight(LightSpot * light)
+void SceneRenderer::AddSpotLight(CLightSpot * light)
 {
 	_spot_light_list.push_back(light);
 }
 
-void SceneRenderer::SetDirectionalLight(LightDirectional * light)
+void SceneRenderer::SetDirectionalLight(CLightDirectional * light)
 {
 	_directional_light = light;
 }
 
-void SceneRenderer::AddDrawable(BaseDrawable * drawable)
+void SceneRenderer::AddDrawable(IDrawable * drawable)
 {
 	_draw_list.push_back(drawable);
 
-	for (auto new_material : drawable->Materials)
+	for (auto new_material : drawable->GetMaterials())
 	{
 		bool in_vector = false;
 		for (auto existing_material : _material_list)
@@ -96,26 +95,26 @@ void SceneRenderer::AddDrawable(BaseDrawable * drawable)
 		}
 	}
 
-	glGenVertexArrays(1, &(drawable->VertexArrayObj));
-	glGenBuffers(1, &(drawable->VertexBufferObj));
-	glGenBuffers(1, &(drawable->ElementBufferObj));
+	glGenVertexArrays(1, &(drawable->VAO()));
+	glGenBuffers(1, &(drawable->VBO()));
+	glGenBuffers(1, &(drawable->EBO()));
 
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) 
 	//and attribute pointer(s).
-	glBindVertexArray(drawable->VertexArrayObj);
+	glBindVertexArray(drawable->VAO());
 
 	//bind the VBO to array_buffer - it is now actually what we want it to be
-	glBindBuffer(GL_ARRAY_BUFFER, drawable->VertexBufferObj);
+	glBindBuffer(GL_ARRAY_BUFFER, drawable->VBO());
 	//copies vertex data into buffer's memory
 	//last arg means data is not likely to change, or only rarely
-	glBufferData(GL_ARRAY_BUFFER, drawable->Vertices.size() * sizeof(VertexData),
-		&(drawable->Vertices)[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, drawable->GetVertices().size() * sizeof(VertexData),
+		&(drawable->GetVertices())[0], GL_STATIC_DRAW);
 
-	if (drawable->Indices.size() > 0)
+	if (drawable->GetIndices().size() > 0)
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawable->ElementBufferObj);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, drawable->Indices.size() * sizeof(GLuint),
-			&(drawable->Indices)[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawable->EBO());
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, drawable->GetIndices().size() * sizeof(GLuint),
+			&(drawable->GetIndices())[0], GL_STATIC_DRAW);
 	}
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
 		(GLvoid *)0);
@@ -144,13 +143,13 @@ bool SceneRenderer::BuildShaders()
 	{
 		shader_create_info.Flags = 0;
 		//If we have new ShaderCreateInfo params or flags, add them here
-		if (drawable->Flags & Drawable_Translucent)
+		if (drawable->DrawFlags() & Drawable_Translucent)
 			shader_create_info.Flags |= Shader_Translucent;
-		if (drawable->Flags & Drawable_Unlit)
+		if (drawable->DrawFlags() & Drawable_Unlit)
 			shader_create_info.Flags |= Shader_Unlit;
-		if (drawable->Flags & Drawable_Skybox)
+		if (drawable->DrawFlags() & Drawable_Skybox)
 			shader_create_info.Flags |= Shader_Skybox;
-		if (drawable->Flags & Drawable_UI)
+		if (drawable->DrawFlags() & Drawable_UI)
 			shader_create_info.Flags |= Shader_UI;
 
 		Shader * shader = Shader::ShaderExists(shader_create_info);
@@ -158,7 +157,7 @@ bool SceneRenderer::BuildShaders()
 		//shader was null, so lets make a new one
 		if (!shader) shader = new Shader(shader_create_info);
 
-		drawable->ShaderObj = shader;
+		drawable->GetShader() = shader;
 
 		bool in_shader_list = false;
 		for (auto shad : _shader_list)
@@ -196,45 +195,45 @@ void SceneRenderer::Draw()
 	//Draw normal objects first
 	for (auto drawable : _draw_list)
 	{
-		if (!(drawable->Flags & Drawable_Translucent) && !(drawable->Flags & Drawable_UI) &&
-			!(drawable->Flags & Drawable_Skybox))
+		if (!(drawable->DrawFlags() & Drawable_Translucent) && !(drawable->DrawFlags() & Drawable_UI) &&
+			!(drawable->DrawFlags() & Drawable_Skybox))
 			drawable->Draw();
 	}
 
 	//Draw the skybox
 	for (auto drawable : _draw_list)
 	{
-		if (drawable->Flags & Drawable_Skybox)
+		if (drawable->DrawFlags() & Drawable_Skybox)
 			drawable->Draw();
 	}
 
 	//Then draw translucent objects, ordered by distance
 	//This being called every frame is probably a bit silly - 
 	//maybe instead find a way to call it only when the camera moves over a certain distance?
-	std::map<float, BaseDrawable *> sorted;
+	std::map<float, IDrawable *> sorted;
 	for (auto drawable : _draw_list)
 	{
 		//If the object matches what we're trying to draw..
-		if (drawable->Flags & Drawable_Translucent && !(drawable->Flags & Drawable_UI))
+		if (drawable->DrawFlags() & Drawable_Translucent && !(drawable->DrawFlags() & Drawable_UI))
 		{
-			//..and is a BaseObject (has a position)..
-			BaseObject * object = dynamic_cast<BaseObject *>(drawable);
+			//..and is a CBaseObject (has a 3d position)..
+			CBaseObject * object = dynamic_cast<CBaseObject *>(drawable);
 			if (object)
 			{
 				//..add it to the sorted list..
-				sorted[glm::length(_camera->GetPos() - object->Position)] = drawable;
+				sorted[glm::length(_camera->GetPosition() - object->GetPosition())] = drawable;
 			}
 		}
 	}
 	//..and finally, draw everything in that list.
-	for (std::map<float, BaseDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
+	for (std::map<float, IDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
 		it->second->Draw();
 
 	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);
 	for (auto drawable : _draw_list)
 	{
-		if (drawable->Flags & Drawable_UI)
+		if (drawable->DrawFlags() & Drawable_UI)
 			drawable->Draw();
 	}
 	glEnable(GL_DEPTH_TEST);
@@ -248,8 +247,8 @@ void SceneRenderer::setLightUniforms(Shader * shader)
 	{
 		glUniform3f(shader->GetUniformLocation(
 			("pointLights[" + std::to_string(i) + "].Position").c_str()),
-			_point_light_list[i]->Position.x, _point_light_list[i]->Position.y,
-			_point_light_list[i]->Position.z);
+			_point_light_list[i]->GetPosition().x, _point_light_list[i]->GetPosition().y,
+			_point_light_list[i]->GetPosition().z);
 		glUniform3f(shader->GetUniformLocation(
 			("pointLights[" + std::to_string(i) + "].Color").c_str()),
 			_point_light_list[i]->Color.x, _point_light_list[i]->Color.y,
@@ -272,8 +271,8 @@ void SceneRenderer::setLightUniforms(Shader * shader)
 	{
 		glUniform3f(shader->GetUniformLocation(
 			("spotLights[" + std::to_string(i) + "].Position").c_str()),
-			_spot_light_list[i]->Position.x, _spot_light_list[i]->Position.y,
-			_spot_light_list[i]->Position.z);
+			_spot_light_list[i]->GetPosition().x, _spot_light_list[i]->GetPosition().y,
+			_spot_light_list[i]->GetPosition().z);
 		glUniform3f(shader->GetUniformLocation(
 			("spotLights[" + std::to_string(i) + "].Direction").c_str()),
 			_spot_light_list[i]->GetForward().x, _spot_light_list[i]->GetForward().y,
@@ -336,7 +335,7 @@ void SceneRenderer::setMatrixUniforms(Shader * shader)
 	}
 
 	glUniform3f(shader->GetUniformLocation("viewPos"),
-		_camera->GetPos().x, _camera->GetPos().y, _camera->GetPos().z);
+		_camera->GetPosition().x, _camera->GetPosition().y, _camera->GetPosition().z);
 	glUniformMatrix4fv(shader->GetUniformLocation("view"), 1, GL_FALSE,
 		glm::value_ptr(_camera->GetViewMatrix()));
 	glUniformMatrix4fv(shader->GetUniformLocation("projection"), 1, GL_FALSE,

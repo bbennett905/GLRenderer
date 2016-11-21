@@ -1,15 +1,15 @@
 #pragma once
-#include "BaseUIElement.h"
+#include "CBaseUIElement.h"
 
 struct SDL_Surface;
 typedef struct _TTF_Font TTF_Font;
 
-class FPS_UIElement :
-	public BaseUIElement
+class CFPSCounter :
+	public CBaseUIElement
 {
 public:
-	FPS_UIElement(Window * window);
-	~FPS_UIElement();
+	CFPSCounter(Window * window);
+	~CFPSCounter();
 
 	void Update(double delta_time);
 

@@ -1,4 +1,4 @@
-#include "FPS_UIElement.h"
+#include "CFPSCounter.h"
 
 #include <string>
 #include <SDL.h>
@@ -8,8 +8,8 @@
 #include "Texture.h"
 #include "Window.h"
 
-FPS_UIElement::FPS_UIElement(Window * window) :
-	BaseUIElement(window)
+CFPSCounter::CFPSCounter(Window * window) :
+	CBaseUIElement(window)
 {
 	_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 18);
 
@@ -22,13 +22,13 @@ FPS_UIElement::FPS_UIElement(Window * window) :
 	autoPosition(_surface->w, _surface->h, 0, 0);
 }
 
-FPS_UIElement::~FPS_UIElement()
+CFPSCounter::~CFPSCounter()
 {
 	SDL_FreeSurface(_surface);
 	_surface = NULL;
 }
 
-void FPS_UIElement::Update(double delta_time)
+void CFPSCounter::Update(double delta_time)
 {
 	SDL_FreeSurface(_surface);
 	_surface = NULL;

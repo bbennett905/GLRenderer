@@ -1,17 +1,17 @@
-#include "Model.h"
+#include "CModel.h"
 
 #include <Importer.hpp>
 #include <postprocess.h>
 
-#include "Mesh.h"
+#include "CMesh.h"
 #include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
 #include "Logging.h"
 
-std::vector<Model *> Model::_models_loaded;
+std::vector<CModel *> CModel::_models_loaded;
 
-Model::Model(std::string path) : 
+CModel::CModel(std::string path) : 
 	_path(path)
 {
 	for (uint32_t i = 0; i < _models_loaded.size(); i++)
@@ -20,7 +20,7 @@ Model::Model(std::string path) :
 		{
 			for (auto mesh : _models_loaded[i]->Meshes)
 			{
-				Mesh * new_mesh = new Mesh();
+				CMesh * new_mesh = new CMesh();
 				*new_mesh = *mesh;
 				Meshes.push_back(new_mesh);
 			}
@@ -35,7 +35,7 @@ Model::Model(std::string path) :
 	Logging::LogMessage(LogLevel_Debug, "Loaded model \"%s\"", _path.c_str());
 }
 
-Model::~Model()
+CModel::~CModel()
 {
 	for (uint32_t i = 0; i < _models_loaded.size(); i++)
 	{
@@ -49,38 +49,38 @@ Model::~Model()
 		delete mesh;
 }
 
-void Model::SetPosition(glm::vec3 pos)
+void CModel::SetPosition(glm::vec3 pos)
 {
 	Position = pos;
 	for (uint32_t i = 0; i < Meshes.size(); i++)
-		Meshes[i]->Position = pos;
+		Meshes[i]->SetPosition(pos);
 }
 
-glm::vec3 Model::GetPosition()
+glm::vec3 CModel::GetPosition()
 {
 	return Position;
 }
 
-void Model::SetAngles(glm::vec3 ang)
+void CModel::SetAngles(glm::vec3 ang)
 {
-	BaseObject::SetAngles(ang);
+	CBaseObject::SetAngles(ang);
 	for (uint32_t i = 0; i < Meshes.size(); i++)
 		Meshes[i]->SetAngles(ang);
 }
 
-glm::vec3 Model::GetScale()
+glm::vec3 CModel::GetScale()
 {
 	return Scale;
 }
 
-void Model::SetScale(glm::vec3 scale)
+void CModel::SetScale(glm::vec3 scale)
 {
 	Scale = scale;
 	for (uint32_t i = 0; i < Meshes.size(); i++)
-		Meshes[i]->Scale = scale;
+		Meshes[i]->SetScale(scale);
 }
 
-void Model::loadModel(std::string path)
+void CModel::loadModel(std::string path)
 {
 	Assimp::Importer importer;
 	const aiScene * scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -94,7 +94,7 @@ void Model::loadModel(std::string path)
 	processNode(scene->mRootNode, scene);
 }
 
-void Model::processNode(aiNode * node, const aiScene * scene)
+void CModel::processNode(aiNode * node, const aiScene * scene)
 {
 	for (uint32_t i = 0; i < node->mNumMeshes; i++)
 	{
@@ -105,7 +105,7 @@ void Model::processNode(aiNode * node, const aiScene * scene)
 		processNode(node->mChildren[i], scene);
 }
 
-Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
+CMesh * CModel::processMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<VertexData> vertices;
 	std::vector<GLuint> indices;
@@ -144,10 +144,10 @@ Mesh * Model::processMesh(aiMesh * mesh, const aiScene * scene)
 		materials = loadMaterials(material);
 	}
 
-	return new Mesh(vertices, indices, materials);
+	return new CMesh(vertices, indices, materials);
 }
 
-std::vector<Material *> Model::loadMaterials(aiMaterial * mat)
+std::vector<Material *> CModel::loadMaterials(aiMaterial * mat)
 {
 	std::vector<Material *> mats;
 

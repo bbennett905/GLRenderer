@@ -1,13 +1,13 @@
 #include "Scene.h"
 
-#include "BaseDrawable.h"
-#include "BaseObject.h"
+#include "IDrawable.h"
+#include "IObject.h"
 #include "SceneRenderer.h"
-#include "Model.h"
+#include "CModel.h"
 #include "Lights.h"
-#include "Mesh.h"
+#include "CMesh.h"
 #include "Logging.h"
-#include "BaseUIElement.h"
+#include "CBaseUIElement.h"
 
 Scene::Scene(Window * window, Camera * camera)
 {
@@ -24,35 +24,35 @@ Scene::~Scene()
 	Logging::LogMessage(LogLevel_Debug, "Destroyed Scene object");
 }
 
-void Scene::AddObjectToScene(BaseObject * obj)
+void Scene::AddObjectToScene(IObject * obj)
 {
 	_object_list.push_back(obj);
 
-	BaseDrawable * drawable = dynamic_cast<BaseDrawable *>(obj);
+	IDrawable * drawable = dynamic_cast<IDrawable *>(obj);
 	if (drawable)
 		_scene_renderer->AddDrawable(drawable);
 
-	Model * model = dynamic_cast<Model *>(obj);
+	CModel * model = dynamic_cast<CModel *>(obj);
 	if (model)
 	{
 		for (auto mesh : model->Meshes)
 			_scene_renderer->AddDrawable(mesh);
 	}
 
-	LightPoint * point_light = dynamic_cast<LightPoint *>(obj);
+	CLightPoint * point_light = dynamic_cast<CLightPoint *>(obj);
 	if (point_light)
 		_scene_renderer->AddPointLight(point_light);
 
-	LightSpot * spot_light = dynamic_cast<LightSpot *>(obj);
+	CLightSpot * spot_light = dynamic_cast<CLightSpot *>(obj);
 	if (spot_light)
 		_scene_renderer->AddSpotLight(spot_light);
 
-	LightDirectional * directional_light = dynamic_cast<LightDirectional *>(obj);
+	CLightDirectional * directional_light = dynamic_cast<CLightDirectional *>(obj);
 	if (directional_light)
 		_scene_renderer->SetDirectionalLight(directional_light);
 }
 
-void Scene::AddUIElementToScene(BaseUIElement * element)
+void Scene::AddUIElementToScene(CBaseUIElement * element)
 {
 	_scene_renderer->AddDrawable(element);
 }

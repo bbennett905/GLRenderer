@@ -8,14 +8,14 @@
  */
 
 class Window;
-class BaseDrawable;
+class IDrawable;
 class Shader;
 class Material;
 class Texture;
 class Camera;
-class LightPoint;
-class LightSpot;
-class LightDirectional;
+class CLightPoint;
+class CLightSpot;
+class CLightDirectional;
 
 class SceneRenderer
 {
@@ -23,11 +23,11 @@ public:
 	SceneRenderer(Window * window, Camera * camera);
 	~SceneRenderer();
 
-	void AddPointLight(LightPoint * light);
-	void AddSpotLight(LightSpot * light);
-	void SetDirectionalLight(LightDirectional * light);
+	void AddPointLight(CLightPoint * light);
+	void AddSpotLight(CLightSpot * light);
+	void SetDirectionalLight(CLightDirectional * light);
 
-	void AddDrawable(BaseDrawable * drawable);
+	void AddDrawable(IDrawable * drawable);
 
 	bool BuildShaders();
 
@@ -37,11 +37,11 @@ private:
 	void setLightUniforms(Shader * shader);
 	void setMatrixUniforms(Shader * shader);
 
-	std::vector<LightPoint *>	_point_light_list;
-	std::vector<LightSpot *>	_spot_light_list;
-	LightDirectional *			_directional_light;
+	std::vector<CLightPoint *>	_point_light_list;
+	std::vector<CLightSpot *>	_spot_light_list;
+	CLightDirectional *			_directional_light;
 
-	std::vector<BaseDrawable *> _draw_list;
+	std::vector<IDrawable *> _draw_list;
 
 	std::vector<Material *>		_material_list;
 	std::vector<Texture *>		_texture_list;
