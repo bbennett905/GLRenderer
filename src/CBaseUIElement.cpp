@@ -5,8 +5,8 @@
 #include <SDL_ttf.h>
 
 #include "Shader.h"
-#include "Material.h"
-#include "Texture.h"
+#include "CMaterial.h"
+#include "CTexture.h"
 #include "Window.h"
 #include "Logging.h"
 
@@ -23,7 +23,7 @@ VertexData quad[] = {
 
 CBaseUIElement::CBaseUIElement(Window * window, glm::vec2 pos, glm::vec2 scale) :
 	CBaseDrawable(std::vector<VertexData>(std::begin(quad), std::end(quad))),
-	CBaseObject(glm::vec3(pos, 0.0f)), _texture(new Texture()), _window(window)
+	CBaseObject(glm::vec3(pos, 0.0f)), _texture(new CTexture()), _window(window)
 {
 	_flags |= Drawable_Translucent | Drawable_Unlit | Drawable_UI;
 	_scale = glm::vec3(scale, 1.0f);

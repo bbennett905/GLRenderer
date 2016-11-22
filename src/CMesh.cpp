@@ -5,7 +5,7 @@
 CMesh::CMesh() { }
 
 CMesh::CMesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
-	std::vector<Material *> & mats) :
+	std::vector<CMaterial *> & mats) :
 	CBaseDrawable(vert, ind, mats)
 { }
 

@@ -2,7 +2,7 @@
 
 #include <gtc\matrix_transform.hpp>
 
-#include "Material.h"
+#include "CMaterial.h"
 
 GLfloat vertices[] = {
 	// Positions           // Normals           // Texture Coords
@@ -49,7 +49,7 @@ GLfloat vertices[] = {
 	0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f
 };
 
-CCube::CCube(Material * mat) :
+CCube::CCube(CMaterial * mat) :
 	CBaseObject(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f)), 
 	CBaseDrawable(vertices, (sizeof(vertices) / sizeof(vertices[0])), mat)
 { 

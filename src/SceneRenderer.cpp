@@ -9,13 +9,13 @@
 #include "IDrawable.h"
 #include "IObject.h"
 #include "Shader.h"
-#include "Material.h"
-#include "Texture.h"
+#include "CMaterial.h"
+#include "CTexture.h"
 #include "Logging.h"
-#include "Camera.h"
+#include "CCamera.h"
 #include "Lights.h"
 
-SceneRenderer::SceneRenderer(Window * window, Camera * camera) :
+SceneRenderer::SceneRenderer(Window * window, CCamera * camera) :
 	_camera(camera)
 {
 	glewExperimental = GL_TRUE;

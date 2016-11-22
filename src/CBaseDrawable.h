@@ -13,20 +13,17 @@
 class SceneRenderer;
 class Camera;
 class Shader;
-class Material;
-class LightPoint;
-class LightSpot;
-class LightDirectional;
+class CMaterial;
 
 class CBaseDrawable : 
 	public IDrawable
 {
 public:
 	CBaseDrawable();
-	CBaseDrawable(const GLfloat vertices[], int verticesSize, Material * mat);
-	CBaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<Material *> & mat);
+	CBaseDrawable(const GLfloat vertices[], int verticesSize, CMaterial * mat);
+	CBaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<CMaterial *> & mat);
 	CBaseDrawable(std::vector<VertexData> vert);
-	CBaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<Material *> & mat);
+	CBaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<CMaterial *> & mat);
 	virtual ~CBaseDrawable();
 
 	//Returns the model transformation matrix this object should use
@@ -39,7 +36,7 @@ public:
 	//Vertex indices
 	virtual std::vector<GLuint>& GetIndices();
 	//Materials used to draw this
-	virtual std::vector<Material *>& GetMaterials();
+	virtual std::vector<CMaterial *>& GetMaterials();
 
 	//Returns a pointer to the shader object to be used
 	virtual Shader*& GetShader();
@@ -63,7 +60,7 @@ protected:
 	//List of Indices, if used by the object
 	std::vector<GLuint> _indices;
 	//List of Materials this obj uses
-	std::vector<Material *> _materials;
+	std::vector<CMaterial *> _materials;
 
 	//The shader that this object uses
 	Shader * _shader;

@@ -1,23 +1,23 @@
-#include "Material.h"
+#include "CMaterial.h"
 
 #include <fstream>
 #include <iostream>
 #include <glm.hpp>
 
 #include "Logging.h"
-#include "Texture.h"
+#include "CTexture.h"
 #include "Utils.h"
 
-Material::Material(Texture * diffuse, Texture * mr, glm::vec3 color, float roughness, float metal) :
+CMaterial::CMaterial(CTexture * diffuse, CTexture * mr, glm::vec3 color, float roughness, float metal) :
 	DiffuseMap(diffuse), MetalAndRoughMap(mr), BaseColor(color),
 	Roughness(roughness), Metallicity(metal) { }
 
-Material::Material(std::string path)
+CMaterial::CMaterial(std::string path)
 {
 	loadMaterial(path);
 }
 
-void Material::loadMaterial(std::string path)
+void CMaterial::loadMaterial(std::string path)
 {
 	std::ifstream materialFile(path.c_str(), std::fstream::in);
 	if (materialFile.fail())
@@ -81,8 +81,8 @@ void Material::loadMaterial(std::string path)
 	}
 	else
 	{
-		DiffuseMap = Texture::TextureExists(diffusePath);
-		if (!DiffuseMap) DiffuseMap = new Texture(diffusePath, texFlags);
+		DiffuseMap = CTexture::TextureExists(diffusePath);
+		if (!DiffuseMap) DiffuseMap = new CTexture(diffusePath, texFlags);
 	}
 	if (mrPath == "")
 	{
@@ -90,8 +90,8 @@ void Material::loadMaterial(std::string path)
 	}
 	else
 	{
-		MetalAndRoughMap = Texture::TextureExists(mrPath);
-		if (!MetalAndRoughMap) MetalAndRoughMap = new Texture(mrPath);
+		MetalAndRoughMap = CTexture::TextureExists(mrPath);
+		if (!MetalAndRoughMap) MetalAndRoughMap = new CTexture(mrPath);
 	}
 	BaseColor = baseColor;
 	Roughness = rough;

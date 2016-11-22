@@ -17,16 +17,16 @@ enum TextureFlags
 	Texture_Cubemap = 1 << 1
 };
 
-class Texture
+class CTexture
 {
 public:
 	//Path to the texture
-	Texture(std::string path, uint32_t flags = 0);
-	Texture(SDL_Surface * surface, uint32_t flags = 0);
-	Texture();
-	~Texture();
+	CTexture(std::string path, uint32_t flags = 0);
+	CTexture(SDL_Surface * surface, uint32_t flags = 0);
+	CTexture();
+	~CTexture();
 
-	static Texture * TextureExists(std::string path);
+	static CTexture * TextureExists(std::string path);
 
 	//Bind this texture object to the active GL texture
 	void Bind();
@@ -37,7 +37,7 @@ private:
 	void loadTextureFromPath(std::string path);
 	void loadCubemapFromPath(std::string path);
 
-	static std::vector<Texture *> _textures_loaded;
+	static std::vector<CTexture *> _textures_loaded;
 	//OpenGL texture object
 	GLuint _id;
 	//Path of this texture - used to avoid loading textures that have already been loaded

@@ -4,18 +4,18 @@
 
 #include <string>
 
-class Texture;
+class CTexture;
 
-class Skybox :
+class CSkybox :
 	public CBaseObject, public CBaseDrawable
 {
 public:
-	Skybox(std::string path);
-	~Skybox();
+	CSkybox(std::string path);
+	~CSkybox();
 
 	void Draw();
 
 protected:
-	Texture * _texture;
+	CTexture * _texture;
 };
 

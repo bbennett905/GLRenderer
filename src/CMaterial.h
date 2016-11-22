@@ -7,19 +7,19 @@
  * Class with Textures and material properties
  */
 
-class Texture;
+class CTexture;
 
-class Material //cook torrance
+class CMaterial //cook torrance
 {
 public:
-	Material(Texture * diffuse = nullptr, Texture * mr = nullptr,
+	CMaterial(CTexture * diffuse = nullptr, CTexture * mr = nullptr,
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f),
 		float roughness = 1.0f, float metal = 1.0f);
 
-	Material(std::string path);
+	CMaterial(std::string path);
 
-	Texture * DiffuseMap;
-	Texture * MetalAndRoughMap; //metal is R, rough is G
+	CTexture * DiffuseMap;
+	CTexture * MetalAndRoughMap; //metal is R, rough is G
 	glm::vec3 BaseColor;
 	float Roughness;
 	float Metallicity;

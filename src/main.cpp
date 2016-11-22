@@ -5,17 +5,17 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
-#include "Texture.h"
-#include "Camera.h"
+#include "CTexture.h"
+#include "CCamera.h"
 #include "Lights.h"
-#include "Material.h"
+#include "CMaterial.h"
 #include "Window.h"
 #include "CCube.h"
 #include "CModel.h"
 #include "Scene.h"
 #include "Logging.h"
 #include "CFPSCounter.h"
-#include "Skybox.h"
+#include "CSkybox.h"
 #include "Keycodes.h"
 #include "Timing.h"
 #include "Profiling.h"
@@ -28,7 +28,7 @@
 
 #define MOVE_SPEED 0.1f
 
-Camera camera = Camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 
+CCamera camera = CCamera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
@@ -78,7 +78,7 @@ int main()
 	Profiling::ProfInit();
 
 	CLightDirectional * dirLight = new CLightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
-		glm::vec3(1.0f, 0.95f, 0.75f), 0.5f,
+		glm::vec3(1.0f, 0.95f, 0.75f), 0.0f,
 		glm::vec3(0.8f, 0.7f, 0.9f), 0.05f);
 	CLightPoint * pointLight = new CLightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
 		glm::vec3(0.0f, 1.0f, 0.3f), 1.0f);
@@ -92,7 +92,7 @@ int main()
 	scene->AddObjectToScene(pointLight2);
 	scene->AddObjectToScene(spotLight);
 
-	Skybox * sky = new Skybox("../images/skybox/a");
+	CSkybox * sky = new CSkybox("../images/skybox/a");
 	scene->AddObjectToScene(sky);
 
 	CModel * suit = new CModel("../nanosuit/nanosuit.obj");
@@ -101,11 +101,11 @@ int main()
 	suit->SetAngles(glm::vec3(0.0f, 180.0f, 0.0f));
 	suit->SetPosition(glm::vec3(0.0f, -1.0f, 1.0f));
 
-	Material * crate = new Material("../images/crate.txt");
-	Material * marble = new Material("../images/marble.txt");
-	Material * wood = new Material("../images/wood.txt");
-	Material * metal = new Material("../images/metal.txt");
-	Material * glass_material = new Material("../images/window.txt");
+	CMaterial * crate = new CMaterial("../images/crate.txt");
+	CMaterial * marble = new CMaterial("../images/marble.txt");
+	CMaterial * wood = new CMaterial("../images/wood.txt");
+	CMaterial * metal = new CMaterial("../images/metal.txt");
+	CMaterial * glass_material = new CMaterial("../images/window.txt");
 
 	CCube * cube = new CCube(crate);
 	cube->SetScale(glm::vec3(1.50f, 1.2f, 1.2f));
@@ -172,10 +172,10 @@ int main()
 		}
 
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
-		//cube->SetAngles(cube->GetAngles() + delta_rotate);
-		//cube2->SetAngles(cube2->GetAngles() + delta_rotate);
-		//cube3->SetAngles(cube3->GetAngles() + delta_rotate);
-		//cube4->SetAngles(cube4->GetAngles() + delta_rotate);
+		cube->SetAngles(cube->GetAngles() + delta_rotate);
+		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
+		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
+		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
 
 		//Go to the event callbacks specified before
 		Input::PollEvents(delta_time);

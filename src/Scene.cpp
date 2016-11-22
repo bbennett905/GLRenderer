@@ -9,7 +9,7 @@
 #include "Logging.h"
 #include "CBaseUIElement.h"
 
-Scene::Scene(Window * window, Camera * camera)
+Scene::Scene(Window * window, CCamera * camera)
 {
 	_scene_renderer = new SceneRenderer(window, camera);
 	Logging::LogMessage(LogLevel_Debug, "Created Scene object");

@@ -10,7 +10,7 @@
 #include <SDL_ttf.h>
 
 #include "Window.h"
-#include "Texture.h"
+#include "CTexture.h"
 #include "CBaseUIElement.h"
 #include "Scene.h"
 
@@ -26,22 +26,22 @@ namespace Logging
 		//File stream object
 		std::ofstream _file;
 
-		class Log_UIElement :
+		class CLogUI :
 			public CBaseUIElement
 		{
 		public:
-			Log_UIElement(Window * window) :
+			CLogUI(Window * window) :
 				CBaseUIElement(window)
 			{
 				_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 14);
 				_surface = TTF_RenderText_Blended_Wrapped(_font, "N/A", { 200, 200, 200 }, 500);
 				
 				delete _texture;
-				_texture = new Texture(_surface, Texture_Translucent);
+				_texture = new CTexture(_surface, Texture_Translucent);
 				autoPosition(_surface->w, _surface->h, 0, 40);
 			}
 
-			~Log_UIElement() 
+			~CLogUI() 
 			{ 
 				SDL_FreeSurface(_surface);
 			}
@@ -108,7 +108,7 @@ namespace Logging
 			SDL_Surface * _surface;
 		};
 
-		Log_UIElement * _log_ui_element;
+		CLogUI * _log_ui_element;
 	}
 
 	void LogMessage(LogLevel level, const char * str, ...)
@@ -179,7 +179,7 @@ namespace Logging
 
 	void LogInit(Window * window, Scene * scene, const char * path)
 	{
-		_log_ui_element = new Log_UIElement(window);
+		_log_ui_element = new CLogUI(window);
 
 		scene->AddUIElementToScene(_log_ui_element);
 

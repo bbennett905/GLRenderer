@@ -5,8 +5,8 @@
 
 #include "CMesh.h"
 #include "Shader.h"
-#include "Material.h"
-#include "Texture.h"
+#include "CMaterial.h"
+#include "CTexture.h"
 #include "Logging.h"
 
 std::vector<CModel *> CModel::_models_loaded;
@@ -109,7 +109,7 @@ CMesh * CModel::processMesh(aiMesh * mesh, const aiScene * scene)
 {
 	std::vector<VertexData> vertices;
 	std::vector<GLuint> indices;
-	std::vector<Material *> materials;
+	std::vector<CMaterial *> materials;
 
 	for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -147,23 +147,23 @@ CMesh * CModel::processMesh(aiMesh * mesh, const aiScene * scene)
 	return new CMesh(vertices, indices, materials);
 }
 
-std::vector<Material *> CModel::loadMaterials(aiMaterial * mat)
+std::vector<CMaterial *> CModel::loadMaterials(aiMaterial * mat)
 {
-	std::vector<Material *> mats;
+	std::vector<CMaterial *> mats;
 
 	for (uint32_t i = 0; i < mat->GetTextureCount(aiTextureType_DIFFUSE); i++)
 	{
-		Texture * diffuse = nullptr;
-		Texture * mrmap = nullptr;
-		Material * material;
+		CTexture * diffuse = nullptr;
+		CTexture * mrmap = nullptr;
+		CMaterial * material;
 
 		//Check if the texture has already been loaded
 		aiString str;
 		mat->GetTexture(aiTextureType_DIFFUSE, i, &str);
 
 		std::string path = _directory + "/" + std::string(str.C_Str());
-		diffuse = Texture::TextureExists(path);
-		if (!diffuse) diffuse = new Texture(path);
+		diffuse = CTexture::TextureExists(path);
+		if (!diffuse) diffuse = new CTexture(path);
 
 		//Specular is actually MR map
 		if (i < mat->GetTextureCount(aiTextureType_SPECULAR))
@@ -173,11 +173,11 @@ std::vector<Material *> CModel::loadMaterials(aiMaterial * mat)
 
 			std::string path = _directory + "/" + std::string(str.C_Str());
 
-			mrmap = Texture::TextureExists(path);
-			if (!mrmap) mrmap = new Texture(path);
+			mrmap = CTexture::TextureExists(path);
+			if (!mrmap) mrmap = new CTexture(path);
 		}
 		//Create a material
-		material = new Material(diffuse, mrmap);
+		material = new CMaterial(diffuse, mrmap);
 		mats.push_back(material);
 	}
 

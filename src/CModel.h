@@ -11,8 +11,8 @@
  * Composed of several meshes
  */
 
-class Texture;
-class Material;
+class CTexture;
+class CMaterial;
 class Shader;
 class CMesh;
 
@@ -40,7 +40,7 @@ private:
 	void loadModel(std::string path);
 	void processNode(aiNode * node, const aiScene * scene);
 	CMesh * processMesh(aiMesh * mesh, const aiScene * scene);
-	std::vector<Material *> loadMaterials(aiMaterial * mat);
+	std::vector<CMaterial *> loadMaterials(aiMaterial * mat);
 
 	static std::vector<CModel *> _models_loaded;
 

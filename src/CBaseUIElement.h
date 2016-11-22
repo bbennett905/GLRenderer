@@ -2,7 +2,7 @@
 #include "CBaseDrawable.h"
 #include "CBaseObject.h"
 
-class Texture;
+class CTexture;
 class Window;
 
 class CBaseUIElement :
@@ -20,7 +20,7 @@ protected:
 	//Automatically scales and positions an element, given its width, height, 
 	//and the x, y coords of the top left - in pixels, counting from top left
 	void autoPosition(int width, int height, int x, int y);
-	Texture * _texture;
+	CTexture * _texture;
 	Window * _window;
 
 private:

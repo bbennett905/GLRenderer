@@ -4,14 +4,14 @@
 #include <gtc\type_ptr.hpp>
 
 #include "Camera.h"
-#include "Material.h"
+#include "CMaterial.h"
 #include "Shader.h"
 #include "Lights.h"
-#include "Texture.h"
+#include "CTexture.h"
 
 CBaseDrawable::CBaseDrawable() { }
 
-CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, Material* mat)
+CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, CMaterial* mat)
 {
 	_materials.push_back(mat);
 	for (int i = 0; i < verticesSize; i += 8)// ? ok
@@ -24,7 +24,7 @@ CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, Materia
 }
 
 CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, 
-	std::vector<Material *> & mat) :
+	std::vector<CMaterial *> & mat) :
 	_materials(mat)
 {
 	for (int i = 0; i < verticesSize; i += 8)// ? ok
@@ -42,7 +42,7 @@ CBaseDrawable::CBaseDrawable(std::vector<VertexData> vert) :
 }
 
 CBaseDrawable::CBaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind,
-	std::vector<Material *> & mat) :
+	std::vector<CMaterial *> & mat) :
 	_vertices(vert), _indices(ind), _materials(mat)
 { 
 	assert(mat.size() < MAX_MATERIALS && "An object exceeded MAX_MATERIALS!");
@@ -144,7 +144,7 @@ std::vector<GLuint>& CBaseDrawable::GetIndices()
 	return _indices;
 }
 
-std::vector<Material*>& CBaseDrawable::GetMaterials()
+std::vector<CMaterial*>& CBaseDrawable::GetMaterials()
 {
 	return _materials;
 }

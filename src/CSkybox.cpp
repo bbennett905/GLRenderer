@@ -1,8 +1,8 @@
-#include "Skybox.h"
+#include "CSkybox.h"
 
 #include <gtc\type_ptr.hpp>
 
-#include "Texture.h"
+#include "CTexture.h"
 #include "Shader.h"
 #include "Camera.h"
 
@@ -51,7 +51,7 @@ GLfloat skyboxVertices[] = {
 	1.0f, -1.0f,  1.0f
 };
 
-Skybox::Skybox(std::string path)
+CSkybox::CSkybox(std::string path)
 {
 	_flags |= Drawable_Skybox;
 	for (int i = 0; i < (sizeof(skyboxVertices) / sizeof(skyboxVertices[0])); i += 3)// ? ok
@@ -61,14 +61,14 @@ Skybox::Skybox(std::string path)
 			glm::vec2(0.0f, 0.0f) };		//TexCoord
 		_vertices.push_back(data);
 	}
-	_texture = new Texture(path, Texture_Cubemap);
+	_texture = new CTexture(path, Texture_Cubemap);
 }
 
-Skybox::~Skybox()
+CSkybox::~CSkybox()
 {
 }
 
-void Skybox::Draw()
+void CSkybox::Draw()
 {
 	glDepthFunc(GL_LEQUAL);
 	_shader->Use();

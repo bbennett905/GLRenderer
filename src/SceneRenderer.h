@@ -10,9 +10,9 @@
 class Window;
 class IDrawable;
 class Shader;
-class Material;
-class Texture;
-class Camera;
+class CMaterial;
+class CTexture;
+class CCamera;
 class CLightPoint;
 class CLightSpot;
 class CLightDirectional;
@@ -20,7 +20,7 @@ class CLightDirectional;
 class SceneRenderer
 {
 public:
-	SceneRenderer(Window * window, Camera * camera);
+	SceneRenderer(Window * window, CCamera * camera);
 	~SceneRenderer();
 
 	void AddPointLight(CLightPoint * light);
@@ -41,11 +41,11 @@ private:
 	std::vector<CLightSpot *>	_spot_light_list;
 	CLightDirectional *			_directional_light;
 
-	std::vector<IDrawable *> _draw_list;
+	std::vector<IDrawable *>	_draw_list;
 
-	std::vector<Material *>		_material_list;
-	std::vector<Texture *>		_texture_list;
+	std::vector<CMaterial *>	_material_list;
+	std::vector<CTexture *>		_texture_list;
 	std::vector<Shader *>		_shader_list;
 
-	Camera * _camera;
+	CCamera * _camera;
 };

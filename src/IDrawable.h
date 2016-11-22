@@ -4,7 +4,7 @@
 #include <glm.hpp>
 #include <glew.h>
 
-class Material;
+class CMaterial;
 class Shader;
 
 struct VertexData
@@ -37,7 +37,7 @@ public:
 	//Vertex indices
 	virtual std::vector<GLuint>& GetIndices() = 0;
 	//Materials used to draw this
-	virtual std::vector<Material *>& GetMaterials() = 0;
+	virtual std::vector<CMaterial *>& GetMaterials() = 0;
 
 	//Returns a pointer to the shader object to be used
 	virtual Shader*& GetShader() = 0;

@@ -5,14 +5,14 @@
 
 #include "CBaseObject.h"
 
-class Camera :
+class CCamera :
 	public CBaseObject
 {
 public:
 	//FOV in degrees, ratio is aspect ratio
-	Camera(glm::vec3 pos, glm::vec3 ang, float FOV, float ratio);
+	CCamera(glm::vec3 pos, glm::vec3 ang, float FOV, float ratio);
 	//Alternate constructor so that glm isnt necessary
-	Camera(GLfloat xpos = 0.0f, GLfloat ypos = 0.0f, GLfloat zpos = 0.0f, GLfloat pitch = 0.0f, GLfloat yaw = -90.0f, GLfloat roll = 0.0f);
+	CCamera(GLfloat xpos = 0.0f, GLfloat ypos = 0.0f, GLfloat zpos = 0.0f, GLfloat pitch = 0.0f, GLfloat yaw = -90.0f, GLfloat roll = 0.0f);
 
 	//Returns the view transformation matrix for this camera
 	glm::mat4 GetViewMatrix();

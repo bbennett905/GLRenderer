@@ -4,8 +4,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "Material.h"
-#include "Texture.h"
+#include "CMaterial.h"
+#include "CTexture.h"
 #include "Window.h"
 
 CFPSCounter::CFPSCounter(Window * window) :
@@ -17,7 +17,7 @@ CFPSCounter::CFPSCounter(Window * window) :
 	buffer = "FPS: N/A (N/A ms)";
 	_surface = TTF_RenderText_Blended(_font, buffer.c_str(), { 255, 255, 255, 255 });
 	delete _texture;
-	_texture = new Texture(_surface, Texture_Translucent);
+	_texture = new CTexture(_surface, Texture_Translucent);
 
 	autoPosition(_surface->w, _surface->h, 0, 0);
 }

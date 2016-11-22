@@ -1,13 +1,13 @@
-#include "Texture.h"
+#include "CTexture.h"
 
 #include <SOIL.h>
 #include <SDL.h>
 
 #include "Logging.h"
 
-std::vector<Texture *> Texture::_textures_loaded;
+std::vector<CTexture *> CTexture::_textures_loaded;
 
-Texture::Texture(std::string path, uint32_t flags) :
+CTexture::CTexture(std::string path, uint32_t flags) :
 	_path(path), _flags(flags)
 {
 	if (flags & Texture_Cubemap)
@@ -16,7 +16,7 @@ Texture::Texture(std::string path, uint32_t flags) :
 		loadTextureFromPath(path);
 }
 
-Texture::Texture(SDL_Surface * surface, uint32_t flags) :
+CTexture::CTexture(SDL_Surface * surface, uint32_t flags) :
 	_flags(flags)
 {
 	glGenTextures(1, &_id);
@@ -40,12 +40,12 @@ Texture::Texture(SDL_Surface * surface, uint32_t flags) :
 	Logging::LogMessage(LogLevel_Debug, "Loaded texture from SDL surface");
 }
 
-Texture::Texture()
+CTexture::CTexture()
 {
 	glGenTextures(1, &_id);
 }
 
-Texture::~Texture()
+CTexture::~CTexture()
 {
 	for (uint32_t i = 0; i < _textures_loaded.size(); i++)
 	{
@@ -58,7 +58,7 @@ Texture::~Texture()
 	glDeleteTextures(1, &_id);
 }
 
-Texture * Texture::TextureExists(std::string path)
+CTexture * CTexture::TextureExists(std::string path)
 {
 	for (uint32_t i = 0; i < _textures_loaded.size(); i++)
 	{
@@ -72,7 +72,7 @@ Texture * Texture::TextureExists(std::string path)
 	return nullptr;
 }
 
-void Texture::Bind() 
+void CTexture::Bind() 
 { 
 	if (_flags & Texture_Cubemap)
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _id);
@@ -80,7 +80,7 @@ void Texture::Bind()
 		glBindTexture(GL_TEXTURE_2D, _id); 
 }
 
-void Texture::Update(SDL_Surface * surface)
+void CTexture::Update(SDL_Surface * surface)
 {
 	glBindTexture(GL_TEXTURE_2D, _id);
 
@@ -94,7 +94,7 @@ void Texture::Update(SDL_Surface * surface)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::loadTextureFromPath(std::string path)
+void CTexture::loadTextureFromPath(std::string path)
 {
 	int texWidth, texHeight;
 	unsigned char * image = SOIL_load_image(path.c_str(), &texWidth, &texHeight, 0,
@@ -126,7 +126,7 @@ void Texture::loadTextureFromPath(std::string path)
 	Logging::LogMessage(LogLevel_Debug, "Loaded texture \"%s\"", _path.c_str());
 }
 
-void Texture::loadCubemapFromPath(std::string path)
+void CTexture::loadCubemapFromPath(std::string path)
 {
 	glGenTextures(1, &_id);
 

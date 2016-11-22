@@ -10,13 +10,13 @@ class SceneRenderer;
 class IDrawable;
 class IObject;
 class CBaseUIElement;
-class Camera;
+class CCamera;
 class Window;
 
 class Scene
 {
 public:
-	Scene(Window * window, Camera * camera);
+	Scene(Window * window, CCamera * camera);
 	~Scene();
 
 	void AddObjectToScene(IObject * obj);

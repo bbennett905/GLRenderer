@@ -10,7 +10,7 @@ class CCube :
 	public CBaseObject, public CBaseDrawable //TODO inherit from Primitive class?
 {
 public:
-	CCube(Material * mat);
+	CCube(CMaterial * mat);
 	~CCube();
 
 	glm::mat4 GetModelMatrix();

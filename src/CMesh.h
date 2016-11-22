@@ -12,6 +12,6 @@ class CMesh :
 public:
 	CMesh();
 	CMesh(std::vector<VertexData> & vert, std::vector<GLuint> & ind, 
-		std::vector<Material *> & mats);
+		std::vector<CMaterial *> & mats);
 	glm::mat4 GetModelMatrix();
 };
