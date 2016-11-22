@@ -3,8 +3,7 @@
 #include <gtc\type_ptr.hpp>
 
 #include "CTexture.h"
-#include "Shader.h"
-#include "Camera.h"
+#include "CShader.h"
 
 GLfloat skyboxVertices[] = {
 	// Positions          

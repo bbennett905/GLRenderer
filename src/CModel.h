@@ -13,7 +13,7 @@
 
 class CTexture;
 class CMaterial;
-class Shader;
+class CShader;
 class CMesh;
 
 class CModel :
@@ -46,7 +46,7 @@ private:
 
 	std::string _path;
 	std::string _directory;
-	Shader * _shader;
+	CShader * _shader;
 
 	glm::vec3 Position;
 	glm::vec3 Scale;

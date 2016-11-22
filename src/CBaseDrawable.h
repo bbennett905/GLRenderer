@@ -12,7 +12,7 @@
 
 class SceneRenderer;
 class Camera;
-class Shader;
+class CShader;
 class CMaterial;
 
 class CBaseDrawable : 
@@ -39,7 +39,7 @@ public:
 	virtual std::vector<CMaterial *>& GetMaterials();
 
 	//Returns a pointer to the shader object to be used
-	virtual Shader*& GetShader();
+	virtual CShader*& GetShader();
 
 	//Vertex array object
 	virtual GLuint& VAO();
@@ -63,7 +63,7 @@ protected:
 	std::vector<CMaterial *> _materials;
 
 	//The shader that this object uses
-	Shader * _shader;
+	CShader * _shader;
 
 	//OpenGL Vertex Array Object
 	GLuint _vao;

@@ -8,7 +8,7 @@ class CFPSCounter :
 	public CBaseUIElement
 {
 public:
-	CFPSCounter(Window * window);
+	CFPSCounter(CWindow * window);
 	~CFPSCounter();
 
 	void Update(double delta_time);

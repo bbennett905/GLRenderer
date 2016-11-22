@@ -1,7 +1,7 @@
 #pragma once
 
-class Window;
-class Scene;
+class CWindow;
+class CScene;
 
 enum LogLevel
 {
@@ -28,7 +28,7 @@ namespace Logging
 	void LogMessage(LogLevel level, const char * str, ...);
 
 	//Initialize logging - must be called before using LogMessage
-	void LogInit(Window * window, Scene * scene, const char * path);
+	void LogInit(CWindow * window, CScene * scene, const char * path);
 
 	//Updates the on-screen log
 	void LogUpdate(double delta_time);

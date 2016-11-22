@@ -9,10 +9,10 @@
 #include <SDL_video.h>
 #include <SDL_ttf.h>
 
-#include "Window.h"
+#include "CWindow.h"
 #include "CTexture.h"
 #include "CBaseUIElement.h"
-#include "Scene.h"
+#include "CScene.h"
 
 namespace Logging
 {
@@ -30,7 +30,7 @@ namespace Logging
 			public CBaseUIElement
 		{
 		public:
-			CLogUI(Window * window) :
+			CLogUI(CWindow * window) :
 				CBaseUIElement(window)
 			{
 				_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 14);
@@ -177,7 +177,7 @@ namespace Logging
 
 	}
 
-	void LogInit(Window * window, Scene * scene, const char * path)
+	void LogInit(CWindow * window, CScene * scene, const char * path)
 	{
 		_log_ui_element = new CLogUI(window);
 

@@ -51,15 +51,15 @@ enum ShaderFlags
 	Shader_UI = 1 << 3
 };
 
-class Shader
+class CShader
 {
 public:
 	//Create a typical shader dynamically, given certain parameters
-	Shader(ShaderCreateInfo info);
-	~Shader();
+	CShader(ShaderCreateInfo info);
+	~CShader();
 
 	//Returns nullptr if no suitable shader exists, else returns pointer to shader
-	static Shader * ShaderExists(ShaderCreateInfo info);
+	static CShader * ShaderExists(ShaderCreateInfo info);
 
 	//Tells OpenGL to use this shader
 	void Use();
@@ -84,5 +84,5 @@ private:
 
 	std::map<std::string, GLuint> _uniform_locations;
 	GLuint _program;
-	static std::vector<Shader *> _shaders_loaded;
+	static std::vector<CShader *> _shaders_loaded;
 };

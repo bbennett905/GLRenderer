@@ -4,7 +4,7 @@
 #include <postprocess.h>
 
 #include "CMesh.h"
-#include "Shader.h"
+#include "CShader.h"
 #include "CMaterial.h"
 #include "CTexture.h"
 #include "Logging.h"

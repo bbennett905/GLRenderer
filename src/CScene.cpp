@@ -1,21 +1,21 @@
-#include "Scene.h"
+#include "CScene.h"
 
 #include "IDrawable.h"
 #include "IObject.h"
-#include "SceneRenderer.h"
+#include "CSceneRenderer.h"
 #include "CModel.h"
 #include "Lights.h"
 #include "CMesh.h"
 #include "Logging.h"
 #include "CBaseUIElement.h"
 
-Scene::Scene(Window * window, CCamera * camera)
+CScene::CScene(CWindow * window, CCamera * camera)
 {
-	_scene_renderer = new SceneRenderer(window, camera);
+	_scene_renderer = new CSceneRenderer(window, camera);
 	Logging::LogMessage(LogLevel_Debug, "Created Scene object");
 }
 
-Scene::~Scene()
+CScene::~CScene()
 {
 	for (auto object : _object_list)
 		delete object;
@@ -24,7 +24,7 @@ Scene::~Scene()
 	Logging::LogMessage(LogLevel_Debug, "Destroyed Scene object");
 }
 
-void Scene::AddObjectToScene(IObject * obj)
+void CScene::AddObjectToScene(IObject * obj)
 {
 	_object_list.push_back(obj);
 
@@ -52,18 +52,18 @@ void Scene::AddObjectToScene(IObject * obj)
 		_scene_renderer->SetDirectionalLight(directional_light);
 }
 
-void Scene::AddUIElementToScene(CBaseUIElement * element)
+void CScene::AddUIElementToScene(CBaseUIElement * element)
 {
 	_scene_renderer->AddDrawable(element);
 }
 
-void Scene::PrepareScene()
+void CScene::PrepareScene()
 {
 	Logging::LogMessage(LogLevel_Debug, "Preparing scene");
 	_scene_renderer->BuildShaders();
 }
 
-void Scene::Update(double delta_time)
+void CScene::Update(double delta_time)
 {
 	//TODO implement BaseObject::Update
 	/*for (auto obj : _object_list)

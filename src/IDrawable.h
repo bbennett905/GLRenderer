@@ -5,7 +5,7 @@
 #include <glew.h>
 
 class CMaterial;
-class Shader;
+class CShader;
 
 struct VertexData
 {
@@ -40,7 +40,7 @@ public:
 	virtual std::vector<CMaterial *>& GetMaterials() = 0;
 
 	//Returns a pointer to the shader object to be used
-	virtual Shader*& GetShader() = 0;
+	virtual CShader*& GetShader() = 0;
 
 	//Vertex array object
 	virtual GLuint& VAO() = 0;

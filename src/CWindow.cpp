@@ -1,11 +1,11 @@
-#include "Window.h"
+#include "CWindow.h"
 
 #include <iostream>
 #include <SDL.h>
 
 #include "Logging.h"
 
-Window::Window(int width, int height, const char * title) :
+CWindow::CWindow(int width, int height, const char * title) :
 	_width(width), _height(height)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -46,14 +46,14 @@ Window::Window(int width, int height, const char * title) :
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
-Window::~Window()
+CWindow::~CWindow()
 {
 	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
 	SDL_Quit();
 }
 
-void Window::SwapBuffers()
+void CWindow::SwapBuffers()
 {
 	//Do this here because its called every frame
 	if (_has_focus)
@@ -62,12 +62,12 @@ void Window::SwapBuffers()
 	SDL_GL_SwapWindow(_window);
 }
 
-int Window::GetWidth()
+int CWindow::GetWidth()
 {
 	return _width;
 }
 
-int Window::GetHeight()
+int CWindow::GetHeight()
 {
 	return _height;
 }

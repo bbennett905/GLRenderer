@@ -6,9 +6,9 @@
 
 #include "CMaterial.h"
 #include "CTexture.h"
-#include "Window.h"
+#include "CWindow.h"
 
-CFPSCounter::CFPSCounter(Window * window) :
+CFPSCounter::CFPSCounter(CWindow * window) :
 	CBaseUIElement(window)
 {
 	_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 18);

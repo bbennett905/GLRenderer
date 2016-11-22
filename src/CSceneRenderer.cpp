@@ -1,21 +1,21 @@
-#include "SceneRenderer.h"
+#include "CSceneRenderer.h"
 
 #include <map>
 #include <iostream>
 #include <glew.h>
 #include <gtc\type_ptr.hpp>
 
-#include "Window.h"
+#include "CWindow.h"
 #include "IDrawable.h"
 #include "IObject.h"
-#include "Shader.h"
+#include "CShader.h"
 #include "CMaterial.h"
 #include "CTexture.h"
 #include "Logging.h"
 #include "CCamera.h"
 #include "Lights.h"
 
-SceneRenderer::SceneRenderer(Window * window, CCamera * camera) :
+CSceneRenderer::CSceneRenderer(CWindow * window, CCamera * camera) :
 	_camera(camera)
 {
 	glewExperimental = GL_TRUE;
@@ -33,7 +33,7 @@ SceneRenderer::SceneRenderer(Window * window, CCamera * camera) :
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-SceneRenderer::~SceneRenderer()
+CSceneRenderer::~CSceneRenderer()
 {
 	//TODO replace this form of memory management with mm base class everything inherits from
 
@@ -49,22 +49,22 @@ SceneRenderer::~SceneRenderer()
 		delete material;
 }
 
-void SceneRenderer::AddPointLight(CLightPoint * light)
+void CSceneRenderer::AddPointLight(CLightPoint * light)
 {
 	_point_light_list.push_back(light);
 }
 
-void SceneRenderer::AddSpotLight(CLightSpot * light)
+void CSceneRenderer::AddSpotLight(CLightSpot * light)
 {
 	_spot_light_list.push_back(light);
 }
 
-void SceneRenderer::SetDirectionalLight(CLightDirectional * light)
+void CSceneRenderer::SetDirectionalLight(CLightDirectional * light)
 {
 	_directional_light = light;
 }
 
-void SceneRenderer::AddDrawable(IDrawable * drawable)
+void CSceneRenderer::AddDrawable(IDrawable * drawable)
 {
 	_draw_list.push_back(drawable);
 
@@ -131,7 +131,7 @@ void SceneRenderer::AddDrawable(IDrawable * drawable)
 	glBindVertexArray(0);
 }
 
-bool SceneRenderer::BuildShaders()
+bool CSceneRenderer::BuildShaders()
 {
 	Logging::LogMessage(LogLevel_Debug, "Building shaders...");
 	ShaderCreateInfo shader_create_info;
@@ -152,10 +152,10 @@ bool SceneRenderer::BuildShaders()
 		if (drawable->DrawFlags() & Drawable_UI)
 			shader_create_info.Flags |= Shader_UI;
 
-		Shader * shader = Shader::ShaderExists(shader_create_info);
+		CShader * shader = CShader::ShaderExists(shader_create_info);
 
 		//shader was null, so lets make a new one
-		if (!shader) shader = new Shader(shader_create_info);
+		if (!shader) shader = new CShader(shader_create_info);
 
 		drawable->GetShader() = shader;
 
@@ -175,7 +175,7 @@ bool SceneRenderer::BuildShaders()
 	return true;
 }
 
-void SceneRenderer::Draw()
+void CSceneRenderer::Draw()
 {
 	glClear(GL_DEPTH_BUFFER_BIT); 
 
@@ -238,10 +238,10 @@ void SceneRenderer::Draw()
 	}
 	glEnable(GL_DEPTH_TEST);
 
-	Shader::UseNull();
+	CShader::UseNull();
 }
 
-void SceneRenderer::setLightUniforms(Shader * shader)
+void CSceneRenderer::setLightUniforms(CShader * shader)
 {
 	for (uint32_t i = 0; i < _point_light_list.size(); i++)
 	{
@@ -315,7 +315,7 @@ void SceneRenderer::setLightUniforms(Shader * shader)
 		_directional_light->AmbientIntensity);
 }
 
-void SceneRenderer::setMatrixUniforms(Shader * shader)
+void CSceneRenderer::setMatrixUniforms(CShader * shader)
 {
 	if (shader->CreateInfo.Flags & Shader_Skybox)
 	{

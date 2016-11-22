@@ -6,18 +6,18 @@
  * Used to hold all objects being used, and update/draw them every tick
  */
 
-class SceneRenderer;
+class CSceneRenderer;
 class IDrawable;
 class IObject;
 class CBaseUIElement;
 class CCamera;
-class Window;
+class CWindow;
 
-class Scene
+class CScene
 {
 public:
-	Scene(Window * window, CCamera * camera);
-	~Scene();
+	CScene(CWindow * window, CCamera * camera);
+	~CScene();
 
 	void AddObjectToScene(IObject * obj);
 	void AddUIElementToScene(CBaseUIElement * element);
@@ -27,7 +27,7 @@ public:
 	void Update(double delta_time);
 
 private:
-	SceneRenderer * _scene_renderer;
+	CSceneRenderer * _scene_renderer;
 	std::vector<IObject *> _object_list;
 };
 

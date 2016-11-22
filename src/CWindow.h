@@ -9,12 +9,12 @@
 struct SDL_Window;
 typedef void * SDL_GLContext;
 
-class Window
+class CWindow
 {
 public:
 	//Creates a window obj with the specified width, height, and title
-	Window(int width, int height, const char * title);
-	~Window();
+	CWindow(int width, int height, const char * title);
+	~CWindow();
 
 	//Swaps the draw buffers and draws to the screen
 	void SwapBuffers();

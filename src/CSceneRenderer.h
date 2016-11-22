@@ -7,9 +7,9 @@
  * Used by Scene class to render everything in the scene
  */
 
-class Window;
+class CWindow;
 class IDrawable;
-class Shader;
+class CShader;
 class CMaterial;
 class CTexture;
 class CCamera;
@@ -17,11 +17,11 @@ class CLightPoint;
 class CLightSpot;
 class CLightDirectional;
 
-class SceneRenderer
+class CSceneRenderer
 {
 public:
-	SceneRenderer(Window * window, CCamera * camera);
-	~SceneRenderer();
+	CSceneRenderer(CWindow * window, CCamera * camera);
+	~CSceneRenderer();
 
 	void AddPointLight(CLightPoint * light);
 	void AddSpotLight(CLightSpot * light);
@@ -34,8 +34,8 @@ public:
 	void Draw();
 
 private:
-	void setLightUniforms(Shader * shader);
-	void setMatrixUniforms(Shader * shader);
+	void setLightUniforms(CShader * shader);
+	void setMatrixUniforms(CShader * shader);
 
 	std::vector<CLightPoint *>	_point_light_list;
 	std::vector<CLightSpot *>	_spot_light_list;
@@ -45,7 +45,7 @@ private:
 
 	std::vector<CMaterial *>	_material_list;
 	std::vector<CTexture *>		_texture_list;
-	std::vector<Shader *>		_shader_list;
+	std::vector<CShader *>		_shader_list;
 
 	CCamera * _camera;
 };

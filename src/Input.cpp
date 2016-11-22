@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <SDL_keycode.h>
 
-#include "Window.h"
+#include "CWindow.h"
 #include "Logging.h"
 
 namespace Input
@@ -11,10 +11,10 @@ namespace Input
 	namespace
 	{
 		void (* _input_callback)(const unsigned char *, double, int, int, int);
-		Window * _window;
+		CWindow * _window;
 	}
 
-	void InputInit(Window * window)
+	void InputInit(CWindow * window)
 	{
 		_window = window;
 	}

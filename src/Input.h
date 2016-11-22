@@ -1,11 +1,11 @@
 #pragma once
 
-class Window;
+class CWindow;
 
 namespace Input
 {
 	//Initializes input
-	void InputInit(Window * window);
+	void InputInit(CWindow * window);
 
 	//Sets the callback used to handle input
 	void SetInputHandler(void (* input_callback)(const unsigned char *, double, int, int, int));

@@ -91,14 +91,14 @@
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="Profiling.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneRenderer.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="CScene.cpp" />
+    <ClCompile Include="CSceneRenderer.cpp" />
+    <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CSkybox.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="Timing.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="CWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBaseDrawable.h" />
@@ -117,14 +117,14 @@
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="Profiling.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneRenderer.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="CScene.h" />
+    <ClInclude Include="CSceneRenderer.h" />
+    <ClInclude Include="CShader.h" />
     <ClInclude Include="CSkybox.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="Timing.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="CWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\cooktorrance.frag" />

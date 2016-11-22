@@ -1,4 +1,4 @@
-#include "Shader.h"
+#include "CShader.h"
 
 #include "Utils.h"
 
@@ -8,9 +8,9 @@
 
 #include "Logging.h"
 
-std::vector<Shader *> Shader::_shaders_loaded;
+std::vector<CShader *> CShader::_shaders_loaded;
 
-Shader::Shader(ShaderCreateInfo info) :
+CShader::CShader(ShaderCreateInfo info) :
 	TextureCount(0), CreateInfo(info)
 {
 	char * vertexPath;
@@ -63,7 +63,7 @@ Shader::Shader(ShaderCreateInfo info) :
 	Logging::LogMessage(LogLevel_Debug, "Created shader (%d)", _program);
 }
 
-Shader::~Shader()
+CShader::~CShader()
 {
 	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)
 	{
@@ -76,7 +76,7 @@ Shader::~Shader()
 	glDeleteProgram(_program);
 }
 
-Shader * Shader::ShaderExists(ShaderCreateInfo info)
+CShader * CShader::ShaderExists(ShaderCreateInfo info)
 {
 	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)
 	{
@@ -90,25 +90,25 @@ Shader * Shader::ShaderExists(ShaderCreateInfo info)
 	return nullptr;
 }
 
-void Shader::Use()
+void CShader::Use()
 {
 	glUseProgram(_program);
 	TextureCount = 0;
 }
 
-void Shader::UseNull()
+void CShader::UseNull()
 {
 	glUseProgram(0);
 }
 
-GLuint Shader::GetProgram()
+GLuint CShader::GetProgram()
 {
 	return _program;
 }
 
 //This little optimization has a much greater effect on nvidia rather than intel - but regardless, 
 //it slows it down drastically on Debug builds so it's disabled - important to remember for profiling
-GLuint Shader::GetUniformLocation(std::string name)
+GLuint CShader::GetUniformLocation(std::string name)
 {
 #ifdef _DEBUG
 	return glGetUniformLocation(_program, name.c_str());
@@ -122,7 +122,7 @@ GLuint Shader::GetUniformLocation(std::string name)
 #endif //_DEBUG
 }
 
-void Shader::preprocessShader(std::string & vertexSource, std::string & fragSource,
+void CShader::preprocessShader(std::string & vertexSource, std::string & fragSource,
 	ShaderCreateInfo info)
 {
 	switch (info.Version)
@@ -147,7 +147,7 @@ void Shader::preprocessShader(std::string & vertexSource, std::string & fragSour
 	FindAndReplaceAll(fragSource, "MAX_MATERIALS", std::to_string(MAX_MATERIALS));
 }
 
-void Shader::createShaders(const char * vertexSource, const char * fragSource)
+void CShader::createShaders(const char * vertexSource, const char * fragSource)
 {
 	GLuint vertex, frag;
 	GLint success;

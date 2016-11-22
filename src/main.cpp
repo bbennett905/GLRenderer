@@ -9,10 +9,10 @@
 #include "CCamera.h"
 #include "Lights.h"
 #include "CMaterial.h"
-#include "Window.h"
+#include "CWindow.h"
 #include "CCube.h"
 #include "CModel.h"
-#include "Scene.h"
+#include "CScene.h"
 #include "Logging.h"
 #include "CFPSCounter.h"
 #include "CSkybox.h"
@@ -30,7 +30,7 @@
 
 CCamera camera = CCamera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
-Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
+CWindow window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int delta_y, int mouse_buttons)
 {
@@ -65,7 +65,7 @@ void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int del
 int main()
 {
 	//TODO render system namespace for initialization and such
-	Scene * scene = new Scene(&window, &camera);
+	CScene * scene = new CScene(&window, &camera);
 
 	Input::InputInit(&window);
 
@@ -81,9 +81,9 @@ int main()
 		glm::vec3(1.0f, 0.95f, 0.75f), 0.0f,
 		glm::vec3(0.8f, 0.7f, 0.9f), 0.05f);
 	CLightPoint * pointLight = new CLightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
-		glm::vec3(0.0f, 1.0f, 0.3f), 1.0f);
+		glm::vec3(0.0f, 1.0f, 0.3f), 2.0f);
 	CLightPoint * pointLight2 = new CLightPoint(glm::vec3(-1.0f, 0.5f, 0.8f),
-		glm::vec3(0.6f, 0.0f, 1.0f), 1.0f);
+		glm::vec3(0.6f, 0.0f, 1.0f), 2.0f);
 	CLightSpot * spotLight = new CLightSpot(glm::vec3(0.0f, 0.0f, -2.0f), 
 		glm::vec3(0.0f, 90.0f, 0.0f),
 		glm::vec3(0.5f, 0.5f, 1.0f), 3.0f, 12.5f, 20.0f);

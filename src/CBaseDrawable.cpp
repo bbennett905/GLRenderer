@@ -5,7 +5,7 @@
 
 #include "Camera.h"
 #include "CMaterial.h"
-#include "Shader.h"
+#include "CShader.h"
 #include "Lights.h"
 #include "CTexture.h"
 
@@ -149,7 +149,7 @@ std::vector<CMaterial*>& CBaseDrawable::GetMaterials()
 	return _materials;
 }
 
-Shader*& CBaseDrawable::GetShader()
+CShader*& CBaseDrawable::GetShader()
 {
 	return _shader;
 }

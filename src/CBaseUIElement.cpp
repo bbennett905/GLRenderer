@@ -4,10 +4,10 @@
 #include <gtc\type_ptr.hpp>
 #include <SDL_ttf.h>
 
-#include "Shader.h"
+#include "CShader.h"
 #include "CMaterial.h"
 #include "CTexture.h"
-#include "Window.h"
+#include "CWindow.h"
 #include "Logging.h"
 
 bool CBaseUIElement::_is_ttf_init = false;
@@ -21,7 +21,7 @@ VertexData quad[] = {
 	{ {-1.0f,  1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f, -1.0f} },
 	{ {-1.0f, -1.0f, 0.0f},	{0.0f, 0.0f, -1.0f}, {0.0f,  0.0f} } };
 
-CBaseUIElement::CBaseUIElement(Window * window, glm::vec2 pos, glm::vec2 scale) :
+CBaseUIElement::CBaseUIElement(CWindow * window, glm::vec2 pos, glm::vec2 scale) :
 	CBaseDrawable(std::vector<VertexData>(std::begin(quad), std::end(quad))),
 	CBaseObject(glm::vec3(pos, 0.0f)), _texture(new CTexture()), _window(window)
 {
@@ -46,25 +46,25 @@ CBaseUIElement::~CBaseUIElement()
 void CBaseUIElement::Draw()
 {
 	if (!_texture) return;
-	GetShader()->Use();
+	_shader->Use();
 
-	glUniform1i(GetShader()->GetUniformLocation("hasMaterials"), 1);
+	glUniform1i(_shader->GetUniformLocation("hasMaterials"), 1);
 
 	//The reason the shader works even when one of these uniforms isn't set is because
 	//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
-	glUniform1i(GetShader()->GetUniformLocation("materials[0].HasDiffMap"), 1);
-	glActiveTexture(GL_TEXTURE0 + GetShader()->TextureCount);
+	glUniform1i(_shader->GetUniformLocation("materials[0].HasDiffMap"), 1);
+	glActiveTexture(GL_TEXTURE0 + _shader->TextureCount);
 	_texture->Bind();
-	glUniform1i(GetShader()->GetUniformLocation("materials[0].DiffMap"),
-		GetShader()->TextureCount);
-	GetShader()->TextureCount++;
+	glUniform1i(_shader->GetUniformLocation("materials[0].DiffMap"),
+		_shader->TextureCount);
+	_shader->TextureCount++;
 
-	glUniform1i(GetShader()->GetUniformLocation("materials[0].HasSpecMap"), 0);
+	glUniform1i(_shader->GetUniformLocation("materials[0].HasSpecMap"), 0);
 
-	glUniform1i(GetShader()->GetUniformLocation("numMaterials"), 1);
+	glUniform1i(_shader->GetUniformLocation("numMaterials"), 1);
 
 	//model matrix transforms model space to world space - rotation and translation
-	glUniformMatrix4fv(GetShader()->GetUniformLocation("model"), 1, GL_FALSE,
+	glUniformMatrix4fv(_shader->GetUniformLocation("model"), 1, GL_FALSE,
 		glm::value_ptr(GetModelMatrix()));
 
 	glBindVertexArray(VAO());
