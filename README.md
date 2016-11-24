@@ -26,6 +26,7 @@ All listed files are included in /include/ or /lib/ directory.
 * [GLEW](http://glew.sourceforge.net/) ([License](https://github.com/nigels-com/glew#copyright-and-licensing)) - OpenGL Extension library
 * [SOIL](http://www.lonesock.net/soil.html) ([License](http://www.lonesock.net/soil.html)) - Image loader
 * [SDL2](https://www.libsdl.org/) ([License](https://www.libsdl.org/license.php)) - Window management and input, also SDL2_ttf (replaced GLFW3 in this project)
+* [RapidJSON](http://rapidjson.org/) ([License]https://github.com/miloyip/rapidjson/blob/master/license.txt)) - Loading JSON formatted material and scene files
 
 ### Recommended ###
 

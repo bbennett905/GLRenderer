@@ -42,12 +42,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\include\SDL2;..\include\assimp;..\include\SOIL;..\include\glm;..\include\GL;$(IncludePath)</IncludePath>
+    <IncludePath>..\include\rapidjson;..\include\SDL2;..\include\assimp;..\include\SOIL;..\include\glm;..\include\GL;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\include\SDL2;..\include\assimp;..\include\SOIL;..\include\glm;..\include\GL;$(IncludePath)</IncludePath>
+    <IncludePath>..\include\rapidjson;..\include\SDL2;..\include\assimp;..\include\SOIL;..\include\glm;..\include\GL;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
