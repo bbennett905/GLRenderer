@@ -1,2 +1,4 @@
-[DiffuseMap]../images/metal_diffuse.png
-[MRMap]../images/metal_mr.png
+{
+	"DiffuseMap":"../images/metal_diffuse.png",
+	"MRMap":"../images/metal_mr.png"
+}

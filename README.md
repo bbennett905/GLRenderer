@@ -55,13 +55,13 @@ Suffix *_unlit* on shaders means that it doesn't accept lighting
 
 ### Materials ###
 
-Materials can have a number of attributes:
-* *[DiffuseMap]* - The path, relative to the executable, of the base texture to be used
-* *[MRMap]* - The path, relative to the executable, of the Metal and Roughness map used for this texture. Red channel - metallicity, green channel - roughness
-* *[BaseColor]* - Formatted as 3 floats separated by spaces, the color to use if [DiffuseMap] is not specified
-* *[Translucent]* - Set if the [DiffuseMap] texture is translucent
-* *[Roughness]* - A roughness factor, multiplied by or used instead of the [MRMap] texture
-* *[Metallicity]* - A metallicity factor, multiplied by or used instead of the [MRMap] texture
+Materials are formatted as JSON strings and can have a number of attributes:
+* *DiffuseMap* - The path, relative to the executable, of the base texture to be used
+* *MRMap* - The path, relative to the executable, of the Metal and Roughness map used for this texture. Red channel - metallicity, green channel - roughness
+* *BaseColor* - Formatted as 3 floats separated by spaces, the color to use if *DiffuseMap* is not specified
+* *Translucent* - Set if the *DiffuseMap* texture is translucent
+* *Roughness* - A roughness factor, multiplied by or used instead of the *MRMap* texture
+* *Metallicity* - A metallicity factor, multiplied by or used instead of the *MRMap* texture
 
 ### Planned Features / ToDo List ###
 

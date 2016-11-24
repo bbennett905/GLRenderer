@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <glm.hpp>
+#include <document.h>
 
 #include "Logging.h"
 #include "CTexture.h"
@@ -22,11 +23,33 @@ void CMaterial::loadMaterial(std::string path)
 	std::ifstream materialFile(path.c_str(), std::fstream::in);
 	if (materialFile.fail())
 	{
-		Logging::LogMessage(LogLevel_Error, "Failed loading material file %s", path);
+		Logging::LogMessage(LogLevel_Error, "Failed opening material file %s", path);
 		return;
 	}
-	char buffer[512];
+	
+	char json[4096];
+	materialFile.read(json, sizeof(json));
+	
+	if (!materialFile.eof())
+	{
+		//Either file was too large, or some other error occured
+		Logging::LogMessage(LogLevel_Error, "Failed loading material file %s", path);
+		materialFile.close();
+		return;
+	}
+	json[materialFile.gcount()] = '\0'; //Add a null terminator for rapidjson..
+	materialFile.close();
 
+	rapidjson::Document doc;
+	if (doc.Parse(json).HasParseError())
+	{
+		int err = doc.GetParseError();
+		int offs = doc.GetErrorOffset();
+		Logging::LogMessage(LogLevel_Error, "Failed parsing material file %s", path);
+		return;
+	}
+
+	//Defaults
 	std::string diffusePath = "";
 	uint32_t texFlags = 0;
 	std::string mrPath = "";
@@ -34,44 +57,44 @@ void CMaterial::loadMaterial(std::string path)
 	float rough = 1.0f;
 	float metal = 1.0f;
 
-	while (materialFile.good())
+	for (rapidjson::Value::ConstMemberIterator i = doc.MemberBegin(); i != doc.MemberEnd(); i++)
 	{
-		materialFile.getline(buffer, 512);
-		std::string line = buffer;
-
-		uint32_t loc = line.find("[DiffuseMap]");
-		if (loc != std::string::npos)
+		std::string s = i->name.GetString();
+		rapidjson::Value &v = doc[s.c_str()];
+		if (s == "DiffuseMap")
 		{
-			diffusePath = line.substr(loc + strlen("[DiffuseMap]"), std::string::npos);
+			if (v.IsString()) diffusePath = v.GetString();
+			continue;
+		} 
+		if (s == "MRMap")
+		{
+			if (v.IsString()) mrPath = v.GetString();
+			continue;
 		}
-		loc = line.find("[MRMap]");
-		if (loc != std::string::npos)
+		if (s == "BaseColor")
 		{
-			mrPath = line.substr(loc + strlen("[MRMap]"), std::string::npos);
+			if (v.IsArray() && v.Size() == 3)
+			{
+				baseColor.x = v[0].GetFloat();
+				baseColor.y = v[1].GetFloat();
+				baseColor.z = v[2].GetFloat();
+			}
+			continue;
 		}
-		loc = line.find("[BaseColor]");
-		if (loc != std::string::npos)
+		if (s == "Metallicity")
 		{
-			std::vector<std::string> splitBuffer = 
-				Split(line.substr(loc + strlen("[BaseColor]"), std::string::npos).c_str(), ' ');
-			baseColor.x = float(atof(splitBuffer[0].c_str()));
-			baseColor.y = float(atof(splitBuffer[1].c_str()));
-			baseColor.z = float(atof(splitBuffer[2].c_str()));
+			if (v.IsFloat()) metal = v.GetFloat();
+			continue;
 		}
-		loc = line.find("[Roughness]");
-		if (loc != std::string::npos)
+		if (s == "Roughness")
 		{
-			rough = float(atof(line.substr(loc + strlen("[Roughness]"), std::string::npos).c_str()));
+			if (v.IsFloat()) rough = v.GetFloat();
+			continue;
 		}
-		loc = line.find("[Metallicity]");
-		if (loc != std::string::npos)
+		if (s == "Translucent")
 		{
-			metal = float(atof(line.substr(loc + strlen("[Metallicity]"), std::string::npos).c_str()));
-		}
-		loc = line.find("[Translucent]");
-		if (loc != std::string::npos)
-		{
-			texFlags |= Texture_Translucent;
+			if (v.IsBool() && v.GetBool()) texFlags |= Texture_Translucent;
+			continue;
 		}
 	}
 

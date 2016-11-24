@@ -1,2 +1,4 @@
-[DiffuseMap]../images/woodrough_diffuse.png
-[MRMap]../images/woodrough_mr.png
+{
+	"DiffuseMap":"../images/woodrough_diffuse.png",
+	"MRMap":"../images/woodrough_mr.png"
+}
