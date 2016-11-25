@@ -1,5 +1,5 @@
 #pragma once
-#include "CBaseObject.h"
+#include "BaseObject.h"
 
 /*
  * Classes for various types of light entities

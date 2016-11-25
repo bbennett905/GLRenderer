@@ -1,4 +1,4 @@
-#include "CMesh.h"
+#include "Mesh.h"
 
 #include <gtc\matrix_transform.hpp>
 

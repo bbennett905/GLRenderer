@@ -1,18 +1,18 @@
-#include "CSceneRenderer.h"
+#include "SceneRenderer.h"
 
 #include <map>
 #include <iostream>
 #include <glew.h>
 #include <gtc\type_ptr.hpp>
 
-#include "CWindow.h"
+#include "Window.h"
 #include "IDrawable.h"
 #include "IObject.h"
-#include "CShader.h"
-#include "CMaterial.h"
-#include "CTexture.h"
+#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
 #include "Logging.h"
-#include "CCamera.h"
+#include "Camera.h"
 #include "Lights.h"
 
 CSceneRenderer::CSceneRenderer(CWindow * window, CCamera * camera) :

@@ -1,4 +1,4 @@
-#include "CWindow.h"
+#include "Window.h"
 
 #include <iostream>
 #include <SDL.h>

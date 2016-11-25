@@ -1,9 +1,9 @@
-#include "CSkybox.h"
+#include "Skybox.h"
 
 #include <gtc\type_ptr.hpp>
 
-#include "CTexture.h"
-#include "CShader.h"
+#include "Texture.h"
+#include "Shader.h"
 
 GLfloat skyboxVertices[] = {
 	// Positions          

@@ -9,10 +9,10 @@
 #include <SDL_video.h>
 #include <SDL_ttf.h>
 
-#include "CWindow.h"
-#include "CTexture.h"
-#include "CBaseUIElement.h"
-#include "CScene.h"
+#include "Window.h"
+#include "Texture.h"
+#include "BaseUIElement.h"
+#include "Scene.h"
 
 namespace Logging
 {

@@ -1,13 +1,13 @@
-#include "CScene.h"
+#include "Scene.h"
 
 #include "IDrawable.h"
 #include "IObject.h"
-#include "CSceneRenderer.h"
-#include "CModel.h"
+#include "SceneRenderer.h"
+#include "Model.h"
 #include "Lights.h"
-#include "CMesh.h"
+#include "Mesh.h"
 #include "Logging.h"
-#include "CBaseUIElement.h"
+#include "BaseUIElement.h"
 
 CScene::CScene(CWindow * window, CCamera * camera)
 {

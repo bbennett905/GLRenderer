@@ -1,4 +1,4 @@
-#include "CBaseObject.h"
+#include "BaseObject.h"
 
 #include <gtc/matrix_transform.hpp>
 

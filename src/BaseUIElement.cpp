@@ -1,13 +1,13 @@
-#include "CBaseUIElement.h"
+#include "BaseUIElement.h"
 
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
 #include <SDL_ttf.h>
 
-#include "CShader.h"
-#include "CMaterial.h"
-#include "CTexture.h"
-#include "CWindow.h"
+#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
+#include "Window.h"
 #include "Logging.h"
 
 bool CBaseUIElement::_is_ttf_init = false;

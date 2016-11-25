@@ -78,53 +78,53 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CBaseDrawable.cpp" />
-    <ClCompile Include="CBaseObject.cpp" />
-    <ClCompile Include="CBaseUIElement.cpp" />
-    <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CCube.cpp" />
-    <ClCompile Include="CFPSCounter.cpp" />
+    <ClCompile Include="BaseDrawable.cpp" />
+    <ClCompile Include="BaseObject.cpp" />
+    <ClCompile Include="BaseUIElement.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="FPSCounter.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="CMaterial.cpp" />
-    <ClCompile Include="CMesh.cpp" />
-    <ClCompile Include="CModel.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Profiling.cpp" />
-    <ClCompile Include="CScene.cpp" />
-    <ClCompile Include="CSceneRenderer.cpp" />
-    <ClCompile Include="CShader.cpp" />
-    <ClCompile Include="CSkybox.cpp" />
-    <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneRenderer.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timing.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="CWindow.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CBaseDrawable.h" />
-    <ClInclude Include="CBaseObject.h" />
-    <ClInclude Include="CBaseUIElement.h" />
-    <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CCube.h" />
-    <ClInclude Include="CFPSCounter.h" />
+    <ClInclude Include="BaseDrawable.h" />
+    <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="BaseUIElement.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="FPSCounter.h" />
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="IObject.h" />
     <ClInclude Include="Keycodes.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Logging.h" />
-    <ClInclude Include="CMaterial.h" />
-    <ClInclude Include="CMesh.h" />
-    <ClInclude Include="CModel.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Profiling.h" />
-    <ClInclude Include="CScene.h" />
-    <ClInclude Include="CSceneRenderer.h" />
-    <ClInclude Include="CShader.h" />
-    <ClInclude Include="CSkybox.h" />
-    <ClInclude Include="CTexture.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneRenderer.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Timing.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="CWindow.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\cooktorrance.frag" />

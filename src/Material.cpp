@@ -1,4 +1,4 @@
-#include "CMaterial.h"
+#include "Material.h"
 
 #include <fstream>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <document.h>
 
 #include "Logging.h"
-#include "CTexture.h"
+#include "Texture.h"
 #include "Utils.h"
 
 CMaterial::CMaterial(CTexture * diffuse, CTexture * mr, glm::vec3 color, float roughness, float metal) :

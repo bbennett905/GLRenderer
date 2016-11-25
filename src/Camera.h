@@ -3,7 +3,7 @@
 #include <glm.hpp>
 #include <glew.h>
 
-#include "CBaseObject.h"
+#include "BaseObject.h"
 
 class CCamera :
 	public CBaseObject

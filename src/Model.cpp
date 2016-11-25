@@ -1,12 +1,12 @@
-#include "CModel.h"
+#include "Model.h"
 
 #include <Importer.hpp>
 #include <postprocess.h>
 
-#include "CMesh.h"
-#include "CShader.h"
-#include "CMaterial.h"
-#include "CTexture.h"
+#include "Mesh.h"
+#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
 #include "Logging.h"
 
 std::vector<CModel *> CModel::_models_loaded;

@@ -1,8 +1,8 @@
-#include "CCube.h"
+#include "Cube.h"
 
 #include <gtc\matrix_transform.hpp>
 
-#include "CMaterial.h"
+#include "Material.h"
 
 GLfloat vertices[] = {
 	// Positions           // Normals           // Texture Coords

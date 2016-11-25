@@ -1,4 +1,4 @@
-#include "CTexture.h"
+#include "Texture.h"
 
 #include <SOIL.h>
 #include <SDL.h>

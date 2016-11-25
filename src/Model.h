@@ -4,7 +4,7 @@
 #include <vector>
 #include <scene.h>
 
-#include "CBaseObject.h"
+#include "BaseObject.h"
 
 /*
  * Class representing a 3D model, imported using Assimp

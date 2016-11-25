@@ -1,12 +1,12 @@
-#include "CFPSCounter.h"
+#include "FPSCounter.h"
 
 #include <string>
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "CMaterial.h"
-#include "CTexture.h"
-#include "CWindow.h"
+#include "Material.h"
+#include "Texture.h"
+#include "Window.h"
 
 CFPSCounter::CFPSCounter(CWindow * window) :
 	CBaseUIElement(window)

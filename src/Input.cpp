@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <SDL_keycode.h>
 
-#include "CWindow.h"
+#include "Window.h"
 #include "Logging.h"
 
 namespace Input

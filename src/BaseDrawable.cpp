@@ -1,13 +1,12 @@
-#include "CBaseDrawable.h"
+#include "BaseDrawable.h"
 
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
 
-#include "Camera.h"
-#include "CMaterial.h"
-#include "CShader.h"
+#include "Material.h"
+#include "Shader.h"
 #include "Lights.h"
-#include "CTexture.h"
+#include "Texture.h"
 
 CBaseDrawable::CBaseDrawable() { }
 

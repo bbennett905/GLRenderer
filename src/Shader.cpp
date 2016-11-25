@@ -1,4 +1,4 @@
-#include "CShader.h"
+#include "Shader.h"
 
 #include "Utils.h"
 
