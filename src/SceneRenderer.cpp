@@ -125,6 +125,12 @@ void CSceneRenderer::AddDrawable(IDrawable * drawable)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
 		(GLvoid*)(offsetof(VertexData, TexCoords)));
 	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData),
+		(GLvoid*)(offsetof(VertexData, Tangent)));
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData),
+		(GLvoid*)(offsetof(VertexData, BiTangent)));
+	glEnableVertexAttribArray(4);
 
 	//unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

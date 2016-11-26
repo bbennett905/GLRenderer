@@ -20,6 +20,34 @@ CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, CMateri
 							glm::vec2(vertices[i+6], vertices[i+7]) };				//TexCoord
 		_vertices.push_back(data);
 	}
+
+	//Pass to calc tangents
+	for (uint32_t i = 0; i < _vertices.size() - 2; i += 3) //we do this for each triangle (3 verts
+	{
+		glm::vec3 edge1 = _vertices[i + 1].Position - _vertices[i].Position;
+		glm::vec3 edge2 = _vertices[i + 2].Position - _vertices[i].Position;
+		glm::vec2 deltaUV1 = _vertices[i + 1].TexCoords - _vertices[i].TexCoords;
+		glm::vec2 deltaUV2 = _vertices[i + 2].TexCoords - _vertices[i].TexCoords;
+		GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+		glm::vec3 tangent;
+		tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+		tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+		tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+		tangent = glm::normalize(tangent);
+		_vertices[i].Tangent = tangent;
+		_vertices[i + 1].Tangent = tangent;
+		_vertices[i + 2].Tangent = tangent;
+
+		glm::vec3 bitangent;
+		bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+		bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+		bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+		bitangent = glm::normalize(bitangent);
+		_vertices[i].BiTangent = bitangent;
+		_vertices[i + 1].BiTangent = bitangent;
+		_vertices[i + 2].BiTangent = bitangent;
+	}
 }
 
 CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, 
@@ -28,10 +56,39 @@ CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize,
 {
 	for (int i = 0; i < verticesSize; i += 8)// ? ok
 	{
+		
 		VertexData data = { glm::vec3(vertices[i], vertices[i + 1], vertices[i + 2]),	//Pos
 			glm::vec3(vertices[i + 3], vertices[i + 4], vertices[i + 5]),	//Norm
 			glm::vec2(vertices[i + 6], vertices[i + 7]) };				//TexCoord
 		_vertices.push_back(data);
+	}
+
+	//Pass to calc tangents
+	for (uint32_t i = 0; i < _vertices.size() - 2; i += 3) //we do this for each triangle (3 verts
+	{
+		glm::vec3 edge1 = _vertices[i + 1].Position - _vertices[i].Position;
+		glm::vec3 edge2 = _vertices[i + 2].Position - _vertices[i].Position;
+		glm::vec2 deltaUV1 = _vertices[i + 1].TexCoords - _vertices[i].TexCoords;
+		glm::vec2 deltaUV2 = _vertices[i + 2].TexCoords - _vertices[i].TexCoords;
+		GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+		glm::vec3 tangent;
+		tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+		tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+		tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+		tangent = glm::normalize(tangent);
+		_vertices[i].Tangent = tangent;
+		_vertices[i + 1].Tangent = tangent;
+		_vertices[i + 2].Tangent = tangent;
+
+		glm::vec3 bitangent;
+		bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+		bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+		bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+		bitangent = glm::normalize(bitangent);
+		_vertices[i].BiTangent = bitangent;
+		_vertices[i + 1].BiTangent = bitangent;
+		_vertices[i + 2].BiTangent = bitangent;
 	}
 }
 
@@ -114,6 +171,23 @@ void CBaseDrawable::Draw()
 		{
 			glUniform1i(_shader->GetUniformLocation(
 				("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 0);
+		}
+
+		if (_materials[i]->NormalMap != nullptr)
+		{
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasNormalMap").c_str()), 1);
+			glActiveTexture(GL_TEXTURE0 + _shader->TextureCount);
+			_materials[i]->NormalMap->Bind();
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].NormalMap").c_str()),
+				_shader->TextureCount);
+			_shader->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(_shader->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasNormalMap").c_str()), 0);
 		}
 	}
 	glUniform1i(_shader->GetUniformLocation("numMaterials"),

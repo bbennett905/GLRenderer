@@ -20,6 +20,7 @@ public:
 
 	CTexture * DiffuseMap;
 	CTexture * MetalAndRoughMap; //metal is R, rough is G
+	CTexture * NormalMap;
 	glm::vec3 BaseColor;
 	float Roughness;
 	float Metallicity;

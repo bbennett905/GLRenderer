@@ -105,6 +105,7 @@ int main()
 	CMaterial * marble = new CMaterial("../images/marble.txt");
 	CMaterial * wood = new CMaterial("../images/wood.txt");
 	CMaterial * metal = new CMaterial("../images/metal.txt");
+	CMaterial * brick = new CMaterial("../images/brick.txt");
 	CMaterial * glass_material = new CMaterial("../images/window.txt");
 
 	CCube * cube = new CCube(crate);
@@ -120,6 +121,9 @@ int main()
 	CCube * cube4 = new CCube(metal);
 	cube4->SetPosition(glm::vec3(-1.5f, 1.5f, 0.0f));
 	scene->AddObjectToScene(cube4);
+	CCube * cube5 = new CCube(brick);
+	cube5->SetPosition(glm::vec3(-2.5f, 1.2f, 1.0f));
+	scene->AddObjectToScene(cube5);
 
 	CCube * glass = new CCube(glass_material);
 	glass->DrawFlags() |= Drawable_Translucent;
@@ -172,10 +176,10 @@ int main()
 		}
 
 		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
-		cube->SetAngles(cube->GetAngles() + delta_rotate);
-		cube2->SetAngles(cube2->GetAngles() + delta_rotate);
-		cube3->SetAngles(cube3->GetAngles() + delta_rotate);
-		cube4->SetAngles(cube4->GetAngles() + delta_rotate);
+		//cube->SetAngles(cube->GetAngles() + delta_rotate);
+		//cube2->SetAngles(cube2->GetAngles() + delta_rotate);
+		//cube3->SetAngles(cube3->GetAngles() + delta_rotate);
+		//cube4->SetAngles(cube4->GetAngles() + delta_rotate);
 
 		//Go to the event callbacks specified before
 		Input::PollEvents(delta_time);

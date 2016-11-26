@@ -53,6 +53,7 @@ void CMaterial::loadMaterial(std::string path)
 	std::string diffusePath = "";
 	uint32_t texFlags = 0;
 	std::string mrPath = "";
+	std::string normPath = "";
 	glm::vec3 baseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	float rough = 1.0f;
 	float metal = 1.0f;
@@ -69,6 +70,11 @@ void CMaterial::loadMaterial(std::string path)
 		if (s == "MRMap")
 		{
 			if (v.IsString()) mrPath = v.GetString();
+			continue;
+		}
+		if (s == "NormalMap")
+		{
+			if (v.IsString()) normPath = v.GetString();
 			continue;
 		}
 		if (s == "BaseColor")
@@ -115,6 +121,15 @@ void CMaterial::loadMaterial(std::string path)
 	{
 		MetalAndRoughMap = CTexture::TextureExists(mrPath);
 		if (!MetalAndRoughMap) MetalAndRoughMap = new CTexture(mrPath);
+	}
+	if (normPath == "")
+	{
+		NormalMap = nullptr;
+	}
+	else
+	{
+		NormalMap = CTexture::TextureExists(normPath);
+		if (!NormalMap) NormalMap = new CTexture(normPath);
 	}
 	BaseColor = baseColor;
 	Roughness = rough;

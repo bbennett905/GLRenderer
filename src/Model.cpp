@@ -83,7 +83,8 @@ void CModel::SetScale(glm::vec3 scale)
 void CModel::loadModel(std::string path)
 {
 	Assimp::Importer importer;
-	const aiScene * scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene * scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs |
+		aiProcess_CalcTangentSpace);
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		Logging::LogMessage(LogLevel_Error, 
@@ -122,6 +123,10 @@ CMesh * CModel::processMesh(aiMesh * mesh, const aiScene * scene)
 		vertex.Normal.y = mesh->mNormals[i].y;
 		vertex.Normal.z = mesh->mNormals[i].z;
 
+		vertex.Tangent.x = mesh->mTangents[i].x;
+		vertex.Tangent.y = mesh->mTangents[i].y;
+		vertex.Tangent.z = mesh->mTangents[i].z;
+
 		if (mesh->mTextureCoords[0])
 		{
 			vertex.TexCoords.x = mesh->mTextureCoords[0][i].x;
@@ -155,6 +160,7 @@ std::vector<CMaterial *> CModel::loadMaterials(aiMaterial * mat)
 	{
 		CTexture * diffuse = nullptr;
 		CTexture * mrmap = nullptr;
+		CTexture * normal = nullptr;
 		CMaterial * material;
 
 		//Check if the texture has already been loaded
@@ -176,8 +182,19 @@ std::vector<CMaterial *> CModel::loadMaterials(aiMaterial * mat)
 			mrmap = CTexture::TextureExists(path);
 			if (!mrmap) mrmap = new CTexture(path);
 		}
+		if (i < mat->GetTextureCount(aiTextureType_HEIGHT))
+		{
+			//Check if the specular map has already been loaded
+			mat->GetTexture(aiTextureType_HEIGHT, i, &str);
+
+			std::string path = _directory + "/" + std::string(str.C_Str());
+
+			normal = CTexture::TextureExists(path);
+			if (!normal) normal = new CTexture(path);
+		}
 		//Create a material
 		material = new CMaterial(diffuse, mrmap);
+		material->NormalMap = normal;
 		mats.push_back(material);
 	}
 

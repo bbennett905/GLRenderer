@@ -5,6 +5,7 @@
 in vec3 Normal;
 in vec2 TexCoord;
 in vec3 FragPos;
+in mat3 TBN;
 
 out vec4 color;
 
@@ -40,8 +41,8 @@ struct Material {
 	vec3 Color;	//used if no diff map
 	bool HasMetalAndRoughMap; //metal R, rough G
     sampler2D MetalAndRoughMap;
-	//bool HasRoughMap;
-    //sampler2D RoughMap;
+	bool HasNormalMap;
+	sampler2D NormalMap;
     float Roughness;
 	float Metallicity;
 };
@@ -67,6 +68,7 @@ vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir);
 vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir);
 vec4 SumDiffMaps();
 vec4 AvgMetalAndRoughMaps();
+vec3 AvgNormalMaps();
 
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir);
 
@@ -79,8 +81,23 @@ void main(void) {
 		return;
 	}
 
-	vec3 norm = normalize(Normal);
-    vec3 viewDir = normalize(viewPos - FragPos);
+	//case 1: convert normal map to world space and calculate in frag shader
+	//if we have normal maps, avg them and convert it to world space
+	vec3 norm = AvgNormalMaps();
+	if (norm.x < 0.0f)
+	{
+		norm = normalize(Normal);
+	}
+	else
+	{
+		norm = normalize(norm * 2.0 - 1.0);   
+		norm = normalize(TBN * norm); 
+	}
+	//case 2: convert everything else to tangent space using inverted TBN matrix, and 
+	//do most of the matrix calculations in vert shader
+	//TODO
+
+   vec3 viewDir = normalize(viewPos - FragPos);
 
     vec4 result = CalcDirLight(directionalLight, norm, viewDir);
     for (int i = 0; i < pointLights.length(); i++)
@@ -164,6 +181,25 @@ vec4 AvgMetalAndRoughMaps() {
 		}
 	}
     return sum / numMaps;
+}
+
+vec3 AvgNormalMaps()
+{
+	vec3 sum = vec3(0.0f, 0.0f, 0.0f);
+	int numMaps = 0;
+	for (int i = 0; i < numMaterials; i++)
+	{
+		if (materials[i].HasNormalMap)
+		{
+			sum += texture(materials[i].NormalMap, TexCoord).xyz;
+			numMaps++;
+		}	
+	}
+	if (numMaps == 0)
+	{
+		return vec3(-1.0f, -1.0f, -1.0f);
+	}
+	return sum / numMaps;
 }
 
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)
