@@ -122,7 +122,7 @@ int main()
 	cube4->SetPosition(glm::vec3(-1.5f, 1.5f, 0.0f));
 	scene->AddObjectToScene(cube4);
 	CCube * cube5 = new CCube(brick);
-	cube5->SetPosition(glm::vec3(-2.5f, 1.2f, 1.0f));
+	cube5->SetPosition(glm::vec3(-2.5f, 1.2f, 1.5f));
 	scene->AddObjectToScene(cube5);
 
 	CCube * glass = new CCube(glass_material);
