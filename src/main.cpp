@@ -78,7 +78,7 @@ int main()
 	Profiling::ProfInit();
 
 	CLightDirectional * dirLight = new CLightDirectional(glm::vec3(-45.0f, 45.0f, 0.0f),
-		glm::vec3(1.0f, 0.95f, 0.75f), 0.0f,
+		glm::vec3(1.0f, 0.95f, 0.75f), 0.1f,
 		glm::vec3(0.8f, 0.7f, 0.9f), 0.05f);
 	CLightPoint * pointLight = new CLightPoint(glm::vec3(-2.0f, 1.0f, -3.0f), 
 		glm::vec3(0.0f, 1.0f, 0.3f), 2.0f);
@@ -157,25 +157,27 @@ int main()
 	uint64_t start_time = Timing::GetTime();
 	uint64_t last_print_time = Timing::GetTime();
 	int num_frames = 0;
+	double delta_time = 0.0;
+	double delta_print_time = 0.0;
 
 	while (!window.ShouldExit)
 	{
 		//Cap fps to 300
 		while (Timing::GetSecondsSince(start_time) < double(1.0f / 300.0f));
 
-		double delta_time = Timing::GetSecondsSince(start_time);
+		delta_time = Timing::GetSecondsSince(start_time);
 		start_time = Timing::GetTime();
 
 		num_frames++;
-		double delta_print_time = Timing::GetSecondsSince(last_print_time);
-		if (delta_print_time >= 0.5) 
+		delta_print_time = Timing::GetSecondsSince(last_print_time);
+		if (delta_print_time >= 0.5)
 		{
 			fps_element->Update(delta_print_time / (double)num_frames);
 			last_print_time = Timing::GetTime();
 			num_frames = 0;
 		}
 
-		glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
+		//glm::vec3 delta_rotate(40.0 * delta_time, -25.0f * delta_time, 0.0f);
 		//cube->SetAngles(cube->GetAngles() + delta_rotate);
 		//cube2->SetAngles(cube2->GetAngles() + delta_rotate);
 		//cube3->SetAngles(cube3->GetAngles() + delta_rotate);
@@ -188,6 +190,7 @@ int main()
 		spotLight->SetAngles(camera.GetAngles());
 
 		scene->Update(delta_time);
+
 		Logging::LogUpdate(delta_time);
 
 		window.SwapBuffers();
