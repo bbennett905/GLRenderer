@@ -128,7 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\cooktorrance.frag" />
-    <None Include="..\shaders\default.frag" />
     <None Include="..\shaders\default.vert" />
     <None Include="..\shaders\experimental.frag" />
     <None Include="..\shaders\experimental.vert" />
