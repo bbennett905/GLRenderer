@@ -5,36 +5,9 @@
 in vec3 Normal;
 in vec2 TexCoord;
 in vec3 FragPos;
-in mat3 TBN;
 
 out vec4 color;
 
-struct LightPoint {
-    vec3 Position;
-    vec3 Color;
-    float Intensity;
-    float Constant;
-    float Linear;
-    float Quadratic;
-};
-struct LightDirectional {
-    vec3 Direction;
-    vec3 Color;
-    float Intensity;
-    vec3 AmbientColor;
-    float AmbientIntensity;
-};
-struct LightSpot {
-    vec3 Position;
-    vec3 Direction;
-    float InnerCutOff;
-    float OuterCutOff;
-    vec3 Color;
-    float Intensity;
-    float Constant;
-    float Linear;
-    float Quadratic;
-};
 struct Material {
 	bool HasDiffMap;
 	sampler2D DiffMap;
@@ -47,13 +20,35 @@ struct Material {
 	float Metallicity;
 };
 
-uniform LightDirectional directionalLight;
+in LightDirectionalF {
+	vec3 Direction;
+    vec3 Color;
+    float Intensity;
+    vec3 AmbientColor;
+    float AmbientIntensity;
+} directionalLightF;
 
-uniform LightPoint pointLights[
+in LightPointF {
+	vec3 Position;
+    vec3 Color;
+    float Intensity;
+    float Constant;
+    float Linear;
+    float Quadratic;
+} pointLightsF[
 #insert num_point_lights
     ];
-
-uniform LightSpot spotLights[
+in LightSpotF {
+	vec3 Position;
+    vec3 Direction;
+    float InnerCutOff;
+    float OuterCutOff;
+    vec3 Color;
+    float Intensity;
+    float Constant;
+    float Linear;
+    float Quadratic;
+} spotLightsF[
 #insert num_spot_lights
     ];
 
@@ -61,11 +56,12 @@ uniform Material materials[MAX_MATERIALS];
 uniform int numMaterials;
 uniform bool hasMaterials;
 
-uniform vec3 viewPos;
+in vec3 viewPosF;
 
-vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir);
-vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir);
-vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir);
+vec4 CalcDirLight(vec3 norm, vec3 viewDir);
+vec4 CalcPointLight(int i, vec3 norm, vec3 fragPos, vec3 viewDir);
+vec4 CalcSpotLight(int i, vec3 norm, vec3 fragPos, vec3 viewDir);
+
 vec4 SumDiffMaps();
 vec4 AvgMetalAndRoughMaps();
 vec3 AvgNormalMaps();
@@ -81,68 +77,78 @@ void main(void) {
 		return;
 	}
 
+	vec3 norm = AvgNormalMaps();
+
 	//case 1: convert normal map to world space and calculate in frag shader
 	//if we have normal maps, avg them and convert it to world space
-	vec3 norm = AvgNormalMaps();
+	//O(numPixels), matrix * vec mult
+	//For large, flat surfaces, this is going to be a lot of these, when its not necessary
+
+	//case 2: convert everything else to tangent space using inverted TBN matrix, and 
+	//do most of the matrix calculations in vert shader - convert everything to tangent space
+	//in vert, and use same calculations here
+	//O(numVerts * numLights), matrix * vert mult
+	//So this might actually be slower for high-poly models, at a distance (fewer pixels/poly)
+	//especially with large numbers of lights in a scene
+	
 	if (norm.x < 0.0f)
 	{
 		norm = normalize(Normal);
 	}
 	else
 	{
-		norm = normalize(norm * 2.0 - 1.0);   
-		norm = normalize(TBN * norm); 
+		norm = normalize(norm * 2.0 - 1.0);    
 	}
-	//case 2: convert everything else to tangent space using inverted TBN matrix, and 
-	//do most of the matrix calculations in vert shader
-	//TODO
+	
+	vec3 viewDir = normalize(viewPosF - FragPos);
 
-   vec3 viewDir = normalize(viewPos - FragPos);
-
-    vec4 result = CalcDirLight(directionalLight, norm, viewDir);
-    for (int i = 0; i < pointLights.length(); i++)
-        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
-    for (int i = 0; i < spotLights.length(); i++)
-        result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
-
+	vec4 result = CalcDirLight(norm, viewDir);
+	
+    for (int i = 0; i < pointLightsF.length(); i++)
+        result += CalcPointLight(i, norm, FragPos, viewDir);
+    for (int i = 0; i < spotLightsF.length(); i++)
+        result += CalcSpotLight(i, norm, FragPos, viewDir);
+	
 	result.w = 1.0;
+	
 	result *= SumDiffMaps();
 	
 	result.rgb = pow(result.rgb, vec3(1.0/gamma));
     color = result;
 }
 
-vec4 CalcDirLight(LightDirectional light, vec3 norm, vec3 viewDir) {
-    vec3 lightDir = normalize(-light.Direction);
-    vec3 ambient = light.AmbientColor * light.AmbientIntensity;
+vec4 CalcDirLight(vec3 norm, vec3 viewDir)  {
+	vec3 lightDir = normalize(-directionalLightF.Direction);
+    vec3 ambient = directionalLightF.AmbientColor * directionalLightF.AmbientIntensity;
 
-    return CookTorrance(norm, lightDir, light.Color, viewDir) * light.Intensity + 
+    return CookTorrance(norm, lightDir, directionalLightF.Color, viewDir) * directionalLightF.Intensity + 
 		vec4(ambient, 0.0f);
 }
 
-vec4 CalcPointLight(LightPoint light, vec3 norm, vec3 fragPos, vec3 viewDir) {
-    vec3 lightDir = normalize(light.Position - fragPos);
+vec4 CalcPointLight(int i, vec3 norm, vec3 fragPos, vec3 viewDir) {
+    vec3 lightDir = normalize(pointLightsF[i].Position - fragPos);
 
-    float dist = length(light.Position - fragPos);
-    float attenuation = 1.0f / (light.Constant + light.Linear * dist + 
-        light.Quadratic * (dist * dist));
+    float dist = length(pointLightsF[i].Position - fragPos);
+    float attenuation = 1.0f / (pointLightsF[i].Constant + pointLightsF[i].Linear * dist + 
+        pointLightsF[i].Quadratic * (dist * dist));
 
-    return CookTorrance(norm, lightDir, light.Color, viewDir) * attenuation * light.Intensity;
+    return CookTorrance(norm, lightDir, pointLightsF[i].Color, viewDir) * 
+		attenuation * pointLightsF[i].Intensity;
 }
 
-vec4 CalcSpotLight(LightSpot light, vec3 norm, vec3 fragPos, vec3 viewDir) {
-    vec3 lightDir = normalize(light.Position - fragPos);
+vec4 CalcSpotLight(int i, vec3 norm, vec3 fragPos, vec3 viewDir) {
+    vec3 lightDir = normalize(spotLightsF[i].Position - fragPos);
 
-    float dist = length(light.Position - fragPos);
-    float attenuation = 1.0f / (light.Constant + light.Linear * dist + 
-        light.Quadratic * (dist * dist));
+    float dist = length(spotLightsF[i].Position - fragPos);
+    float attenuation = 1.0f / (spotLightsF[i].Constant + spotLightsF[i].Linear * dist + 
+        spotLightsF[i].Quadratic * (dist * dist));
 	
-    float theta = dot(lightDir, normalize(-light.Direction));
-    float epsilon = light.InnerCutOff - light.OuterCutOff;
-    float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
+    float theta = dot(lightDir, normalize(-spotLightsF[i].Direction));
+    float epsilon = spotLightsF[i].InnerCutOff - spotLightsF[i].OuterCutOff;
+    float intensity = clamp((theta - spotLightsF[i].OuterCutOff) / epsilon, 0.0, 1.0);
 
     return intensity * attenuation * 
-		CookTorrance(norm, lightDir, light.Color, viewDir) * light.Intensity;
+		CookTorrance(norm, lightDir, spotLightsF[i].Color, viewDir) * spotLightsF[i].Intensity;
 }
 
 vec4 SumDiffMaps() {
