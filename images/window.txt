@@ -1,6 +1,6 @@
 {
 	"DiffuseMap":"../images/window.png",
 	"Metallicity":0.2,
-	"Roughness":0.2,
+	"Roughness":0.15,
 	"Translucent":true
 }
