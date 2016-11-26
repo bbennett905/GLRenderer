@@ -127,6 +127,10 @@ CMesh * CModel::processMesh(aiMesh * mesh, const aiScene * scene)
 		vertex.Tangent.y = mesh->mTangents[i].y;
 		vertex.Tangent.z = mesh->mTangents[i].z;
 
+		vertex.BiTangent.x = mesh->mBitangents[i].x;
+		vertex.BiTangent.y = mesh->mBitangents[i].y;
+		vertex.BiTangent.z = mesh->mBitangents[i].z;
+
 		if (mesh->mTextureCoords[0])
 		{
 			vertex.TexCoords.x = mesh->mTextureCoords[0][i].x;
