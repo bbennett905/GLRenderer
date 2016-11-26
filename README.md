@@ -54,6 +54,7 @@ Suffix *_unlit* on shaders means that it doesn't accept lighting
 ### Materials ###
 
 Materials are formatted as JSON strings and can have a number of attributes:
+
 * *DiffuseMap* - The path, relative to the executable, of the base texture to be used
 * *MRMap* - The path, relative to the executable, of the Metal and Roughness map used for this texture. Red channel - metallicity, green channel - roughness
 * *NormalMap* - The path, relative to the executable, of the normal texture to be used
