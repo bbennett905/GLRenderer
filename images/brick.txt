@@ -1,0 +1,6 @@
+{
+	"DiffuseMap":"../images/brick_diffuse.png",
+	"NormalMap":"../images/brick_norm.png",
+	"Metallicity":0.0,
+	"Roughness":0.8
+}
