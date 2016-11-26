@@ -33,13 +33,11 @@ All listed files are included in /include/ or /lib/ directory.
 * [GLIntercept](https://github.com/dtrebilco/glintercept) ([License](https://github.com/dtrebilco/glintercept/blob/master/Docs/license.txt)) - Extremely useful for debugging OpenGL errors and memory leaks (can be found in /glintercept/ directory)
 * [VLD](https://vld.codeplex.com/) ([License](https://vld.codeplex.com/SourceControl/latest#COPYING.txt)) - Automatically identifies memory leaks on application shutdown (not included)
 
-
 # More Information #
 ### Shaders ###
 
 * default.vert: A basic vertex shader
-* default.frag: A basic fragment shader, uses Blinn-Phong lighting
-* cooktorrance.frag: Another fragment shader, instead using Cook-Torrance lighting
+* cooktorrance.frag: A typical fragment shader using a physically based shading model
 * default_unlit.vert: Similar to default.vert, but intended to be used with default_unlit.frag
 * detault_unlit.frag: Similar to default.frag, except does not take lights (used for UI)
 * skybox.vert/frag: Intended for a skybox
@@ -58,6 +56,7 @@ Suffix *_unlit* on shaders means that it doesn't accept lighting
 Materials are formatted as JSON strings and can have a number of attributes:
 * *DiffuseMap* - The path, relative to the executable, of the base texture to be used
 * *MRMap* - The path, relative to the executable, of the Metal and Roughness map used for this texture. Red channel - metallicity, green channel - roughness
+* *NormalMap* - The path, relative to the executable, of the normal texture to be used
 * *BaseColor* - Formatted as 3 floats separated by spaces, the color to use if *DiffuseMap* is not specified
 * *Translucent* - Set if the *DiffuseMap* texture is translucent
 * *Roughness* - A roughness factor, multiplied by or used instead of the *MRMap* texture
@@ -65,7 +64,6 @@ Materials are formatted as JSON strings and can have a number of attributes:
 
 ### Planned Features / ToDo List ###
 
-* Normal map support
 * Add shadow map support
 * Add tonemapping support
 * Improved memory management system
