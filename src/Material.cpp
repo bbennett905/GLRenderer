@@ -23,7 +23,7 @@ void CMaterial::loadMaterial(std::string path)
 	std::ifstream materialFile(path.c_str(), std::fstream::in);
 	if (materialFile.fail())
 	{
-		Logging::LogMessage(LogLevel_Error, "Failed opening material file %s", path);
+		Logging::LogMessage(LogLevel_Error, "Failed opening material file %s", path.c_str());
 		return;
 	}
 	
@@ -33,7 +33,7 @@ void CMaterial::loadMaterial(std::string path)
 	if (!materialFile.eof())
 	{
 		//Either file was too large, or some other error occured
-		Logging::LogMessage(LogLevel_Error, "Failed loading material file %s", path);
+		Logging::LogMessage(LogLevel_Error, "Failed loading material file %s", path.c_str());
 		materialFile.close();
 		return;
 	}
@@ -45,7 +45,7 @@ void CMaterial::loadMaterial(std::string path)
 	{
 		int err = doc.GetParseError();
 		int offs = doc.GetErrorOffset();
-		Logging::LogMessage(LogLevel_Error, "Failed parsing material file %s", path);
+		Logging::LogMessage(LogLevel_Error, "Failed parsing material file %s", path.c_str());
 		return;
 	}
 
@@ -120,5 +120,5 @@ void CMaterial::loadMaterial(std::string path)
 	Roughness = rough;
 	Metallicity = metal;
 
-	Logging::LogMessage(LogLevel_Debug, "Loaded material file %s", path);
+	Logging::LogMessage(LogLevel_Debug, "Loaded material file %s", path.c_str());
 }
