@@ -1,4 +1,5 @@
 {
 	"DiffuseMap":"../images/crate_diffuse.png",
-	"MRMap":"../images/crate_mr.png"
+	"MRMap":"../images/crate_mr.png",
+	"NormalMap":"../images/crate_norm.png"
 }
