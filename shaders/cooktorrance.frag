@@ -77,12 +77,11 @@ void main(void) {
 		return;
 	}
 
-	vec3 norm = AvgNormalMaps();
-
 	//case 1: convert normal map to world space and calculate in frag shader
 	//if we have normal maps, avg them and convert it to world space
 	//O(numPixels), matrix * vec mult
 	//For large, flat surfaces, this is going to be a lot of these, when its not necessary
+	//After testing, this took ~22% longer from basic benchmarks
 
 	//case 2: convert everything else to tangent space using inverted TBN matrix, and 
 	//do most of the matrix calculations in vert shader - convert everything to tangent space
@@ -90,15 +89,18 @@ void main(void) {
 	//O(numVerts * numLights), matrix * vert mult
 	//So this might actually be slower for high-poly models, at a distance (fewer pixels/poly)
 	//especially with large numbers of lights in a scene
-	
-	if (norm.x < 0.0f)
+
+	vec3 norm = AvgNormalMaps();
+
+	if (norm.z > 0.0)
 	{
-		norm = normalize(Normal);
+		norm = normalize(norm * 2.0 - 1.0);  
 	}
 	else
 	{
-		norm = normalize(norm * 2.0 - 1.0);    
+		norm = normalize(Normal);
 	}
+
 	
 	vec3 viewDir = normalize(viewPosF - FragPos);
 
@@ -201,11 +203,12 @@ vec3 AvgNormalMaps()
 			numMaps++;
 		}	
 	}
-	if (numMaps == 0)
+	vec3 result = vec3(0.0, 0.0, 0.0);
+	if (numMaps > 0)
 	{
-		return vec3(-1.0f, -1.0f, -1.0f);
+		result = sum / numMaps;
 	}
-	return sum / numMaps;
+	return result;
 }
 
 vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)

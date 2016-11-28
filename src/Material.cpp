@@ -10,7 +10,7 @@
 #include "Utils.h"
 
 CMaterial::CMaterial(CTexture * diffuse, CTexture * mr, glm::vec3 color, float roughness, float metal) :
-	DiffuseMap(diffuse), MetalAndRoughMap(mr), BaseColor(color),
+	DiffuseMap(diffuse), MetalAndRoughMap(mr), BaseColor(color), NormalMap(nullptr),
 	Roughness(roughness), Metallicity(metal) { }
 
 CMaterial::CMaterial(std::string path)
