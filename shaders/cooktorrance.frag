@@ -91,7 +91,6 @@ void main(void) {
 	//especially with large numbers of lights in a scene
 
 	vec3 norm = AvgNormalMaps();
-
 	if (norm.z > 0.0)
 	{
 		norm = normalize(norm * 2.0 - 1.0);  
@@ -101,7 +100,6 @@ void main(void) {
 		norm = normalize(Normal);
 	}
 
-	
 	vec3 viewDir = normalize(viewPosF - FragPos);
 
 	vec4 result = CalcDirLight(norm, viewDir);
@@ -222,7 +220,8 @@ vec4 CookTorrance(vec3 norm, vec3 lightDir, vec3 lightColor, vec3 viewDir)
 	float NdotV = max(dot(norm, viewDir), 0);	
 	float VdotH = max(dot(viewDir, halfVector), 0);
 	float NdotL = max(dot(norm, lightDir), 0);
-	float F0 = clamp(materialProps.x, 0.05, 0.95);
+	//For some god-unknown reason, using clamp here didn't work on nvidia drivers
+	float F0 = min(max(materialProps.x, 0.05), 0.95);//clamp(materialProps.x, 0.05, 0.95);
 
 	//Distribution
 	float distDenominator = ( (NdotH * NdotH) * ( (alpha * alpha) - 1) + 1);
