@@ -95,10 +95,6 @@ void CSceneRenderer::AddDrawable(IDrawable * drawable)
 		}
 	}
 
-	glGenVertexArrays(1, &(drawable->VAO()));
-	glGenBuffers(1, &(drawable->VBO()));
-	glGenBuffers(1, &(drawable->EBO()));
-
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) 
 	//and attribute pointer(s).
 	glBindVertexArray(drawable->VAO());

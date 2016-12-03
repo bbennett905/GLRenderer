@@ -50,7 +50,8 @@ GLfloat skyboxVertices[] = {
 	1.0f, -1.0f,  1.0f
 };
 
-CSkybox::CSkybox(std::string path)
+CSkybox::CSkybox(std::string path) :
+	CBaseDrawable()
 {
 	_flags |= Drawable_Skybox;
 	for (int i = 0; i < (sizeof(skyboxVertices) / sizeof(skyboxVertices[0])); i += 3)// ? ok

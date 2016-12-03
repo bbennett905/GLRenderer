@@ -20,10 +20,9 @@ class CBaseDrawable :
 {
 public:
 	CBaseDrawable();
-	CBaseDrawable(const GLfloat vertices[], int verticesSize, CMaterial * mat);
 	CBaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<CMaterial *> & mat);
-	CBaseDrawable(std::vector<VertexData> vert);
-	CBaseDrawable(std::vector<VertexData> & vert, std::vector<GLuint> & ind, std::vector<CMaterial *> & mat);
+	CBaseDrawable(std::vector<VertexData> &vert);
+	CBaseDrawable(std::vector<VertexData> &vert, std::vector<GLuint> &ind, std::vector<CMaterial *> &mat);
 	virtual ~CBaseDrawable();
 
 	//Returns the model transformation matrix this object should use
