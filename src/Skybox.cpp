@@ -4,6 +4,7 @@
 
 #include "Texture.h"
 #include "Shader.h"
+#include "Material.h"
 
 GLfloat skyboxVertices[] = {
 	// Positions          
@@ -61,25 +62,10 @@ CSkybox::CSkybox(std::string path) :
 			glm::vec2(0.0f, 0.0f) };		//TexCoord
 		_vertices.push_back(data);
 	}
-	_texture = new CTexture(path, Texture_Cubemap);
+	_materials.push_back(new CMaterial(new CTexture(path, Texture_Cubemap)));
 }
 
 CSkybox::~CSkybox()
 {
 }
 
-void CSkybox::Draw()
-{
-	glDepthFunc(GL_LEQUAL);
-	_shader->Use();
-
-	glBindVertexArray(_vao);
-	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(_shader->GetUniformLocation("skybox"), 0);
-	_texture->Bind();
-	glDrawArrays(GL_TRIANGLES, 0, _vertices.size());
-	glBindVertexArray(0);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glDepthFunc(GL_LESS);
-}

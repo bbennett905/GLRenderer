@@ -20,32 +20,34 @@ class CLightDirectional;
 class CSceneRenderer
 {
 public:
-	CSceneRenderer(CWindow * window, CCamera * camera);
+	CSceneRenderer(CWindow* window, CCamera* camera);
 	~CSceneRenderer();
 
-	void AddPointLight(CLightPoint * light);
-	void AddSpotLight(CLightSpot * light);
-	void SetDirectionalLight(CLightDirectional * light);
+	void AddPointLight(CLightPoint* light);
+	void AddSpotLight(CLightSpot* light);
+	void SetDirectionalLight(CLightDirectional* light);
 
-	void AddDrawable(IDrawable * drawable);
+	void AddDrawable(IDrawable* drawable);
 
 	bool BuildShaders();
 
 	void Draw();
 
 private:
-	void setLightUniforms(CShader * shader);
-	void setMatrixUniforms(CShader * shader);
+	void setLightUniforms(CShader* shader);
+	void setMatrixUniforms(CShader* shader);
+	void draw(IDrawable* drawable);
+	void drawSkybox(IDrawable* drawable);
 
-	std::vector<CLightPoint *>	_point_light_list;
-	std::vector<CLightSpot *>	_spot_light_list;
-	CLightDirectional *			_directional_light;
+	std::vector<CLightPoint*>	_point_light_list;
+	std::vector<CLightSpot*>	_spot_light_list;
+	CLightDirectional*			_directional_light;
 
-	std::vector<IDrawable *>	_draw_list;
+	std::vector<IDrawable*>	_draw_list;
 
-	std::vector<CMaterial *>	_material_list;
-	std::vector<CTexture *>		_texture_list;
-	std::vector<CShader *>		_shader_list;
+	std::vector<CMaterial*>	_material_list;
+	std::vector<CTexture*>		_texture_list;
+	std::vector<CShader*>		_shader_list;
 
-	CCamera * _camera;
+	CCamera* _camera;
 };

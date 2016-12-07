@@ -113,7 +113,7 @@ void CSceneRenderer::AddDrawable(IDrawable * drawable)
 			&(drawable->GetIndices())[0], GL_STATIC_DRAW);
 	}
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
-		(GLvoid *)0);
+		(GLvoid *)0);	//Vertex
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), 
 		(GLvoid *)(offsetof(VertexData, Normal)));
@@ -199,14 +199,14 @@ void CSceneRenderer::Draw()
 	{
 		if (!(drawable->DrawFlags() & Drawable_Translucent) && !(drawable->DrawFlags() & Drawable_UI) &&
 			!(drawable->DrawFlags() & Drawable_Skybox))
-			drawable->Draw();
+			draw(drawable);
 	}
 
 	//Draw the skybox
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->DrawFlags() & Drawable_Skybox)
-			drawable->Draw();
+			drawSkybox(drawable);
 	}
 
 	//Then draw translucent objects, ordered by distance
@@ -229,14 +229,14 @@ void CSceneRenderer::Draw()
 	}
 	//..and finally, draw everything in that list.
 	for (std::map<float, IDrawable *>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
-		it->second->Draw();
+		draw(it->second);
 
 	//Finally, draw UI on top of everything else - disable depth testing 
 	glDisable(GL_DEPTH_TEST);
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->DrawFlags() & Drawable_UI)
-			drawable->Draw();
+			draw(drawable);
 	}
 	glEnable(GL_DEPTH_TEST);
 
@@ -342,4 +342,126 @@ void CSceneRenderer::setMatrixUniforms(CShader * shader)
 		glm::value_ptr(_camera->GetViewMatrix()));
 	glUniformMatrix4fv(shader->GetUniformLocation("projection"), 1, GL_FALSE,
 		glm::value_ptr(_camera->GetProjMatrix()));
+}
+
+void CSceneRenderer::draw(IDrawable * drawable)
+{
+	CShader * shad = drawable->GetShader();
+	shad->Use();
+
+	if (drawable->GetMaterials().size())
+	{
+		glUniform1i(shad->GetUniformLocation("hasMaterials"), 1);
+	}
+	else
+	{
+		glUniform1i(shad->GetUniformLocation("hasMaterials"), 0);
+	}
+	for (uint32_t i = 0; i < drawable->GetMaterials().size(); i++)
+	{
+		CMaterial * mat = drawable->GetMaterials()[i];
+		glUniform3f(shad->GetUniformLocation("materials[" + std::to_string(i) + "].Color"),
+			mat->BaseColor.x, mat->BaseColor.y, mat->BaseColor.z);
+		glUniform1f(shad->GetUniformLocation("materials[" + std::to_string(i) + "].Roughness"),
+			mat->Roughness);
+		glUniform1f(shad->GetUniformLocation("materials[" + std::to_string(i) + "].Metallicity"),
+			mat->Metallicity);
+
+		if (mat->DiffuseMap != nullptr)
+		{
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 1);
+			glActiveTexture(GL_TEXTURE0 + shad->TextureCount);
+			mat->DiffuseMap->Bind();
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].DiffMap").c_str()),
+				shad->TextureCount);
+			shad->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasDiffMap").c_str()), 0);
+		}
+
+		if (mat->MetalAndRoughMap != nullptr)
+		{
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 1);
+			glActiveTexture(GL_TEXTURE0 + shad->TextureCount);
+			mat->MetalAndRoughMap->Bind();
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].MetalAndRoughMap").c_str()),
+				shad->TextureCount);
+			shad->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasMetalAndRoughMap").c_str()), 0);
+		}
+
+		if (mat->NormalMap != nullptr)
+		{
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasNormalMap").c_str()), 1);
+			glActiveTexture(GL_TEXTURE0 + shad->TextureCount);
+			mat->NormalMap->Bind();
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].NormalMap").c_str()),
+				shad->TextureCount);
+			shad->TextureCount++;
+		}
+		else
+		{
+			glUniform1i(shad->GetUniformLocation(
+				("materials[" + std::to_string(i) + "].HasNormalMap").c_str()), 0);
+		}
+	}
+	glUniform1i(shad->GetUniformLocation("numMaterials"),
+		drawable->GetMaterials().size());
+
+	//model matrix transforms model space to world space - rotation and translation
+	glUniformMatrix4fv(shad->GetUniformLocation("model"), 1, GL_FALSE,
+		glm::value_ptr(drawable->GetModelMatrix()));
+
+	//Bind our VAO so we have the correct vertex attribute configuration
+	glBindVertexArray(drawable->VAO());
+	//Draw! - type of primitive, starting index of vertex array, number of vertices
+	if (drawable->GetIndices().size() > 0) glDrawElements(GL_TRIANGLES, drawable->GetIndices().size(), GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, drawable->GetVertices().size());
+	glBindVertexArray(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+
+void CSceneRenderer::drawSkybox(IDrawable* drawable)
+{
+	CShader* shad = drawable->GetShader();
+	glDepthFunc(GL_LEQUAL);
+	shad->Use();
+
+	glBindVertexArray(drawable->VAO());
+	glActiveTexture(GL_TEXTURE0);
+	glUniform1i(shad->GetUniformLocation("skybox"), 0);
+
+	if (drawable->GetMaterials().size() == 0)
+	{
+		Logging::LogMessage(LogLevel_Error, "Skybox has no materials!");
+		return;
+	}
+	CMaterial* mat = drawable->GetMaterials()[0];
+
+	if (!mat->DiffuseMap)
+	{
+		Logging::LogMessage(LogLevel_Error, "Skybox material has no texture!");
+		return;
+	}
+	mat->DiffuseMap->Bind();
+	glDrawArrays(GL_TRIANGLES, 0, drawable->GetVertices().size());
+	glBindVertexArray(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDepthFunc(GL_LESS);
 }

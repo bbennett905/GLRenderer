@@ -4,6 +4,10 @@
 #include <glm.hpp>
 #include <glew.h>
 
+/*
+ * Interface for drawable objects
+ */
+
 class CMaterial;
 class CShader;
 
@@ -29,8 +33,6 @@ class IDrawable
 public:
 	virtual ~IDrawable() {}
 
-	//Draws the object using the current
-	virtual void Draw() = 0;
 	//The model transform matrix
 	virtual glm::mat4 GetModelMatrix() = 0;
 

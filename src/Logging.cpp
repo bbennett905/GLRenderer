@@ -13,6 +13,7 @@
 #include "Texture.h"
 #include "BaseUIElement.h"
 #include "Scene.h"
+#include "Material.h"
 
 namespace Logging
 {
@@ -34,16 +35,18 @@ namespace Logging
 				CBaseUIElement(window)
 			{
 				_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 14);
-				_surface = TTF_RenderText_Blended_Wrapped(_font, "N/A", { 200, 200, 200 }, 500);
+				SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(_font, "N/A", { 200, 200, 200 }, 500);
 				
-				delete _texture;
-				_texture = new CTexture(_surface, Texture_Translucent);
-				autoPosition(_surface->w, _surface->h, 0, 40);
+				if (_materials[0]->DiffuseMap)
+					delete _materials[0]->DiffuseMap;
+				_materials[0]->DiffuseMap = new CTexture(surface, Texture_Translucent);
+				autoPosition(surface->w, surface->h, 0, 40);
+				SDL_FreeSurface(surface);
 			}
 
 			~CLogUI() 
 			{ 
-				SDL_FreeSurface(_surface);
+				TTF_CloseFont(_font);
 			}
 
 			void AddLogMessage(std::string message, double time = 5.0)
@@ -79,25 +82,22 @@ namespace Logging
 				}
 
 				if (!_has_changed) return;
-
-				if (_surface) SDL_FreeSurface(_surface);
-
+				
+				SDL_Surface* surface;
 				if (buffer.length() > 0)
 				{
-					_surface = TTF_RenderText_Blended_Wrapped(_font, buffer.c_str(),
+					surface = TTF_RenderText_Blended_Wrapped(_font, buffer.c_str(),
 						{ 200, 200, 200 }, 500);
 
-					if (_surface)
-					{
-						autoPosition(_surface->w, _surface->h, 0, 40);
-						_texture->Update(_surface);
-					}
+					autoPosition(surface->w, surface->h, 0, 40);
+					_materials[0]->DiffuseMap->Update(surface);
 				}
 				else
 				{
-					_surface = SDL_CreateRGBSurface(0, 1, 1, 8, 0, 0, 0, 0);
-					_texture->Update(_surface);
+					surface = SDL_CreateRGBSurface(0, 1, 1, 8, 0, 0, 0, 0);
+					_materials[0]->DiffuseMap->Update(surface);
 				}
+				SDL_FreeSurface(surface);
 				_has_changed = false;
 			}
 
@@ -105,7 +105,6 @@ namespace Logging
 			bool _has_changed;
 			std::deque<std::tuple<double, std::string>> _log_queue;
 			TTF_Font * _font;
-			SDL_Surface * _surface;
 		};
 
 		CLogUI * _log_ui_element;

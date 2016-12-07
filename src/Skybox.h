@@ -12,10 +12,5 @@ class CSkybox :
 public:
 	CSkybox(std::string path);
 	~CSkybox();
-
-	void Draw();
-
-protected:
-	CTexture * _texture;
 };
 

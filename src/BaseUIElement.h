@@ -2,7 +2,6 @@
 #include "BaseDrawable.h"
 #include "BaseObject.h"
 
-class CTexture;
 class CWindow;
 
 class CBaseUIElement :
@@ -13,14 +12,12 @@ public:
 		glm::vec2 scale = glm::vec2(1.0f, 1.0f));
 	virtual ~CBaseUIElement();
 
-	virtual void Draw();
 	virtual glm::mat4 GetModelMatrix();
 
 protected:
 	//Automatically scales and positions an element, given its width, height, 
 	//and the x, y coords of the top left - in pixels, counting from top left
 	void autoPosition(int width, int height, int x, int y);
-	CTexture * _texture;
 	CWindow * _window;
 
 private:

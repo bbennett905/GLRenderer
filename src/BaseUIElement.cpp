@@ -23,8 +23,9 @@ VertexData quad[] = {
 
 CBaseUIElement::CBaseUIElement(CWindow * window, glm::vec2 pos, glm::vec2 scale) :
 	CBaseDrawable(std::vector<VertexData>(std::begin(quad), std::end(quad))),
-	CBaseObject(glm::vec3(pos, 0.0f)), _texture(new CTexture()), _window(window)
+	CBaseObject(glm::vec3(pos, 0.0f)), _window(window)//_texture(new CTexture())
 {
+	_materials.push_back(new CMaterial(new CTexture()));
 	_flags |= Drawable_Translucent | Drawable_Unlit | Drawable_UI;
 	_scale = glm::vec3(scale, 1.0f);
 	if (!_is_ttf_init)
@@ -40,10 +41,10 @@ CBaseUIElement::CBaseUIElement(CWindow * window, glm::vec2 pos, glm::vec2 scale)
 
 CBaseUIElement::~CBaseUIElement()
 {
-	delete _texture;
+	//delete _texture;
 }
 
-void CBaseUIElement::Draw()
+/*void CBaseUIElement::Draw()
 {
 	if (!_texture) return;
 	_shader->Use();
@@ -73,7 +74,7 @@ void CBaseUIElement::Draw()
 	glBindVertexArray(0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
+}*/
 
 glm::mat4 CBaseUIElement::GetModelMatrix()
 {

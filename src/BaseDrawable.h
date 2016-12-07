@@ -7,7 +7,8 @@
 #include "IDrawable.h"
 
 /*
- * Class that any 3D drawable object inherits from
+ * Class that any 3D drawable object inherits from - holds data required for rendering,
+ * which CSceneRenderer uses to render it
  */
 
 class SceneRenderer;
@@ -27,8 +28,6 @@ public:
 
 	//Returns the model transformation matrix this object should use
 	virtual glm::mat4 GetModelMatrix();
-	//Draw the object
-	virtual void Draw();
 
 	//Vertex data (pos, normal, texture coords)
 	virtual std::vector<VertexData>& GetVertices();

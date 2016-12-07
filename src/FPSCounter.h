@@ -15,6 +15,5 @@ public:
 
 private:
 	TTF_Font * _font;
-	SDL_Surface * _surface;
 };
 
