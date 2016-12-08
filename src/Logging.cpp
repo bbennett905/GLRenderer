@@ -31,12 +31,12 @@ namespace Logging
 			public CBaseUIElement
 		{
 		public:
-			CLogUI(CWindow * window) :
-				CBaseUIElement(window)
+			CLogUI() :
+				CBaseUIElement()
 			{
 				_font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 14);
 				SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(_font, "N/A", { 200, 200, 200 }, 500);
-				
+
 				if (_materials[0]->DiffuseMap)
 					delete _materials[0]->DiffuseMap;
 				_materials[0]->DiffuseMap = new CTexture(surface, Texture_Translucent);
@@ -44,8 +44,8 @@ namespace Logging
 				SDL_FreeSurface(surface);
 			}
 
-			~CLogUI() 
-			{ 
+			~CLogUI()
+			{
 				TTF_CloseFont(_font);
 			}
 
@@ -82,12 +82,12 @@ namespace Logging
 				}
 
 				if (!_has_changed) return;
-				
+
 				SDL_Surface* surface;
 				if (buffer.length() > 0)
 				{
 					surface = TTF_RenderText_Blended_Wrapped(_font, buffer.c_str(),
-						{ 200, 200, 200 }, 500);
+					{ 200, 200, 200 }, 500);
 
 					autoPosition(surface->w, surface->h, 0, 40);
 					_materials[0]->DiffuseMap->Update(surface);
@@ -121,36 +121,36 @@ namespace Logging
 
 		switch (level)
 		{
-			case LogLevel_Critical:
-			{
-				if (bLogToFile) _file << "CRITICAL ERROR: ";
-				if (bLogToConsole) std::cout << "CRITICAL ERROR: ";
-				break;
-			}
-			case LogLevel_Error:
-			{
-				if (bLogToFile) _file << "ERROR: ";
-				if (bLogToConsole) std::cout << "ERROR: ";
-				break;
-			}
-			case LogLevel_Warn:
-			{
-				if (bLogToFile) _file << "Warning: ";
-				if (bLogToConsole) std::cout << "Warning: ";
-				break;
-			}
-			case LogLevel_Info:
-			{
-				if (bLogToFile) _file << "Info: ";
-				if (bLogToConsole) std::cout << "Info: ";
-				break;
-			}
-			case LogLevel_Debug:
-			{
-				if (bLogToFile) _file << "Debug: ";
-				if (bLogToConsole) std::cout << "Debug: ";
-				break;
-			}
+		case LogLevel_Critical:
+		{
+			if (bLogToFile) _file << "CRITICAL ERROR: ";
+			if (bLogToConsole) std::cout << "CRITICAL ERROR: ";
+			break;
+		}
+		case LogLevel_Error:
+		{
+			if (bLogToFile) _file << "ERROR: ";
+			if (bLogToConsole) std::cout << "ERROR: ";
+			break;
+		}
+		case LogLevel_Warn:
+		{
+			if (bLogToFile) _file << "Warning: ";
+			if (bLogToConsole) std::cout << "Warning: ";
+			break;
+		}
+		case LogLevel_Info:
+		{
+			if (bLogToFile) _file << "Info: ";
+			if (bLogToConsole) std::cout << "Info: ";
+			break;
+		}
+		case LogLevel_Debug:
+		{
+			if (bLogToFile) _file << "Debug: ";
+			if (bLogToConsole) std::cout << "Debug: ";
+			break;
+		}
 		}
 
 		if (bLogToFile)
@@ -176,9 +176,9 @@ namespace Logging
 
 	}
 
-	void LogInit(CWindow * window, CScene * scene, const char * path)
+	void LogInit(CScene * scene, const char * path)
 	{
-		_log_ui_element = new CLogUI(window);
+		_log_ui_element = new CLogUI();
 
 		scene->AddUIElementToScene(_log_ui_element);
 

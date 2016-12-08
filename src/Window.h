@@ -9,13 +9,12 @@
 struct SDL_Window;
 typedef void * SDL_GLContext;
 
-class CWindow
+namespace Window
 {
-public:
-	//Creates a window obj with the specified width, height, and title
-	CWindow(int width, int height, const char * title);
-	~CWindow();
-
+	//Creates a window and GL context with the specified width, height, and title
+	void WindowInit(int width, int height, const char* title);
+	//Close the window
+	void WindowTerm();
 	//Swaps the draw buffers and draws to the screen
 	void SwapBuffers();
 
@@ -24,15 +23,9 @@ public:
 	//Returns window height
 	int GetHeight();
 
-	bool ShouldExit;
+	//Tell the window if it has focus - should only be used by Input
+	void HasFocus(bool val);
 
-	friend void Input::PollEvents(double delta_time);
-
-private:
-	bool _has_focus;
-	SDL_Window * _window;
-	SDL_GLContext _context;
-	int _width;
-	int _height;
-};
-
+	//true if the window should close next frame
+	extern bool ShouldExit;
+}

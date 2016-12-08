@@ -5,7 +5,6 @@
 #include <glew.h>
 #include <gtc\type_ptr.hpp>
 
-#include "Window.h"
 #include "IDrawable.h"
 #include "IObject.h"
 #include "Shader.h"
@@ -15,7 +14,7 @@
 #include "Camera.h"
 #include "Lights.h"
 
-CSceneRenderer::CSceneRenderer(CWindow * window, CCamera * camera) :
+CSceneRenderer::CSceneRenderer(CCamera * camera) :
 	_camera(camera)
 {
 	glewExperimental = GL_TRUE;

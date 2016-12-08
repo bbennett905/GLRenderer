@@ -11,23 +11,22 @@ class IDrawable;
 class IObject;
 class CBaseUIElement;
 class CCamera;
-class CWindow;
 
 class CScene
 {
 public:
-	CScene(CWindow * window, CCamera * camera);
+	CScene(CCamera* camera);
 	~CScene();
 
-	void AddObjectToScene(IObject * obj);
-	void AddUIElementToScene(CBaseUIElement * element);
+	void AddObjectToScene(IObject* obj);
+	void AddUIElementToScene(CBaseUIElement* element);
 
 	void PrepareScene();
 
 	void Update(double delta_time);
 
 private:
-	CSceneRenderer * _scene_renderer;
-	std::vector<IObject *> _object_list;
+	CSceneRenderer* _scene_renderer;
+	std::vector<IObject*> _object_list;
 };
 

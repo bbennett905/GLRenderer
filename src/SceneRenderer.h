@@ -7,7 +7,6 @@
  * Used by Scene class to render everything in the scene
  */
 
-class CWindow;
 class IDrawable;
 class CShader;
 class CMaterial;
@@ -20,7 +19,7 @@ class CLightDirectional;
 class CSceneRenderer
 {
 public:
-	CSceneRenderer(CWindow* window, CCamera* camera);
+	CSceneRenderer(CCamera* camera);
 	~CSceneRenderer();
 
 	void AddPointLight(CLightPoint* light);

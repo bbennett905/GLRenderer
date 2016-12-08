@@ -2,13 +2,11 @@
 #include "BaseDrawable.h"
 #include "BaseObject.h"
 
-class CWindow;
-
 class CBaseUIElement :
 	public CBaseDrawable, public CBaseObject
 {
 public:
-	CBaseUIElement(CWindow * window, glm::vec2 pos = glm::vec2(0.0f, 0.0f),
+	CBaseUIElement(glm::vec2 pos = glm::vec2(0.0f, 0.0f),
 		glm::vec2 scale = glm::vec2(1.0f, 1.0f));
 	virtual ~CBaseUIElement();
 
@@ -18,7 +16,6 @@ protected:
 	//Automatically scales and positions an element, given its width, height, 
 	//and the x, y coords of the top left - in pixels, counting from top left
 	void autoPosition(int width, int height, int x, int y);
-	CWindow * _window;
 
 private:
 	static bool _is_ttf_init;

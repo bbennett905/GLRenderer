@@ -10,13 +10,7 @@ namespace Input
 {
 	namespace
 	{
-		void (* _input_callback)(const unsigned char *, double, int, int, int);
-		CWindow * _window;
-	}
-
-	void InputInit(CWindow * window)
-	{
-		_window = window;
+		void (*_input_callback)(const unsigned char*, double, int, int, int);
 	}
 
 	void SetInputHandler(void (* input_callback)(const unsigned char *, double, int, int, int))
@@ -31,7 +25,7 @@ namespace Input
 		{
 			if (e.type == SDL_QUIT)
 			{
-				_window->ShouldExit = true;
+				Window::ShouldExit = true;
 				return;
 			}
 			if (e.type == SDL_WINDOWEVENT)
@@ -39,11 +33,11 @@ namespace Input
 				switch (e.window.event)
 				{
 				case SDL_WINDOWEVENT_FOCUS_GAINED:
-					_window->_has_focus = true;
+					Window::HasFocus(true);
 					Logging::LogMessage(LogLevel_Debug, "Window gained focus");
 					break;
 				case SDL_WINDOWEVENT_FOCUS_LOST:
-					_window->_has_focus = false;
+					Window::HasFocus(false);
 					Logging::LogMessage(LogLevel_Debug, "Window lost focus");
 					break;
 				}

@@ -30,7 +30,6 @@
 
 CCamera camera = CCamera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), 
 	80.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
-CWindow window(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
 void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int delta_y, int mouse_buttons)
 {
@@ -43,7 +42,7 @@ void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int del
 		camera.SetPosition(camera.GetPosition() - (cameraSpeed * camera.GetForward()));
 	if (keys[KEY_D]) 
 		camera.SetPosition(camera.GetPosition() + (cameraSpeed * camera.GetRight()));
-	if (keys[KEY_ESCAPE]) window.ShouldExit = true;
+	if (keys[KEY_ESCAPE]) Window::ShouldExit = true;
 
 	//Example
 	if (mouse_buttons & MOUSE_BUTTON(MOUSE_BUTTON_LEFT)) { }
@@ -64,12 +63,11 @@ void InputCallback(const uint8_t * keys, double delta_time, int delta_x, int del
 
 int main()
 {
-	//TODO render system namespace for initialization and such
-	CScene * scene = new CScene(&window, &camera);
+	Window::WindowInit(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Testing");
 
-	Input::InputInit(&window);
+	CScene * scene = new CScene(&camera);
 
-	Logging::LogInit(&window, scene, "log.txt");
+	Logging::LogInit(scene, "log.txt");
 	Logging::MinLogLevel = LogLevel_Debug;
 
 	Logging::LogMessage(LogLevel_Info, "-------------------------------------------------------");
@@ -146,7 +144,7 @@ int main()
 	cone->SetPosition(glm::vec3(-0.01f, 2.02f, 1.0f));
 	scene->AddObjectToScene(cone);
 
-	CFPSCounter * fps_element = new CFPSCounter(&window);
+	CFPSCounter * fps_element = new CFPSCounter();
 	scene->AddUIElementToScene(fps_element);
 
 	scene->PrepareScene();
@@ -160,7 +158,7 @@ int main()
 	double delta_time = 0.0;
 	double delta_print_time = 0.0;
 
-	while (!window.ShouldExit)
+	while (!Window::ShouldExit)
 	{
 		//Cap fps to 300
 		while (Timing::GetSecondsSince(start_time) < double(1.0f / 300.0f));
@@ -193,7 +191,7 @@ int main()
 
 		Logging::LogUpdate(delta_time);
 
-		window.SwapBuffers();
+		Window::SwapBuffers();
 	}
 
 	delete scene;
@@ -202,6 +200,8 @@ int main()
 
 	Logging::LogMessage(LogLevel_Info, "Application exiting");
 	Logging::LogTerm();
+
+	Window::WindowTerm();
 
 	return 0;
 }
