@@ -8,7 +8,7 @@ CCamera::CCamera(glm::vec3 pos, glm::vec3 ang, float FOV, float ratio) :
 	updateMatrices();
 }
 
-CCamera::CCamera(GLfloat xpos, GLfloat ypos, GLfloat zpos, GLfloat pitch, GLfloat yaw, GLfloat roll) :
+CCamera::CCamera(float xpos, float ypos, float zpos, float pitch, float yaw, float roll) :
 	CBaseObject(glm::vec3(xpos, ypos, zpos), glm::vec3(pitch, yaw, roll))
 { }
 
