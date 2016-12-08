@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "Material.h"
 
-GLfloat skyboxVertices[] = {
+float skyboxVertices[] = {
 	// Positions          
 	-1.0f,  1.0f, -1.0f,
 	-1.0f, -1.0f, -1.0f,

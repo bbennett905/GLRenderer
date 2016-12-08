@@ -21,6 +21,12 @@ namespace Window
 
 	void WindowInit(int width, int height, const char * title)
 	{
+		if (_is_init)
+		{
+			Logging::LogMessage(LogLevel_Error,
+				"Attempted to re-intialize window!");
+			return;
+		}
 		_height = height;
 		_width = width;
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)

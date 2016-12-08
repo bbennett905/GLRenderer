@@ -2,6 +2,7 @@
 
 #include <SOIL.h>
 #include <SDL.h>
+#include <glew.h>
 
 #include "Logging.h"
 

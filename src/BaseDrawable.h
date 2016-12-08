@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <glew.h>
 #include <glm.hpp>
 
 #include "IDrawable.h"
@@ -21,7 +20,7 @@ class CBaseDrawable :
 {
 public:
 	CBaseDrawable();
-	CBaseDrawable(const GLfloat vertices[], int verticesSize, std::vector<CMaterial *> & mat);
+	CBaseDrawable(const float vertices[], int verticesSize, std::vector<CMaterial *> & mat);
 	CBaseDrawable(std::vector<VertexData> &vert);
 	CBaseDrawable(std::vector<VertexData> &vert, std::vector<GLuint> &ind, std::vector<CMaterial *> &mat);
 	virtual ~CBaseDrawable();

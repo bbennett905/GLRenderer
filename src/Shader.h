@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <glew.h>
 #include <vector>
 #include <map>
 
@@ -9,6 +8,8 @@
  * Shader object class which can dynamically create shaders for the specific scene 
  * being rendered - params for shader creation in ShaderCreateInfo struct
  */
+
+typedef unsigned int GLuint;
 
 //I really have no idea if this is a reasonable number
 #define MAX_MATERIALS 8

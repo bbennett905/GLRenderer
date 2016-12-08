@@ -2,6 +2,7 @@
 
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
+#include <glew.h>
 
 #include "Material.h"
 #include "Shader.h"
@@ -15,7 +16,7 @@ CBaseDrawable::CBaseDrawable()
 	glGenBuffers(1, &_ebo);
 }
 
-CBaseDrawable::CBaseDrawable(const GLfloat vertices[], int verticesSize, 
+CBaseDrawable::CBaseDrawable(const float vertices[], int verticesSize, 
 	std::vector<CMaterial *> & mat) :
 	_materials(mat)
 {

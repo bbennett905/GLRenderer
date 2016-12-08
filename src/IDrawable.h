@@ -2,11 +2,12 @@
 
 #include <vector>
 #include <glm.hpp>
-#include <glew.h>
 
 /*
  * Interface for drawable objects
  */
+
+typedef unsigned int GLuint;
 
 class CMaterial;
 class CShader;

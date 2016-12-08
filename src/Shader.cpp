@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include <glew.h>
+
 #include "Utils.h"
 
 #include <fstream>

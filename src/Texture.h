@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glew.h>
 #include <string>
 #include <vector>
 
@@ -8,6 +7,7 @@
  * Abstraction over SOIL texture loading and OpenGL texture creation and binding
  */
 
+typedef unsigned int GLuint;
 struct SDL_Surface;
 
  //Any flags indicating different behaviour needed from the shader, ie translucency
