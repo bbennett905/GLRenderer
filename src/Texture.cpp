@@ -30,7 +30,7 @@ CTexture::CTexture(SDL_Surface * surface, uint32_t flags) :
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D(GL_TEXTURE_2D, 0,
-		flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		flags & Texture_Translucent ? GL_RGBA8 : GL_RGB8,
 		surface->w, surface->h, 0,
 		flags & Texture_Translucent ? GL_RGBA : GL_RGB,
 		GL_UNSIGNED_BYTE, surface->pixels);
@@ -86,7 +86,7 @@ void CTexture::Update(SDL_Surface * surface)
 	glBindTexture(GL_TEXTURE_2D, _id);
 
 	glTexImage2D(GL_TEXTURE_2D, 0,
-		_flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		_flags & Texture_Translucent ? GL_RGBA8 : GL_RGB8,
 		surface->w, surface->h, 0,
 		_flags & Texture_Translucent ? GL_RGBA : GL_RGB,
 		GL_UNSIGNED_BYTE, surface->pixels);
@@ -114,7 +114,7 @@ void CTexture::loadTextureFromPath(std::string path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D(GL_TEXTURE_2D, 0,
-		_flags & Texture_Translucent ? GL_RGBA : GL_RGB,
+		_flags & Texture_Translucent ? GL_RGBA8 : GL_RGB8,
 		texWidth, texHeight, 0,
 		_flags & Texture_Translucent ? GL_RGBA : GL_RGB,
 		GL_UNSIGNED_BYTE, image);
@@ -142,7 +142,7 @@ void CTexture::loadCubemapFromPath(std::string path)
 		image = SOIL_load_image(name.c_str(), &tex_width, &tex_height, 0, SOIL_LOAD_RGB);
 		if (image == nullptr)
 			Logging::LogMessage(LogLevel_Error, "Failed loading texture \"%s\"\n", path.c_str());
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB8,
 			tex_width, tex_height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		SOIL_free_image_data(image);
 	}
