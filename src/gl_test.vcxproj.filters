@@ -80,6 +80,9 @@
     <ClCompile Include="BaseDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lights.h">
@@ -152,6 +155,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BaseDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
