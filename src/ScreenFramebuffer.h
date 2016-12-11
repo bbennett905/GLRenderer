@@ -16,5 +16,7 @@ protected:
 	CShader* _shader;
 	GLuint _vao;
 	GLuint _vbo;
+
+	CFramebuffer* _intermediate_framebuffer;
 };
 

@@ -8,11 +8,13 @@ class CFramebuffer
 {
 public:
 	//If read is true, then the fbo must be read in a shader, and uses textures rather than RBO
-	CFramebuffer(bool has_depth = true, bool has_stencil = false);
+	CFramebuffer(int multisample = 0, bool has_depth = true, bool has_stencil = false);
 	~CFramebuffer();
 
-	void Bind();
+	void Bind(bool read = true, bool draw = true);
 	static void BindDefault();
+
+	void BindFramebufferTexture();
 protected:
 	//The openGL framebuffer object
 	GLuint _fbo;

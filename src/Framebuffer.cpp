@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "Logging.h"
 
-CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
+CFramebuffer::CFramebuffer(int multisample, bool has_depth, bool has_stencil) :
 	_rbo(0)
 {
 	//So assume color is always readable, RGBA (texture)
@@ -17,14 +17,27 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 
 	//Prepare color attachment - texture
 	glGenTextures(1, &_texture);
-	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-		Window::GetWidth(), Window::GetHeight(), 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-		GL_TEXTURE_2D, _texture, 0);
+	if (multisample)
+	{
+		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, _texture);
+		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, multisample, GL_RGBA8,
+			Window::GetWidth(), Window::GetHeight(), GL_TRUE);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			GL_TEXTURE_2D_MULTISAMPLE, _texture, 0);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, _texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+			Window::GetWidth(), Window::GetHeight(), 0,
+			GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			GL_TEXTURE_2D, _texture, 0);
+	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//If has depth and stencil prepare depth24stencil8 rbo
@@ -46,8 +59,16 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 			//Use a renderbuffer
 			glGenRenderbuffers(1, &_rbo);
 			glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
-				Window::GetWidth(), Window::GetHeight());
+			if (multisample)
+			{
+				glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisample, GL_DEPTH_COMPONENT24,
+					Window::GetWidth(), Window::GetHeight());
+			}
+			else
+			{
+				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+					Window::GetWidth(), Window::GetHeight());
+			}
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 				GL_RENDERBUFFER, _rbo);
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -57,8 +78,16 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 			//Use a renderbuffer
 			glGenRenderbuffers(1, &_rbo);
 			glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX8,
-				Window::GetWidth(), Window::GetHeight());
+			if (multisample)
+			{
+				glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisample, GL_STENCIL_INDEX8,
+					Window::GetWidth(), Window::GetHeight());
+			}
+			else
+			{
+				glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX8,
+					Window::GetWidth(), Window::GetHeight());
+			}
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
 				GL_RENDERBUFFER, _rbo);
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -79,12 +108,31 @@ CFramebuffer::~CFramebuffer()
 		glDeleteTextures(1, &_texture);
 }
 
-void CFramebuffer::Bind()
+void CFramebuffer::Bind(bool read, bool draw)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+	if (read && draw)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+		return;
+	}
+	if (read)
+	{
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, _fbo);
+		return;
+	}
+	if (draw)
+	{
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _fbo);
+		return;
+	}
 }
 
 void CFramebuffer::BindDefault()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void CFramebuffer::BindFramebufferTexture()
+{
+	glBindTexture(GL_TEXTURE_2D, _texture);
 }

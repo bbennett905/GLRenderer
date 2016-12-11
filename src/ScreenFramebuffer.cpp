@@ -1,7 +1,9 @@
 #include "ScreenFramebuffer.h"
 
 #include <glew.h>
+
 #include "Shader.h"
+#include "Window.h"
 
 GLfloat fbVertices[] = { 
 	// Positions   // TexCoords
@@ -15,8 +17,9 @@ GLfloat fbVertices[] = {
 };
 
 CScreenFramebuffer::CScreenFramebuffer() :
-	CFramebuffer(), 
-	_shader(new CShader("../shaders/screen_default.vert", "../shaders/screen_default.frag"))
+	CFramebuffer(4), 
+	_shader(new CShader("../shaders/screen_default.vert", "../shaders/screen_default.frag")),
+	_intermediate_framebuffer(new CFramebuffer(0, false, false))
 {
 	glGenVertexArrays(1, &_vao);
 	glGenBuffers(1, &_vbo);
@@ -38,12 +41,18 @@ CScreenFramebuffer::~CScreenFramebuffer()
 
 void CScreenFramebuffer::Draw()
 {
-	BindDefault();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	Bind(true, false);
+	_intermediate_framebuffer->Bind(false, true);
+	glBlitFramebuffer(0, 0, Window::GetWidth(), Window::GetHeight(),
+		0, 0, Window::GetWidth(), Window::GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
+	BindDefault();
+	glDisable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
 	_shader->Use();
 	glBindVertexArray(_vao);
-	glBindTexture(GL_TEXTURE_2D, _texture);
+	_intermediate_framebuffer->BindFramebufferTexture();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 }
