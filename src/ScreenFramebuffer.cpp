@@ -41,8 +41,8 @@ CScreenFramebuffer::~CScreenFramebuffer()
 
 void CScreenFramebuffer::Draw()
 {
-	Bind(true, false);
-	_intermediate_framebuffer->Bind(false, true);
+	Bind(true, false); //Read from this framebuffer
+	_intermediate_framebuffer->Bind(false, true); //Write to an intermediate framebuffer
 	glBlitFramebuffer(0, 0, Window::GetWidth(), Window::GetHeight(),
 		0, 0, Window::GetWidth(), Window::GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
