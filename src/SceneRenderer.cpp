@@ -241,7 +241,7 @@ void CSceneRenderer::Draw()
 	for (auto drawable : _draw_list)
 	{
 		if (drawable->DrawFlags() & Drawable_UI)
-			draw(drawable);
+			drawUI(drawable);
 	}
 
 	_screen_framebuffer->Draw();
@@ -470,4 +470,50 @@ void CSceneRenderer::drawSkybox(IDrawable* drawable)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDepthFunc(GL_LESS);
+}
+
+void CSceneRenderer::drawUI(IDrawable * drawable)
+{
+	CShader * shad = drawable->GetShader();
+	shad->Use();
+
+	glBindVertexArray(drawable->VAO());
+
+	if (drawable->GetMaterials().size() == 0)
+	{
+		Logging::LogMessage(LogLevel_Error, "UI element has no materials!");
+		return;
+	}
+	CMaterial* mat = drawable->GetMaterials()[0];
+
+	if (!mat->DiffuseMap)
+	{
+		Logging::LogMessage(LogLevel_Error, "UI material has no texture!");
+		return;
+	}
+	mat->DiffuseMap->Bind();
+
+	glUniform1i(shad->GetUniformLocation("hasMaterials"), 1);
+
+	//The reason the shader works even when one of these uniforms isn't set is because
+	//Sampler2Ds in GLSL are guaranteed to return black if there's no texture unit bound.
+	glUniform1i(shad->GetUniformLocation("materials[0].HasDiffMap"), 1);
+	glActiveTexture(GL_TEXTURE0 + shad->TextureCount);
+	glUniform1i(shad->GetUniformLocation("materials[0].DiffMap"),
+		shad->TextureCount);
+	shad->TextureCount++;
+
+	glUniform1i(shad->GetUniformLocation("materials[0].HasSpecMap"), 0);
+
+	glUniform1i(shad->GetUniformLocation("numMaterials"), 1);
+
+	//model matrix transforms model space to world space - rotation and translation
+	glUniformMatrix4fv(shad->GetUniformLocation("model"), 1, GL_FALSE,
+		glm::value_ptr(drawable->GetModelMatrix()));
+
+	//Draw! - type of primitive, starting index of vertex array, number of vertices
+	glDrawArrays(GL_TRIANGLES, 0, drawable->GetVertices().size());
+	glBindVertexArray(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

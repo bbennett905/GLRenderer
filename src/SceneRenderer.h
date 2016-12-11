@@ -39,6 +39,7 @@ protected:
 	void setMatrixUniforms(CShader* shader);
 	void draw(IDrawable* drawable);
 	void drawSkybox(IDrawable* drawable);
+	void drawUI(IDrawable* drawable);
 
 	std::vector<CLightPoint*>	_point_light_list;
 	std::vector<CLightSpot*>	_spot_light_list;
