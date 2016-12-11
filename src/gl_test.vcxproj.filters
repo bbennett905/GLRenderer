@@ -183,12 +183,6 @@
     <None Include="..\shaders\skybox.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\shaders\experimental.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\shaders\experimental.vert">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\shaders\cooktorrance.frag">
       <Filter>Shaders</Filter>
     </None>
