@@ -32,7 +32,7 @@ void CFPSCounter::Update(double delta_time)
 {
 	std::string buffer;
 	buffer = "FPS: " + std::to_string(1.0 / delta_time)
-		+ " (" + std::to_string(delta_time) + " ms)";
+		+ " (" + std::to_string(delta_time * 1000.0) + " ms)";
 	SDL_Surface* surface = TTF_RenderText_Blended(_font, buffer.c_str(), { 255, 255, 255, 255 });
 
 	autoPosition(surface->w, surface->h, 0, 0);
