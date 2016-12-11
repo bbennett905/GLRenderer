@@ -15,6 +15,8 @@ class CCamera;
 class CLightPoint;
 class CLightSpot;
 class CLightDirectional;
+class CFramebuffer;
+class CScreenFramebuffer;
 
 class CSceneRenderer
 {
@@ -32,7 +34,7 @@ public:
 
 	void Draw();
 
-private:
+protected:
 	void setLightUniforms(CShader* shader);
 	void setMatrixUniforms(CShader* shader);
 	void draw(IDrawable* drawable);
@@ -42,11 +44,12 @@ private:
 	std::vector<CLightSpot*>	_spot_light_list;
 	CLightDirectional*			_directional_light;
 
-	std::vector<IDrawable*>	_draw_list;
+	std::vector<IDrawable*>		_draw_list;
 
-	std::vector<CMaterial*>	_material_list;
+	std::vector<CMaterial*>		_material_list;
 	std::vector<CTexture*>		_texture_list;
 	std::vector<CShader*>		_shader_list;
 
-	CCamera* _camera;
+	CCamera*					_camera;
+	CScreenFramebuffer*			_screen_framebuffer;
 };

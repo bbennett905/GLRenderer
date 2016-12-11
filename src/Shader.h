@@ -57,6 +57,8 @@ class CShader
 public:
 	//Create a typical shader dynamically, given certain parameters
 	CShader(ShaderCreateInfo info);
+	//Create a shader given paths for frag and vert shaders - typically for framebuffers
+	CShader(std::string vert_path, std::string frag_path);
 	~CShader();
 
 	//Returns nullptr if no suitable shader exists, else returns pointer to shader

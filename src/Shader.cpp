@@ -65,6 +65,50 @@ CShader::CShader(ShaderCreateInfo info) :
 	Logging::LogMessage(LogLevel_Debug, "Created shader (%d)", _program);
 }
 
+CShader::CShader(std::string vert_path, std::string frag_path)
+{
+	std::string vertexSource;
+	std::string fragSource;
+	std::ifstream vertexFile;
+	std::ifstream fragFile;
+
+	vertexFile.exceptions(std::ifstream::badbit);
+	fragFile.exceptions(std::ifstream::badbit);
+	try
+	{
+		vertexFile.open(vert_path);
+		fragFile.open(frag_path);
+		std::stringstream vertexStream, fragStream;
+
+		vertexStream << vertexFile.rdbuf();
+		fragStream << fragFile.rdbuf();
+
+		vertexFile.close();
+		fragFile.close();
+
+		vertexSource = vertexStream.str();
+		fragSource = fragStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		Logging::LogMessage(LogLevel_Error, "Failed reading shader file \"%s\"", vert_path);
+	}
+
+	ShaderCreateInfo info;
+	info.Version = ShaderVersion330Core;
+	//Setting these to 0 will cause errors for some shaders - but those shaders need to not use
+	//this constructor
+	info.NumPointLights = 0;
+	info.NumSpotLights = 0;
+	info.Flags = 0;
+
+	preprocessShader(vertexSource, fragSource, info);
+	createShaders(vertexSource.c_str(), fragSource.c_str());
+
+	_shaders_loaded.push_back(this);
+	Logging::LogMessage(LogLevel_Debug, "Created shader (%d)", _program);
+}
+
 CShader::~CShader()
 {
 	for (uint32_t i = 0; i < _shaders_loaded.size(); i++)

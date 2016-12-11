@@ -6,24 +6,9 @@
 #include "Window.h"
 #include "Logging.h"
 
-/*
-std::map<FramebufferFormat, GLenum> imageFormats =
-	{ { FramebufferColor, GL_RGBA },
-	  { FramebufferDepth, GL_DEPTH_COMPONENT },
-	  { FramebufferStencil, GL_STENCIL_INDEX } };
-std::map<FramebufferFormat, GLenum> imageInternalFormats = 
-	{ { FramebufferColor, GL_RGBA8 },
-	  { FramebufferDepth, GL_DEPTH_COMPONENT32 },
-	  { FramebufferStencil, GL_STENCIL_INDEX8 } };
-std::map<FramebufferFormat, GLenum> imageAttachments = 
-	{ { FramebufferColor, GL_COLOR_ATTACHMENT0 },
-	  { FramebufferDepth, GL_DEPTH_ATTACHMENT },
-	  { FramebufferStencil, GL_STENCIL_ATTACHMENT } };*/
-
 CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 	_rbo(0)
 {
-	//CFramebuffer(bool hasDepth, bool hasStencil)
 	//So assume color is always readable, RGBA (texture)
 	//Depth and stencil are assumed to be not readable (rbo)- doesn't seem like we need that (yet)
 
@@ -36,12 +21,10 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
 		Window::GetWidth(), Window::GetHeight(), 0,
 		GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	GLenum err = glGetError();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 		GL_TEXTURE_2D, _texture, 0);
-	err = glGetError();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//If has depth and stencil prepare depth24stencil8 rbo
@@ -52,10 +35,8 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 		glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,
 			Window::GetWidth(), Window::GetHeight());
-		GLenum err = glGetError();
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
 			GL_RENDERBUFFER, _rbo);
-		err = glGetError();
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	}
 	else
@@ -67,10 +48,8 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 			glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
 				Window::GetWidth(), Window::GetHeight());
-			GLenum err = glGetError();
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 				GL_RENDERBUFFER, _rbo);
-			err = glGetError();
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		}
 		if (has_stencil)
@@ -80,10 +59,8 @@ CFramebuffer::CFramebuffer(bool has_depth, bool has_stencil) :
 			glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX8,
 				Window::GetWidth(), Window::GetHeight());
-			GLenum err = glGetError();
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
 				GL_RENDERBUFFER, _rbo);
-			err = glGetError();
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		}
 	}
@@ -105,11 +82,6 @@ CFramebuffer::~CFramebuffer()
 void CFramebuffer::Bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-}
-
-void CFramebuffer::BindFramebufferTexture()
-{
-	glBindTexture(GL_TEXTURE_2D, _texture);
 }
 
 void CFramebuffer::BindDefault()

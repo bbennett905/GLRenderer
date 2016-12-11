@@ -13,6 +13,8 @@
 #include "Logging.h"
 #include "Camera.h"
 #include "Lights.h"
+#include "Framebuffer.h"
+#include "ScreenFramebuffer.h"
 
 CSceneRenderer::CSceneRenderer(CCamera * camera) :
 	_camera(camera)
@@ -30,6 +32,8 @@ CSceneRenderer::CSceneRenderer(CCamera * camera) :
 	glEnable(GL_BLEND);
 	glEnable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	_screen_framebuffer = new CScreenFramebuffer();
 }
 
 CSceneRenderer::~CSceneRenderer()
@@ -178,7 +182,9 @@ bool CSceneRenderer::BuildShaders()
 
 void CSceneRenderer::Draw()
 {
-	glClear(GL_DEPTH_BUFFER_BIT); 
+	_screen_framebuffer->Bind();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
 
 	//For each shader, set the light/camera uniforms - don't change per object so set once/frame
 	for (auto shader : _shader_list)
@@ -237,7 +243,8 @@ void CSceneRenderer::Draw()
 		if (drawable->DrawFlags() & Drawable_UI)
 			draw(drawable);
 	}
-	glEnable(GL_DEPTH_TEST);
+
+	_screen_framebuffer->Draw();
 
 	CShader::UseNull();
 }

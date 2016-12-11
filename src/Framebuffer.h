@@ -12,7 +12,6 @@ public:
 	~CFramebuffer();
 
 	void Bind();
-	void BindFramebufferTexture();
 	static void BindDefault();
 protected:
 	//The openGL framebuffer object

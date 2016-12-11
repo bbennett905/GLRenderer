@@ -83,6 +83,9 @@
     <ClCompile Include="Framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScreenFramebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lights.h">
@@ -160,6 +163,9 @@
     <ClInclude Include="Framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScreenFramebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\default.vert">
@@ -184,6 +190,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\shaders\cooktorrance.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\shaders\screen_default.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\shaders\screen_default.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
