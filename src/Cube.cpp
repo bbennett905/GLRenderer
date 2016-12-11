@@ -50,7 +50,7 @@ float vertices[] = {
 };
 
 CCube::CCube(CMaterial * mat) :
-	CBaseObject(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f)), 
+	CBaseObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)), 
 	CBaseDrawable(vertices, (sizeof(vertices) / sizeof(vertices[0])), std::vector<CMaterial *>{mat})
 { 
 }
