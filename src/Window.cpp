@@ -41,8 +41,7 @@ namespace Window
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 		_window = SDL_CreateWindow("OpenGL Testing",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -63,6 +62,9 @@ namespace Window
 				"Failed to create GL Context! Error:%s\n", SDL_GetError());
 			return;
 		}
+
+		//Force disable vsync
+		SDL_GL_SetSwapInterval(0);
 
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		_is_init = true;
