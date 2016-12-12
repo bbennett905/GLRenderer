@@ -17,6 +17,7 @@ namespace Profiling
 		Self = new ProfileData();
 		Self->name = name;
 		Self->num_parents = _open_samples.size();
+		Self->num_samples = 1;
 
 		//Check if this sample has a parent
 		if (_open_samples.size() >= 1)
@@ -74,6 +75,7 @@ namespace Profiling
 			{
 				already_exists = true;
 				_entries[i]->time += data->time;
+				_entries[i]->num_samples++;
 				break;
 			}
 		}
@@ -95,14 +97,16 @@ namespace Profiling
 				buff += entry->name.c_str();
 				if (parent != nullptr)
 				{
-					Logging::LogMessage(LogLevel_Debug, " %06.5f | %06.3f | %s",
-						entry->time, 100.0 * (entry->time / parent->time),
+					Logging::LogMessage(LogLevel_Debug, " %06.5f | %06.5f | %06.3f | %s",
+						entry->time, (double(1000) * entry->time) / double(entry->num_samples),
+						100.0 * (entry->time / parent->time),
 						buff.c_str());
 				}
 				else
 				{
-					Logging::LogMessage(LogLevel_Debug, " %06.5f | %06.3f | %s",
-						entry->time, 100.0 * (entry->time / _prof_full_seconds),
+					Logging::LogMessage(LogLevel_Debug, " %06.5f | %06.5f | %06.3f | %s",
+						entry->time, (double(1000) * entry->time) / double(entry->num_samples),
+						100.0 * (entry->time / _prof_full_seconds),
 						buff.c_str());
 				}
 				printEntries(level + 1, entry);
@@ -118,7 +122,7 @@ namespace Profiling
 		Logging::LogMessage(LogLevel_Debug, " Total Execution Time: %f", _prof_full_seconds);
 		Logging::LogMessage(LogLevel_Debug, " Entries:");
 
-		Logging::LogMessage(LogLevel_Debug, "   sec   |   %%    | name");
+		Logging::LogMessage(LogLevel_Debug, "   sec   |   avg   |   %%    | name");
 
 		printEntries();
 

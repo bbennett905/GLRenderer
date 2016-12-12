@@ -18,6 +18,8 @@ namespace Profiling
 		ProfileData * parent;
 		//Number of parents of this sample
 		uint32_t num_parents;
+		//Number of samples
+		uint32_t num_samples;
 	};
 
 	/*
