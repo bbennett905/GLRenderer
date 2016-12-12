@@ -224,3 +224,4 @@ build/*
 !build/libfreetype-6.dll
 !nanosuit/nanosuit.obj
 !cone/cone.obj
+sh.exe.stackdump
