@@ -93,10 +93,7 @@ CFramebuffer::CFramebuffer(int multisample, bool has_depth, bool has_stencil) :
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		}
 	}
-	
-	//TODO remove this when done testing
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		Logging::LogMessage(LogLevel_Error, "Framebuffer (%d) is not complete!", _fbo);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

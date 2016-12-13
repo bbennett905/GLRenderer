@@ -225,3 +225,4 @@ build/*
 !nanosuit/nanosuit.obj
 !cone/cone.obj
 sh.exe.stackdump
+*.nvact
