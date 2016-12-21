@@ -65,11 +65,16 @@ Materials are formatted as JSON strings and can have a number of attributes:
 
 ### Planned Features / ToDo List ###
 
-* Add shadow map support
-* Add tonemapping support
-* Improved memory management system
-* Create more primitives (possibly generating vertices & indices)
-* Load scenes from file
+* Graphics related
+    * Add shadow map support
+        * Directional lights
+        * Other lights
+    * Add tonemapping support
+    * Bloom support
+* Engine related
+    * Improved memory management system
+    * Create more primitives (possibly generating vertices & indices)
+    * Load scenes from file
 * See in-file TODOs for others...
 * And hopefully lots more, later on
 
