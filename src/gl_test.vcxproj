@@ -135,6 +135,8 @@
     <None Include="..\shaders\default.vert" />
     <None Include="..\shaders\default_unlit.frag" />
     <None Include="..\shaders\default_unlit.vert" />
+    <None Include="..\shaders\depth.frag" />
+    <None Include="..\shaders\depth.vert" />
     <None Include="..\shaders\screen_default.frag" />
     <None Include="..\shaders\screen_default.vert" />
     <None Include="..\shaders\skybox.frag" />
