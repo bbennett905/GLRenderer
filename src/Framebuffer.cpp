@@ -297,7 +297,12 @@ CFramebuffer::CFramebuffer(FramebufferCreateInfo* info) :
 			}
 		} //HasStencil
 	}
-
+	//Framebuffer requires color to be complete, but you can also tell it you don't have one
+	if (!info->HasColor)
+	{
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
