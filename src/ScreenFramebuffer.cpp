@@ -16,10 +16,14 @@ GLfloat fbVertices[] = {
 	1.0f,  1.0f,  1.0f, 1.0f
 };
 
+
+
 CScreenFramebuffer::CScreenFramebuffer() :
-	CFramebuffer(4), 
+	CFramebuffer(new FramebufferCreateInfo(Window::GetWidth(), Window::GetHeight(), 4)),
 	_shader(new CShader("../shaders/screen_default.vert", "../shaders/screen_default.frag")),
-	_intermediate_framebuffer(new CFramebuffer(0, false, false))
+	_intermediate_framebuffer(new CFramebuffer(
+		new FramebufferCreateInfo(Window::GetWidth(), Window::GetHeight(),
+		0, true, true, false, false, false, false)))
 {
 	glGenVertexArrays(1, &_vao);
 	glGenBuffers(1, &_vbo);
@@ -52,7 +56,7 @@ void CScreenFramebuffer::Draw()
 	
 	_shader->Use();
 	glBindVertexArray(_vao);
-	_intermediate_framebuffer->BindFramebufferTexture();
+	_intermediate_framebuffer->BindFramebufferColorTexture();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 }
