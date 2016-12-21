@@ -71,6 +71,7 @@ Materials are formatted as JSON strings and can have a number of attributes:
         * Other lights
     * Add tonemapping support
     * Bloom support
+    * Forward+ rendering
 * Engine related
     * Improved memory management system
     * Create more primitives (possibly generating vertices & indices)
