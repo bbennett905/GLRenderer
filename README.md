@@ -1,6 +1,6 @@
 # Summary #
 
-My pet project over the last few months, a work-in-progress OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/).
+One of my pet projects, a partially complete OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/).
 
 ## Features ##
 
@@ -63,7 +63,7 @@ Materials are formatted as JSON strings and can have a number of attributes:
 * *Roughness* - A roughness factor, multiplied by or used instead of the *MRMap* texture
 * *Metallicity* - A metallicity factor, multiplied by or used instead of the *MRMap* texture
 
-### Planned Features / ToDo List ###
+### Unfinished Features / Future additions ###
 
 * Graphics related
     * Add shadow map support
@@ -76,8 +76,6 @@ Materials are formatted as JSON strings and can have a number of attributes:
     * Improved memory management system
     * Create more primitives (possibly generating vertices & indices)
     * Load scenes from file
-* See in-file TODOs for others...
-* And hopefully lots more, later on
 
 # License #
 
