@@ -1,6 +1,6 @@
 # Summary #
 
-One of my pet projects, a partially complete OpenGL renderer/engine, partially based on code in and using assets from [LearnOpenGL](http://learnopengl.com/).
+A very basic OpenGL renderer/engine, partially based on (although highly modified) code in and using assets from [LearnOpenGL](http://learnopengl.com/).
 
 ## Features ##
 
@@ -62,20 +62,6 @@ Materials are formatted as JSON strings and can have a number of attributes:
 * *Translucent* - Set if the *DiffuseMap* texture is translucent
 * *Roughness* - A roughness factor, multiplied by or used instead of the *MRMap* texture
 * *Metallicity* - A metallicity factor, multiplied by or used instead of the *MRMap* texture
-
-### Unfinished Features / Future additions ###
-
-* Graphics related
-    * Add shadow map support
-        * Directional lights
-        * Other lights
-    * Add tonemapping support
-    * Bloom support
-    * Forward+ rendering
-* Engine related
-    * Improved memory management system
-    * Create more primitives (possibly generating vertices & indices)
-    * Load scenes from file
 
 # License #
 
